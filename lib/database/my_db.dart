@@ -67,6 +67,7 @@ class MyDb {
            updatedAt TEXT
             )""",
         );
+
         db.execute(
           """CREATE TABLE IF NOT EXISTS invoices(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,7 +77,8 @@ class MyDb {
         discount TEXT,
         isPaying INTEGER,
         createdAt TEXT,
-        updatedAt TEXT
+        updatedAt TEXT,
+        FOREIGN KEY (idCustomer) REFERENCES customers(id)
         )""",
         );
         db.execute(
@@ -84,7 +86,9 @@ class MyDb {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         idInvoice INTEGER,
         idProduct INTEGER,
-        count INTEGER
+        count INTEGER,
+        FOREIGN KEY (idInvoice) REFERENCES invoices(id),
+        FOREIGN KEY (idProduct) REFERENCES products(id)
         )""",
         );
       },
@@ -299,6 +303,18 @@ class MyDb {
         "createdAt": DateTime.now().toString().split(".")[0],
         "updatedAt": DateTime.now().toString().split(".")[0]
       });
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'ثبت محصول',style: TextStyle(fontSize: 18,color: kPurpleDark),
+        ),
+        messageText: const Text(
+          'محصول با موفقیت ثبت شد',
+          style: TextStyle(fontSize: 18,color: kPurpleDark), ),
+        backgroundColor: Colors.white,
+        colorText: kPinkDark,
+      );
       print('readAllProducts  // readAllProducts bad az create product');
       await readAllProducts();
     } else {
@@ -737,66 +753,118 @@ class MyDb {
     }
   }
 
-  Future<void> addInvoice(
-      idCustomer,nameCustomer, idInvoices, idProduct, nameProduct, countProduct, priceFi,
-      priceSum, typePay, discount,isPaying) async {
-    print('gham gham gham gham gham 0');
-    final db = await MyDb().db();
-    print('gham gham gham gham gham 1');
-    Invoice inv = Invoice();
-    var res = await db.query("invoices",
-        where: "idCustomer = ? AND isPaying=?", whereArgs: [idCustomer, 0]);
-    print('gham gham gham gham gham 2');
-    var jam = res.isNotEmpty ? inv = Invoice.fromJson(res.first) : Null;
-    print('gham gham gham gham gham 3');
-    if (jam != Null) {
-      // in halat zamani etefagh mioftad ke faktori baraye in customer az ghabl vojod dard va pardakh nashode
-      // bare hamin factor jadidi create nmishavad
-      print('create invoiceProducts');
-      //create invoice
-      await db.insert(
-          'invoice_products',
-          InvoiceProducts(
-            idInvoice: idInvoices,
-              idProduct: idProduct,
-              count: countProduct,)
-              .toJson());
-      print('gham gham gham gham gham 4');
 
-    } else {
-      print('create invoice');
-      print(idCustomer);
-      print('a');
-      print(nameCustomer);
-      print('A');
-      print(typePay);
-      print('B');
-      print(discount);
-      print('C');
-      print(isPaying);
-      print('D');
-      await db.insert('Invoices', {
-        "idCustomer": idCustomer,
-        "nameCustomer": nameCustomer,
-        "typePay": typePay,
-        "discount": discount,
-        "isPaying": isPaying,
-        "createdAt": DateTime.now().toString().split(".")[0],
-        "updatedAt": DateTime.now().toString().split(".")[0]
-      });
-      print('gham gham gham gham gham 5');
+  // Future<void> addInvoice(
+  //     idCustomer,nameCustomer, idInvoices, idProduct, nameProduct, countProduct, priceFi,
+  //     priceSum, typePay, discount,isPaying) async {
+  //
+  //   final db = await MyDb().db();
+  //   Invoice inv = Invoice();
+  //
+  //   // چک کنید که آیا فاکتور باز برای این مشتری وجود دارد
+  //   var res = await db.query("invoices",
+  //       where: "idCustomer = ? AND isPaying=?", whereArgs: [idCustomer, 0]);
+  //   var existingInvoice = res.isNotEmpty ? Invoice.fromJson(res.first) : null;
+  //
+  //   if (existingInvoice != null) {
+  //     // فاکتور باز برای مشتری پیدا شده است
+  //     await db.insert(
+  //       'invoice_products',
+  //       InvoiceProducts(
+  //         idInvoice: existingInvoice.id, // استفاده از id فاکتور موجود
+  //         idProduct: idProduct,
+  //         count: countProduct,
+  //       ).toJson(),
+  //     );
+  //   } else {
+  //     // فاکتور جدید ایجاد کنید
+  //     int newInvoiceId = await db.insert('invoices', {
+  //       "idCustomer": idCustomer,
+  //       "nameCustomer": nameCustomer,
+  //       "typePay": typePay,
+  //       "discount": discount,
+  //       "isPaying": isPaying,
+  //       "createdAt": DateTime.now().toString().split(".")[0],
+  //       "updatedAt": DateTime.now().toString().split(".")[0]
+  //     });
+  //
+  //     // ذخیره محصول در جدول واسط برای فاکتور جدید
+  //     await db.insert(
+  //       'invoice_products',
+  //       InvoiceProducts(
+  //         idInvoice: newInvoiceId, // استفاده از id فاکتور جدید
+  //         idProduct: idProduct,
+  //         count: countProduct,
+  //       ).toJson(),
+  //     );
+  //   }
+  // }
+////////////////////////////////////
 
-      await db.insert('invoice_products', InvoiceProducts(
-        idInvoice: idInvoices,
-            idProduct: idProduct,
-            count: countProduct,).toJson());
-      print('gham gham gham gham gham 6');
 
-      // invoice exists by customer in no pay
-    }
-    print('gham gham gham gham gham 7');
 
-  }
+
+  // Future<void> addInvoice(
+  //     idCustomer,nameCustomer, idInvoices, idProduct, nameProduct, countProduct, priceFi,
+  //     priceSum, typePay, discount,isPaying) async {
+  //   Invoice inv = Invoice();
+  //   print('gham gham gham gham gham 0');
+  //   final db = await MyDb().db();
+  //   print('gham gham gham gham gham 1');
+  //   var res = await db.query("invoices",
+  //       where: "nameCustomer = ? AND isPaying=?", whereArgs: [nameCustomer, 0]);
+  //   print('gham gham gham gham gham 2');
+  //   var jam = res.isNotEmpty ? inv = Invoice.fromJson(res.first) : Null;
+  //   print('gham gham gham gham gham 3');
+  //   if (jam != Null) {
+  //     // in halat zamani etefagh mioftad ke faktori baraye in customer az ghabl vojod dard va pardakh nashode
+  //     // bare hamin factor jadidi create nmishavad
+  //     print('create invoiceProducts');
+  //     //create invoice
+  //     await db.insert(
+  //         'invoice_products',
+  //         InvoiceProducts(
+  //           idInvoice: idInvoices,
+  //             idProduct: idProduct,
+  //             count: countProduct,)
+  //             .toJson());
+  //     print('gham gham gham gham gham 4');
+  //
+  //   }
+  //   else {
+  //     print('create invoice');
+  //     print(idCustomer);
+  //     print('a');
+  //     print(nameCustomer);
+  //     print('A');
+  //     print(typePay);
+  //     print('B');
+  //     print(discount);
+  //     print('C');
+  //     print(isPaying);
+  //     print('D');
+  //     await db.insert('Invoices', {
+  //       "idCustomer": idCustomer,
+  //       "nameCustomer": nameCustomer,
+  //       "typePay": typePay,
+  //       "discount": discount,
+  //       "isPaying": isPaying,
+  //       "createdAt": DateTime.now().toString().split(".")[0],
+  //       "updatedAt": DateTime.now().toString().split(".")[0]
+  //     });
+  //     print('gham gham gham gham gham 5');
+  //
+  //     await db.insert('invoice_products', InvoiceProducts(
+  //       idInvoice: idInvoices,
+  //           idProduct: idProduct,
+  //           count: countProduct,).toJson());
+  //     print('gham gham gham gham gham 6');
+  //
+  //     // invoice exists by customer in no pay
+  //   }
+  //   print('gham gham gham gham gham 7');
+  //
+  // }
 
   Future<List<Invoice>> getInvoice() async {
     final Database db = await MyDb().db();
@@ -818,6 +886,20 @@ class MyDb {
         },
       );
     }
+  }
+
+  Future<String> deleteInvoices() async {
+    final db = await MyDb().db();
+    await db.delete('invoices');
+    print('successful delete incoices');
+    return "successful delete incoices";
+  }
+
+  Future<String> deleteInvoiceProducts() async {
+    final db = await MyDb().db();
+    await db.delete('invoice_products');
+    print('successful delete invoice_products');
+    return "successful delete invoice_products";
   }
 
 }

@@ -42,7 +42,7 @@ class SignupPage extends GetView<RegisterLoginController> {
                       ),
                       Text(
                         "مشخصاتتان را برای ساخت حساب کاربری وارد کنید",
-                        style: TextStyle(fontSize: 15, ),
+                        style: TextStyle(fontSize: 18, ),
                       )
                     ],
                   ),
@@ -124,8 +124,8 @@ class SignupPage extends GetView<RegisterLoginController> {
                     colorBtn: Colors.white,
                     textBtn: 'ثبت نام',
                     textColor: kPurpleDark,
-                    fontBtn: 'yekanBakh',
-                    fontSizeBtn: 24,
+                    fontBtn: 'lalezarPlus',
+                    fontSizeBtn: 28,
                     shadowColor: kPurpleDark,
                     onTapped: () {
                       controller.registerUser();
@@ -138,13 +138,13 @@ class SignupPage extends GetView<RegisterLoginController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Text("از قبل حساب کاربری دارید؟",style: TextStyle(fontSize: 15),),
+                      const Text("از قبل حساب کاربری دارید؟",style: TextStyle(fontSize: 18),),
                       TextButton(
                           onPressed: () {
                             User user = User();
                             Get.toNamed(AppRoutes.login,arguments: user,parameters: {'username':'','registerOne':'yes'});
                           },
-                          child: const Text("ورود", style: TextStyle(color:kPurpleDark,fontSize: 17),)
+                          child: const Text("ورود", style: TextStyle(color:kPurpleDark,fontSize: 20),)
                       )
                     ],
                   )

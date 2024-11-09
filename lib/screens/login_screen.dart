@@ -32,12 +32,12 @@ final String registerOne = Get.parameters['registerOne']!;
 
                   const Text(
                     "ورود",
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  const Text("اطلاعات را برای ورود به حساب خود وارد کنید"),
+                  const Text("اطلاعات را برای ورود به حساب خود وارد کنید",style: TextStyle(fontSize: 20)),
                   const SizedBox(
                     height: 60,
                   ),
@@ -71,8 +71,8 @@ final String registerOne = Get.parameters['registerOne']!;
                     colorBtn: Colors.white,
                     textBtn: 'ورود',
                     textColor: kPurpleDark,
-                    fontBtn: 'yekanBakh',
-                    fontSizeBtn: 24,
+                    fontBtn: 'lalezarPlus',
+                    fontSizeBtn: 28,
                     shadowColor: kPurpleDark,
                     onTapped: () {
                       controller.registerOne = registerOne;
@@ -89,14 +89,14 @@ final String registerOne = Get.parameters['registerOne']!;
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("حساب کاربری ندارید؟",style: TextStyle(fontSize: 15),),
+                      const Text("حساب کاربری ندارید؟",style: TextStyle(fontSize: 18),),
                       TextButton(
                         onPressed: () {
                           Get.toNamed(AppRoutes.register);
                         },
                         child: const Text(
                           "ثبت نام",
-                          style: TextStyle(color: kPurpleDark,fontSize: 17),
+                          style: TextStyle(color: kPurpleDark,fontSize: 20),
                         ),
                       ),
                     ],

@@ -63,7 +63,10 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                           Center(
                               child: GestureDetector(
                             onTap: () async {
-                              await MyDb().addTest();
+                              // await MyDb().addTest();
+                              await MyDb().deleteInvoiceProducts();
+                              await MyDb().deleteInvoices();
+
                             },
                             child: const Text('ثبت فاکتور جدید',
                                 style: TextStyle(
@@ -165,82 +168,81 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: Row(
-                          children: [
-                            Center(
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton2<String>(
-                                  isExpanded: true,
-                                  hint: const Text(
-                                    'نام محصول',
-                                    style: TextStyle(
-                                      fontFamily: 'lalezarPlus',
-                                      fontSize: 20,
-                                      color: Colors.white70,
-                                    ),
-                                  ),
-                                  items: controller.addDividersAfterItems(
-                                      controller.listIdProducts),
-                                  value: controller.selectedValue,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  onChanged: (value) {
-                                    setState(() {
-
-                                      controller.selectedValue = value;
-                                      controller.idProduct.value.text = value!;
-                                    });
-                                  },
-                                  buttonStyleData: const ButtonStyleData(
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 1,
-                                                color: Colors.white24))),
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 50),
-                                    height: 60,
-                                    width: 360,
-                                  ),
-                                  dropdownStyleData: DropdownStyleData(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 0),
-                                    decoration: BoxDecoration(
-                                        gradient: const LinearGradient(
-                                            colors: [
-                                              kBlueLight,
-                                              kPurpleDark,
-                                            ],
-                                            begin: Alignment.bottomLeft,
-                                            end: Alignment.topRight),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    maxHeight: 250,
-                                  ),
-                                  menuItemStyleData: const MenuItemStyleData(
-                                    padding: EdgeInsets.only(
-                                        right: 20, left: 8, bottom: 0, top: 0),
-                                  ),
-                                  iconStyleData: const IconStyleData(
-                                    icon: Icon(
-                                      Icons.arrow_drop_down_rounded,
-                                      color: Colors.white38,
-                                    ),
-                                    openMenuIcon: Icon(
-                                      Icons.arrow_drop_up_rounded,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    children: [
+                      Center(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2<String>(
+                            isExpanded: true,
+                            hint: const Text(
+                              'نام محصول',
+                              style: TextStyle(
+                                fontFamily: 'lalezarPlus',
+                                fontSize: 20,
+                                color: Colors.white70,
                               ),
                             ),
-                          ],
+                            items: controller.addDividersAfterItems(
+                                controller.listIdProducts),
+                            value: controller.selectedValue,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                controller.selectedValue = value;
+                                controller.idProduct.value.text = value!;
+                              });
+                            },
+                            buttonStyleData: const ButtonStyleData(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          width: 1,
+                                          color: Colors.white24))),
+                              padding:
+                              EdgeInsets.symmetric(horizontal: 50),
+                              height: 60,
+                              width: 360,
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              padding:
+                              const EdgeInsets.symmetric(vertical: 0),
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                      colors: [
+                                        kBlueLight,
+                                        kPurpleDark,
+                                      ],
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.topRight),
+                                  borderRadius:
+                                  BorderRadius.circular(10)),
+                              maxHeight: 250,
+                            ),
+                            menuItemStyleData: const MenuItemStyleData(
+                              padding: EdgeInsets.only(
+                                  right: 20, left: 8, bottom: 0, top: 0),
+                            ),
+                            iconStyleData: const IconStyleData(
+                              icon: Icon(
+                                Icons.arrow_drop_down_rounded,
+                                color: Colors.white38,
+                              ),
+                              openMenuIcon: Icon(
+                                Icons.arrow_drop_up_rounded,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         child: Row(children: [
@@ -278,22 +280,7 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                               padding: const EdgeInsets.only(top: 30),
                               child: IconButton(
                                 onPressed: () async {
-                                  await controller.addToOrderList();
-                                  print(controller.listOrders.length);
-                                  print('paadawdaa lngh');
-                                  Get.snackbar(
-                                    '',
-                                    '',
-                                    titleText: const Text(
-                                        'ثبت فاکتور',style: TextStyle(fontSize: 18,color: kPurpleDark),
-                                    ),
-                                    messageText: const Text(
-                                    'اطلاعات فاکتور با موفقیت ثبت شد',
-                                      style: TextStyle(fontSize: 18,color: kPurpleDark), ),
-                                    backgroundColor: Colors.white,
-                                    colorText: kPinkDark,
-                                  );
-
+                                  await controller.addOrder();
                                 },
                                 icon: const Icon(
                                   Icons.add_task_rounded,
@@ -325,8 +312,9 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                     physics: const BouncingScrollPhysics(),
                     child: SizedBox(
                       height: Get.width / 2,
-                      child: controller.listOrders.isEmpty
-                          ? const Column(
+                      child: controller.listOrder.isEmpty
+                          ?
+                      const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Center(
@@ -340,93 +328,91 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                                 ))
                               ],
                             )
-                          : ListView.builder(
-                              itemCount: controller.listOrders.length,
-                              itemBuilder: (context, index) {
-                                var product = controller.listOrders[index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5.0, vertical: 5),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      gradient: const LinearGradient(
-                                          colors: [
-                                            kBlueLight,
-                                            kPinkLight,
-                                          ],
-                                          end: Alignment.bottomLeft,
-                                          begin: Alignment.topRight),
-                                    ),
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 4),
-                                        child: Row(
-                                          children: [
-                                            Column(
-                                              children: [
-                                                const Text(
-                                                  'نام محصول',
-                                                ),
-                                                Text(
-                                                  product[0],
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            Column(
-                                              children: [
-                                                const Text('تعداد'),
-                                                Text(
-                                                  product[1],
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            Column(
-                                              children: [
-                                                const Text('قیمت فی'),
-                                                Text(
-                                                  product[2],
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            Column(
-                                              children: [
-                                                const Text('قیمت کل'),
-                                                Text(
-                                                  // ((int.parse(product.price!)) *
-                                                  //         product.count!)
-                                                  //     .toString(),
-                                                  product[3].toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                          : Obx(
+                            ()=> ListView.builder(
+                                itemCount: controller.listOrder.length,
+                                itemBuilder: (context, index) {
+                                  var order = controller.listOrder[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5.0, vertical: 5),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        gradient: const LinearGradient(
+                                            colors: [
+                                              kBlueLight,
+                                              kPinkLight,
+                                            ],
+                                            end: Alignment.bottomLeft,
+                                            begin: Alignment.topRight),
+                                      ),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0, vertical: 4),
+                                          child: Row(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  const Text(
+                                                    'نام محصول',
+                                                  ),
+                                                  Text(
+                                                    order.nameProduct??'',
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  const Text('تعداد'),
+                                                  Text(
+                                                    order.countOrder.toString(),
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  const Text('قیمت فی'),
+                                                  Text(
+                                                    '${separateDigits(int.parse(order.unitPrice.toString()))} ت',
+                                                    style: const TextStyle(color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  const Text('قیمت کل'),
+                                                  Text(
+                                                    '${separateDigits(int.parse(order.totalPrice.toString()))} ت',
+                                                    style: const TextStyle(color: Colors.white),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
+                                  );
+                                },
+                              ),
+                          ),
                     ),
                   ),
                   const Spacer(),
@@ -458,7 +444,8 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
-                          child: TextField(
+                          child:
+                          TextField(
                             readOnly: true,
                             controller: controller.priceSum.value,
                             textAlign: TextAlign.center,
@@ -492,12 +479,20 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                       fontSizeBtn: 26,
                       shadowColor: kPurpleDark,
                       onTapped: () async {
+                          await controller.addInvoice();
                         var a = await MyDb().readInvoiceProducts();
-                        print(a);
+                        print(a.length);
+                        print('object');
+                        for(var item in a){
+                          print(item);
+                        }
+                        print('read Invoices');
                         var i = await MyDb().readInvoices();
                         print(i.length);
                         print(i);
-                        // controller.getIdNameProductForInvoice();
+                        await controller.readListOrder();
+                        print(controller.listOrder.length);
+                        print('listOrder.length');
                       },
                       splashColor: kPurpleDark,
                       borderColor: kPurpleDark,

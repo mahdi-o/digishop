@@ -39,14 +39,14 @@ class IntroScreen extends GetView<RegisterLoginController> {
                 ),
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 45.0),
+                    padding: const EdgeInsets.only(top: 40.0),
                     child: RichText(
                       text: const TextSpan(
                         text: 'فروشگاه ',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: kPurpleDark,
-                            fontSize: 38,fontFamily: 'Titr'),
+                            fontSize: 38,fontFamily: 'Lalezar'),
                         children: <TextSpan>[
                           TextSpan(
                               text: 'دیجیتال',
@@ -73,20 +73,20 @@ class IntroScreen extends GetView<RegisterLoginController> {
                       child: Text(
                         'خوشحالیم که تصمیم گرفتید به ما بپیوندید',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontFamily: 'lalezarPlus',
+                            fontSize: 18,
                             color: Colors.black),
                       ),
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     const Center(
                       child: Text(
                         'بهترین مجموعه لوازم دیجیتالی در یک برنامه',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontFamily: 'lalezarPlus',
+                          fontSize: 18,
                         ),
                       ),
                     ),
@@ -115,8 +115,8 @@ class IntroScreen extends GetView<RegisterLoginController> {
                       colorBtn: Colors.white,
                       textBtn: 'برو بریم!',
                       textColor: kPurpleDark,
-                      fontBtn: 'yekanBakh',
-                      fontSizeBtn: 25,
+                      fontBtn: 'lalezarPlus',
+                      fontSizeBtn: 28,
                       shadowColor: kPurpleDark,
                       onTapped: () {
                        Get.toNamed(AppRoutes.home,arguments: user);
