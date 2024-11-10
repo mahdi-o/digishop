@@ -35,15 +35,16 @@ class BasketScreen extends GetView<BasketController> {
                     const Center(
                       child: Text(
                         'شما در حال حاضر هیچ سبد خریدی ندارید!',
-                        style: TextStyle(fontSize: 21, color: Colors.white),
+                        style: TextStyle(fontSize: 24, color: Colors.white),
                       ),
                     ),
                     const SizedBox(
+
                       height: 30,
                     ),
                     const Icon(
                       Icons.remove_shopping_cart_outlined,
-                      size: 100,
+                      size: 130,
                       color: Colors.white,
                     ),
                     const SizedBox(

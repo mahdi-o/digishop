@@ -28,6 +28,7 @@ Random random = Random();
             )),
             leading: IconButton(
               onPressed: () {
+                FocusScope.of(context).unfocus();
                 Get.back();
               },
               icon: const Icon(
