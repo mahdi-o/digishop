@@ -43,12 +43,15 @@ class HomeScreen extends GetView<HomeController> {
                       icon2: Icons.account_circle_outlined,
                       icon1: Icons.shopping_cart,
                       onTapIcon1: () {
+                        FocusScope.of(context).unfocus();
                         Get.toNamed(AppRoutes.profile);
                       },
                       onTapIcon2: () {
+                        FocusScope.of(context).unfocus();
                         Get.toNamed(AppRoutes.basket);
                       },
                       moveHomeAdmin: () {
+                        FocusScope.of(context).unfocus();
                         Get.toNamed(AppRoutes.adminHome, arguments: username);
                       },
                     ),
@@ -68,7 +71,9 @@ class HomeScreen extends GetView<HomeController> {
                           border: Border.all(color: Colors.grey)),
                       child: TextField(
                         onTap: () {
-                          Get.toNamed(AppRoutes.search);
+                          FocusScope.of(context).unfocus();
+                          Get.toNamed(AppRoutes.search,
+                              parameters: {'username': username});
                         },
                         style: TextStyle(
                           color: Colors.black,
@@ -77,7 +82,8 @@ class HomeScreen extends GetView<HomeController> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'جستجو',
-                          hintStyle: TextStyle(color: Colors.grey.shade600,fontSize: 20),
+                          hintStyle: TextStyle(
+                              color: Colors.grey.shade600, fontSize: 20),
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           prefixIcon: Icon(
@@ -102,9 +108,12 @@ class HomeScreen extends GetView<HomeController> {
                         for (int i = 0; i < categoryList.length; i++) ...[
                           GestureDetector(
                             onTap: () {
-                              Get.toNamed(AppRoutes.showAllPro,
-                                  arguments: '${categoryList[i].name}',
-                                  parameters: {'username': username});
+                              FocusScope.of(context).unfocus();
+                              Get.toNamed(
+                                AppRoutes.showAllPro,
+                                arguments: '${categoryList[i].name}',
+                                parameters: {'username': username},
+                              );
                             },
                             child: CategoryContainer(
                               image: categoryList[i].imageAddress.toString(),
@@ -124,7 +133,6 @@ class HomeScreen extends GetView<HomeController> {
                       horizontal: 5,
                       vertical: 5,
                     ),
-
                     child: Row(
                       children: [
                         const Text('لپتاپ های برگزیده',
@@ -135,6 +143,7 @@ class HomeScreen extends GetView<HomeController> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
+                            FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.showAllPro,
                                 arguments: 'all',
                                 parameters: {'username': username});
@@ -150,50 +159,12 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                       ],
                     ),
-
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  // SizedBox(
-                  //   height: 100,
-                  //   child: SingleChildScrollView(
-                  //     scrollDirection: Axis.horizontal,
-                  //     child: Row(
-                  //       children: [
-                  //         for (int i = 0; i < 4; i++) ...[
-                  //           GestureDetector(
-                  //               onTap: () {
-                  //                 String username = user.username.toString();
-                  //                 Get.toNamed(
-                  //                   AppRoutes.proDet,
-                  //                   arguments: proLaptopList[i],
-                  //                   parameters: {'username': username},
-                  //                 );
-                  //               },
-                  //               child: ListView.builder(
-                  //                 scrollDirection: Axis.horizontal,
-                  //                 itemCount:
-                  //                 controller.listProductsBestDb.length,
-                  //                 itemBuilder: (context, index) {
-                  //                   return BoxRowProduct(
-                  //                       name: proLaptopList[i]
-                  //                           .nameProduct
-                  //                           .toString(),
-                  //                       price:
-                  //                       proLaptopList[i].price.toString(),
-                  //                       image: proLaptopList[i]
-                  //                           .imageAddress
-                  //                           .toString());
-                  //                 },
-                  //               ))
-                  //         ]
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   Obx(
-                    ()=> SizedBox(
+                    () => SizedBox(
                       height: 375,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -202,6 +173,7 @@ class HomeScreen extends GetView<HomeController> {
                           return GestureDetector(
                             onTap: () {
                               String username = user.username.toString();
+                              FocusScope.of(context).unfocus();
                               Get.toNamed(
                                 AppRoutes.proDet,
                                 arguments: controller.listProductsBestDb[index],
@@ -212,10 +184,12 @@ class HomeScreen extends GetView<HomeController> {
                                 name: controller
                                     .listProductsBestDb[index].nameProduct
                                     .toString(),
-                                price: controller.listProductsBestDb[index].price
+                                price: controller
+                                    .listProductsBestDb[index].price
                                     .toString(),
-                                image:
-                                    proLaptopList[index].imageAddress.toString()),
+                                image: proLaptopList[index]
+                                    .imageAddress
+                                    .toString()),
                           );
                         },
                       ),
@@ -229,7 +203,6 @@ class HomeScreen extends GetView<HomeController> {
                       horizontal: 5,
                       vertical: 5,
                     ),
-
                     child: Row(
                       children: [
                         const Text('لپتاپ های پرفروش',
@@ -240,6 +213,7 @@ class HomeScreen extends GetView<HomeController> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
+                            FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.showAllPro,
                                 arguments: 'all',
                                 parameters: {'username': username});
@@ -255,7 +229,6 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                       ],
                     ),
-
                   ),
 
                   const SizedBox(
@@ -263,25 +236,16 @@ class HomeScreen extends GetView<HomeController> {
                   ),
 
                   Obx(
-                    ()=> SizedBox(
+                    () => SizedBox(
                       height: 375,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: controller.listProductsBestDb.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: ()async{
-                              // print(controller.checkNameProductForDb("Surface Laptop 4-i5 1135G7 16GB 256SSD"));
-                              // controller.listProductsBestDb[index].nameProduct.toString()
-                              print(await onCheck());
-                              print('??;;;;;_____====="""""""00000000');
-                              print(controller.listProductsBestDb[index].nameProduct);
-                              print(controller
-                                  .listProductsBestDb[index].price);
-                              print(controller.listProductsBestDb[index].id);
-                              print('8s8s8s8s8s8s8s8s8s8s8s8');
-
+                            onTap: () async {
                               String username = user.username.toString();
+                              FocusScope.of(context).unfocus();
                               Get.toNamed(
                                 AppRoutes.proDet,
                                 arguments: controller.listProductsBestDb[index],
@@ -292,39 +256,17 @@ class HomeScreen extends GetView<HomeController> {
                                 name: controller
                                     .listProductsBestDb[index].nameProduct
                                     .toString(),
-                                price: controller.listProductsBestDb[index].price
+                                price: controller
+                                    .listProductsBestDb[index].price
                                     .toString(),
-                                image:
-                                proLaptopList[index].imageAddress.toString()),
+                                image: proLaptopList[index]
+                                    .imageAddress
+                                    .toString()),
                           );
                         },
                       ),
                     ),
                   ),
-                  // SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   child: Row(
-                  //     children: [
-                  //       for (int i = 0; i < 4; i++) ...[
-                  //         GestureDetector(
-                  //           onTap: () {
-                  //             String username = user.username.toString();
-                  //             Get.toNamed(
-                  //               AppRoutes.proDet,
-                  //               arguments: proLaptopList[i],
-                  //               parameters: {'username': username},
-                  //             );
-                  //           },
-                  //           child: BoxRowProduct(
-                  //               name: proLaptopList[i].nameProduct.toString(),
-                  //               price: proLaptopList[i].price.toString(),
-                  //               image:
-                  //                   proLaptopList[i].imageAddress.toString()),
-                  //         )
-                  //       ]
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -335,9 +277,4 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 }
-Future onCheck()async{
-  MyDb db = await MyDb();
-  var result = await db.checkNameProductForDb('LOQ 15IRH8-i7 13620H 16GB 512SSD RTX4050');
-  print(result);
-  return result;
-}
+

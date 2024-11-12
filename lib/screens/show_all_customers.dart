@@ -2,159 +2,180 @@ import 'package:digishop/constans.dart';
 import 'package:digishop/controller/customer_controller.dart';
 import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Customer.dart';
-import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/base_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ShowAllCustomers extends GetView<CustomerController> {
+import '../services/routes.dart';
+
+class ShowAllCustomers extends StatelessWidget {
   ShowAllCustomers({super.key});
 
-  String argument = Get.arguments;
-  String mapData = Get.parameters['username']!;
-  MyDb myDb = Get.find<MyDb>();
+  final String mapData = Get.parameters['username']!;
+  final MyDb myDb = Get.find<MyDb>();
+  final CustomerController controller = Get.find<CustomerController>();
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => BaseWidget(
-        color: Colors.white,
-        bottomNavigation: null,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          leading: GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.black,
-              )),
-        ),
-        // controller.productBrand(context, argument,mapData),
+    return FutureBuilder<List<Customer>>(
+      future: controller.getListCustomer(), // متد بارگذاری مشتریان از دیتابیس
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator()); // نمایش لودینگ
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('خطا در بارگذاری داده‌ها'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('هیچ مشتری موجود نیست'));
+        }
 
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SizedBox(
-            height: Get.height,
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 80),
-              scrollDirection: Axis.vertical,
-              itemCount: controller.listCustomersDb.length,
-              itemBuilder: (context, index) {
-                print(controller.listCustomersDb.length);
-                Customer customer = controller.listCustomersDb[index];
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 160,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: kPurple,
-                                  borderRadius: BorderRadius.circular(150)),
-                              child: const CircleAvatar(
-                                backgroundColor: Colors.white,
-                                backgroundImage:
-                                    AssetImage('assets/images/user3.png'),
-                                radius: 50,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 40,
-                                width: 200,
-                                child: Center(
-                                  child: Text(
-                                    customer.nameCustomer.toString(),
-                                    style: const TextStyle(
-                                        fontSize: 22),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                customer.username.toString(),
-                                style: TextStyle(
-                                    fontFamily: 'Titr',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: kPinkDark.withOpacity(0.7)),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Row(
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        // Get.toNamed(AppRoutes.adminProUpd,arguments: product);
-                                      },
-                                      icon: const Icon(Icons.edit_rounded,color: kPurpleDark,)),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: kPurpleDark),
-                                        borderRadius:
-                                            BorderRadius.circular(50),
-                                        color: kPurpleLight),
-                                    width: 110,
-                                    height: 35,
-                                    child: Center(
-                                        child: GestureDetector(
-                                      onTap: () {
-                                        // Get.toNamed(AppRoutes.proDet,arguments: product,parameters: {'username':nameUser});
-                                      },
-                                      child: const Text(
-                                        'جزئیات',
-                                        style: TextStyle(
-                                            fontFamily: 'Titr', fontSize: 15),
-                                      ),
-                                    )),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  const Icon(
-                                    Icons.delete_outline_rounded,
-                                    size: 35,
-                                    color: kPurpleDark,
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      const Divider(
-                          color: Colors.black26,
-                          thickness: 0.7,
-                          ),
-                    ],
-                  ),
+        final customers = snapshot.data!;
+
+        return BaseWidget(
+          color: Colors.white,
+          bottomNavigation: null,
+          appBar: AppBar(
+            elevation: 0,
+            toolbarHeight: 70,
+            centerTitle: true,
+            title: const Text(
+              'مشتریان',
+              style: TextStyle(
+                  fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
+            ),
+            backgroundColor: Colors.white,
+            leading: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  Get.back();
+                },
+                child: const Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: Colors.black,
+                )),
+          ),
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: 80),
+            itemCount: customers.length,
+            itemBuilder: (context, index) {
+              final customer = customers[index];
+              return Container(
+                width: double.infinity,
+                height: 160,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildAvatar(),
+                        const SizedBox(width: 10),
+                        _buildCustomerInfo(customer),
+                      ],
+                    ),
+                    const Divider(
+                      color: Colors.black26,
+                      thickness: 0.7,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAvatar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: kPurple,
+        borderRadius: BorderRadius.circular(150),
+      ),
+      child: const CircleAvatar(
+        backgroundColor: Colors.white,
+        backgroundImage: AssetImage('assets/images/user3.png'),
+        radius: 50,
+      ),
+    );
+  }
+
+  Widget _buildCustomerInfo(Customer customer) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 40,
+          width: 200,
+          child: Center(
+            child: Text(
+              customer.nameCustomer ?? '',
+              style: const TextStyle(fontSize: 22),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+        Text(
+          customer.username ?? '',
+          style: TextStyle(
+            fontFamily: 'Titr',
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: kPinkDark.withOpacity(0.7),
+          ),
+        ),
+        const SizedBox(height: 15),
+        Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Get.toNamed(
+                  AppRoutes.adminCusUpd,
+                  arguments: customer,
+                  parameters: {'username': mapData},
                 );
               },
+              icon: const Icon(Icons.edit_rounded, color: kPurpleDark),
             ),
+            const SizedBox(width: 5),
+            _buildDetailsButton(),
+            const SizedBox(width: 20),
+            GestureDetector(
+              onTap: () async {
+                await myDb.deleteCustomer(customer.id ?? -1);
+              },
+              child: const Icon(
+                Icons.delete_outline_rounded,
+                size: 35,
+                color: kPurpleDark,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDetailsButton() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: kPurpleDark),
+        borderRadius: BorderRadius.circular(50),
+        color: kPurpleLight,
+      ),
+      width: 110,
+      height: 35,
+      child: Center(
+        child: GestureDetector(
+          onTap: null, // Add your navigation action here.
+          child: const Text(
+            'جزئیات',
+            style: TextStyle(fontFamily: 'lalezarPlus', fontSize: 18),
           ),
         ),
       ),

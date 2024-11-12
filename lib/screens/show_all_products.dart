@@ -7,6 +7,7 @@ import 'package:digishop/widgets/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 
 import '../widgets/custom_button.dart';
 
@@ -29,38 +30,54 @@ class ShowAllProducts extends GetView<ProductController> {
           () => BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        appBar: null,
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 70,
+          centerTitle: true,
+          title: const Text('محصولات',style: TextStyle(fontFamily: 'lalezar',color: Colors.black,fontSize: 26),),
+          backgroundColor: Colors.white,
+          leading: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                Get.back();
+              },
+              child: const Icon(
+                Icons.arrow_back_ios_rounded,
+                color: Colors.black,
+              )),
+        ),
         child: argument == 'all'
-            ? _buildProductList(controller.listProductsDb)
+            ? _buildProductList(controller.listProductsDb,context)
             : _buildProductList(
-          controller.listProductsDb.where((p) => p.brand == argument).toList(),
+          controller.listProductsDb.where((p) => p.brand == argument).toList(),context
         ),
       ),
     );
   }
 
-  Widget _buildProductList(List<Product> products) {
+  Widget _buildProductList(List<Product> products,context) {
     return products.isEmpty ?
     Container(
       decoration: const BoxDecoration(color: kPurpleDark),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Center(
-            child: Text(
-              'شما در حال حاضر هیچ سبد خریدی ندارید!',
-              style: TextStyle(fontSize: 24, color: Colors.white),
-            ),
-          ),
-          const SizedBox(
-
-            height: 30,
-          ),
           const Icon(
             Icons.remove_shopping_cart_outlined,
             size: 130,
             color: Colors.white,
           ),
+          const SizedBox(
+
+            height: 30,
+          ),
+          const Center(
+            child: Text(
+              'شما در حال حاضر محصولی از این برند ندارید!',
+              style: TextStyle(fontSize: 24, color: Colors.white),
+            ),
+          ),
+
           const SizedBox(
             height: 50,
           ),
@@ -69,9 +86,10 @@ class ShowAllProducts extends GetView<ProductController> {
             textBtn: 'برگشت به صفحه اصلی',
             textColor: kPurpleDark,
             fontBtn: 'lalezarPlus',
-            fontSizeBtn: 22,
+            fontSizeBtn: 24,
             shadowColor: kPurpleDark,
             onTapped: () {
+              FocusScope.of(context).unfocus();
               Get.back();
             },
             splashColor: kPurpleDark,
@@ -93,7 +111,7 @@ class ShowAllProducts extends GetView<ProductController> {
 
   Widget _buildProductCard(Product product, int index) {
     return Padding(
-      padding: EdgeInsets.only(top: index == 0 ? 20 : 10), // برای اولین محصول padding بیشتری اعمال می‌شود
+      padding: const EdgeInsets.only(bottom: 10), // برای اولین محصول padding بیشتری اعمال می‌شود
       child: Container(
         width: Get.width,
         height: 170,
@@ -170,7 +188,7 @@ class ShowAllProducts extends GetView<ProductController> {
                 icon: const Icon(Icons.edit_rounded),
               ),
               const SizedBox(width: 5),
-              _buildDetailsButton(product),
+              _buildDetailsButton(product,context),
               const SizedBox(width: 20),
               _buildHeartIcon(),
             ],
@@ -180,7 +198,7 @@ class ShowAllProducts extends GetView<ProductController> {
     );
   }
 
-  Widget _buildDetailsButton(Product product) {
+  Widget _buildDetailsButton(Product product,context) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: kPurpleDark),

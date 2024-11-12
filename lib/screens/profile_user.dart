@@ -24,7 +24,7 @@ class ProfileUser extends GetView<ProfileController> {
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: InkWell(
                   onTap: () async {
-                    myDialog();
+                    myDialog(context);
                   },
                   child: const Icon(
                     Icons.logout_rounded,
@@ -35,6 +35,7 @@ class ProfileUser extends GetView<ProfileController> {
           ],
           leading: GestureDetector(
               onTap: () {
+                FocusScope.of(context).unfocus();
                 Get.back();
               },
               child: const Icon(
@@ -258,11 +259,12 @@ class ProfileUser extends GetView<ProfileController> {
   }
 }
 
-myDialog()async {
+myDialog(context)async {
   SharedPreferences pref =
       await SharedPreferences.getInstance();
   return dialogCustom('آیا از حذف حساب کاربری اطمینان دارید؟', () {
     pref.clear();
+    FocusScope.of(context).unfocus();
     Get.toNamed(AppRoutes.register);
   });
 

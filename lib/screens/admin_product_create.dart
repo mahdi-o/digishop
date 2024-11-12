@@ -36,6 +36,7 @@ class AdminProductCreate extends GetView<ProductController> {
                         padding: const EdgeInsets.only(right: 20.0, left: 80),
                         child: GestureDetector(
                           onTap: () {
+                            FocusScope.of(context).unfocus();
                             Get.back();
                           },
                           child: const Icon(

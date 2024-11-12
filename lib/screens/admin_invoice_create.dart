@@ -52,6 +52,7 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                                 const EdgeInsets.only(right: 15.0, left: 100),
                             child: GestureDetector(
                               onTap: () {
+                                FocusScope.of(context).unfocus();
                                 Get.back();
                               },
                               child: const Icon(

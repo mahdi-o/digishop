@@ -13,10 +13,12 @@ class CustomerController extends GetxController{
   Rx<TextEditingController> wallet =TextEditingController().obs;
   Rx<TextEditingController> address =TextEditingController().obs;
   RxList<Customer> listCustomersDb = <Customer>[].obs;
+  Rx<TextEditingController> changePassword = TextEditingController().obs;
 
-  getListCustomer()async{
+  Future<List<Customer>>getListCustomer()async{
     listCustomersDb.value.clear();
     listCustomersDb.value = await MyDb().getCustomer();
+    return listCustomersDb.value;
   }
   clear()async{
      name.value.clear();
@@ -28,9 +30,9 @@ class CustomerController extends GetxController{
      address.value.clear();
   }
   @override
-  void onInit() {
+  void onInit() async{
     // TODO: implement onInit
     super.onInit();
-    getListCustomer();
+    await getListCustomer();
   }
 }

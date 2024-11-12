@@ -119,6 +119,7 @@ class IntroScreen extends GetView<RegisterLoginController> {
                       fontSizeBtn: 28,
                       shadowColor: kPurpleDark,
                       onTapped: () {
+                        FocusScope.of(context).unfocus();
                        Get.toNamed(AppRoutes.home,arguments: user);
                         },
                       splashColor: kPurpleDark,

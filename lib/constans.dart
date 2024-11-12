@@ -47,12 +47,14 @@ String separateDigits(int number) {
 dialogCustom(String textBody, VoidCallback onTapped) {
   return Get.defaultDialog(
     backgroundColor: kPurpleDark,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
     title: 'اخطار',
-    titleStyle: const TextStyle(color: Colors.white, fontSize: 24),
-    content: Center(
+    titleStyle: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+    content: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Text(
         textBody,
+        textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white, fontSize: 16),
       ),
     ),
@@ -60,94 +62,173 @@ dialogCustom(String textBody, VoidCallback onTapped) {
       colorBtn: Colors.white,
       textBtn: 'تایید',
       textColor: kPinkDark,
-      fontBtn: 'yekanBakh',
-      fontSizeBtn: 22,
-      shadowColor: kPurpleDark,
+      fontBtn: 'lalezarPlus',
+      fontSizeBtn: 20,
+      shadowColor: Colors.transparent,
       onTapped: onTapped,
-      splashColor: kPurpleDark,
-      borderColor: kPurpleDark,
-      widthBtn: 100,
-      heightBtn: 55,
+      splashColor: kPurpleDark.withOpacity(0.2),
+      borderColor: Colors.transparent,
+      widthBtn: 120,
+      heightBtn: 45,
     ),
     cancel: CustomButton(
+      colorBtn: Colors.transparent,
+      textBtn: 'لغو',
+      textColor: Colors.white,
+      fontBtn: 'lalezarPlus',
+      fontSizeBtn: 20,
+      shadowColor: Colors.transparent,
+      onTapped: () {
+        Get.back();
+      },
+      splashColor: Colors.white.withOpacity(0.2),
+      borderColor: Colors.white,
+      widthBtn: 120,
+      heightBtn: 45,
+    ),
+    radius: 10,
+  );
+}
+ dialogCheckOut(
+    String title,
+    String textBody,
+    String textButton,
+    VoidCallback onTapped,
+    int type,
+    ) {
+  return Get.defaultDialog(
+    backgroundColor: Colors.white,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+    title: title,
+    titleStyle: const TextStyle(color: kPinkDark, fontSize: 24),
+    content: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        textBody,
+        textAlign: TextAlign.center,
+        style: const TextStyle(color: kPurpleDark, fontSize: 18),
+      ),
+    ),
+    confirm: CustomButton(
+      colorBtn: Colors.white,
+      textBtn: type == 0 ? 'بازگشت' : textButton,
+      textColor: kPurpleDark,
+      fontBtn: 'lalezarPlus',
+      fontSizeBtn: 22,
+      shadowColor: kPurpleDark,
+      splashColor: kPurpleDark,
+      borderColor: kPurpleDark,
+      widthBtn: 200,
+      heightBtn: type == 0 ? 60 : 55,
+      onTapped: type == 0 ? Get.back : onTapped,
+    ),
+  );
+}
+
+dialogTextFieldCheck(
+    String title,
+    String textBody,
+    String textButton,
+    VoidCallback onTapped,
+    int type,
+    TextEditingController inputController,
+    ) {
+  return Get.defaultDialog(
+    backgroundColor: Colors.white,
+    contentPadding: const EdgeInsets.only(right: 16,left: 16,bottom: 20,top: 0),
+    title: title,
+    titleStyle: const TextStyle(color: kPinkDark, fontSize: 24),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            textBody,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: kPurpleDark, fontSize: 18),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: TextField(
+            controller: inputController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'اینجا متن را وارد کنید',
+            ),
+          ),
+        ),
+      ],
+    ),
+    confirm:
+    CustomButton(
+      colorBtn: kPurpleDark,
+      textBtn: textButton,
+      textColor:  Colors.white,
+      fontBtn: 'lalezarPlus',
+      fontSizeBtn: 24,
+      shadowColor: kPurpleDark,
+      splashColor: kPurpleDark,
+      borderColor: kPurpleDark,
+      widthBtn: 130,
+      heightBtn: 55,
+      onTapped: onTapped,
+    ),
+
+    cancel:CustomButton(
       colorBtn: Colors.white,
       textBtn: 'لغو',
-      textColor: kPurpleDark,
-      fontBtn: 'yekanBakh',
-      fontSizeBtn: 22,
+      textColor:kPurpleDark,
+      fontBtn: 'lalezarPlus',
+      fontSizeBtn: 24,
       shadowColor: kPurpleDark,
       onTapped: () {
         Get.back();
       },
-      splashColor: kPurpleDark,
-      borderColor: kPurpleDark,
+      splashColor: Colors.white.withOpacity(0.2),
+      borderColor: Colors.white,
       widthBtn: 100,
       heightBtn: 55,
     ),
+    radius: 10,
   );
 }
-
-dialogCheckOut(String title, String textBody, String textButton,
-    VoidCallback onTapped, int type) {
-  return Get.defaultDialog(
-    backgroundColor: Colors.white,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-    title: title,
-    titleStyle: const TextStyle(color: kPinkDark, fontSize: 24),
-    content: Center(
-      child: Text(
-        textBody,
-        style: const TextStyle(color: kPurpleDark, fontSize: 18),
-      ),
-    ),
-    confirm: type == 0
-        ? CustomButton(
-            colorBtn: Colors.white,
-            textBtn: type == 0 ? 'بازگشت' : 'تایید',
-            textColor: kPurpleDark,
-            fontBtn: 'yekanBakh',
-            fontSizeBtn: 22,
-            shadowColor: kPurpleDark,
-            onTapped: onTapped,
-            splashColor: kPurpleDark,
-            borderColor: kPurpleDark,
-            widthBtn: 200,
-            heightBtn: 100,
-          )
-        : CustomButton(
-            colorBtn: Colors.white,
-            textBtn: textButton,
-            textColor: kPinkDark,
-            fontBtn: 'yekanBakh',
-            fontSizeBtn: 22,
-            shadowColor: kPurpleDark,
-            onTapped: onTapped,
-            splashColor: kPurpleDark,
-            borderColor: kPurpleDark,
-            widthBtn: 130,
-            heightBtn: 60,
-          ),
-  );
-}
-
-textFieldCustom(TextEditingController controller,Color textColor, Color labelColor, Color borderColor,
-    Color borderColorNext, String label, double width,double height, TextAlign textAlign,double double) {
+textFieldCustom(
+    TextEditingController controller,
+    Color textColor,
+    Color labelColor,
+    Color borderColor,
+    Color borderColorNext,
+    String label,
+    double width,
+    double height,
+    TextAlign textAlign,
+    double double,
+    {bool? readOnly,
+    obscureText,VoidCallback? onTap}) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: width, vertical: height),
-    child:
-    TextField(
+    child: TextField(
       controller: controller,
       textAlign: textAlign,
       style: TextStyle(color: textColor, fontSize: double),
       decoration: InputDecoration(
-          label:textAlign == TextAlign.center?Center(child: Text(label)):Text(label),
-          labelStyle: TextStyle(
-            color: labelColor,
-          ),
-          focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: borderColor)),
-          enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: borderColorNext))),
+        label: textAlign == TextAlign.center
+            ? Center(child: Text(label))
+            : Text(label),
+        labelStyle: TextStyle(
+          color: labelColor,
+        ),
+        focusedBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: borderColor)),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: borderColorNext),
+        ),
+      ),
+      readOnly: readOnly ?? false,
+      obscureText: obscureText ?? false,
+      onTap: onTap,
     ),
   );
 }

@@ -142,6 +142,7 @@ class SignupPage extends GetView<RegisterLoginController> {
                       TextButton(
                           onPressed: () {
                             User user = User();
+                            FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.login,arguments: user,parameters: {'username':'','registerOne':'yes'});
                           },
                           child: const Text("ورود", style: TextStyle(color:kPurpleDark,fontSize: 20),)

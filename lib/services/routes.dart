@@ -1,4 +1,5 @@
 import 'package:digishop/screens/admin_customer_create.dart';
+import 'package:digishop/screens/admin_customer_update.dart';
 import 'package:digishop/screens/admin_home_screen.dart';
 import 'package:digishop/screens/admin_invoice_create.dart';
 import 'package:digishop/screens/admin_product_create.dart';
@@ -32,6 +33,7 @@ class AppRoutes {
   static const String adminProCre = '/admin_product_create';
   static const String adminProUpd = '/admin_product_update';
   static const String adminCusCre = '/admin_customer_create';
+  static const String adminCusUpd = '/admin_customer_update';
   static const String adminInvCre = '/admin_invoice_create';
   static const String showAllCus = '/show_all_customers';
   static const String showAllInv = '/show_all_invoices';
@@ -84,6 +86,10 @@ class AppRoutes {
     GetPage(
       name: adminProCre,
       page: () => AdminProductCreate(),
+    ),
+    GetPage(
+      name: adminCusUpd,
+      page: () => AdminCustomerUpdate(),
     ),
     GetPage(
       name: adminProUpd,

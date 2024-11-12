@@ -205,6 +205,7 @@ class AdminHomeScreen extends StatelessWidget {
                           textColor: Colors.black,
                           iconColor: kPurpleDark,
                           voidCallback: () {
+                            FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.adminCusCre);
                           }),
                       ContainerCustomAdmin(
@@ -213,8 +214,8 @@ class AdminHomeScreen extends StatelessWidget {
                           textColor: kPurpleDark,
                           iconColor: Colors.black,
                           voidCallback: () {
+                            FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.showAllCus,
-                                arguments: 'all',
                                 parameters: {'username': username});
                           }),
                     ],
@@ -231,6 +232,7 @@ class AdminHomeScreen extends StatelessWidget {
                           textColor: kPurpleDark,
                           iconColor: Colors.black,
                           voidCallback: () {
+                            FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.adminInvCre);
                           }),
                       ContainerCustomAdmin(
@@ -239,8 +241,8 @@ class AdminHomeScreen extends StatelessWidget {
                           textColor: Colors.black,
                           iconColor: kPurpleDark,
                           voidCallback: () {
+                            FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.showAllInv,
-                                arguments: 'all',
                                 parameters: {'username': username});
                           }),
                     ],
@@ -257,14 +259,14 @@ class AdminHomeScreen extends StatelessWidget {
                               :Colors.black,
                           iconColor
                               :kPurpleDark,
-                          voidCallback: () { Get.toNamed(AppRoutes.adminProCre);}),
+                          voidCallback: () {FocusScope.of(context).unfocus(); Get.toNamed(AppRoutes.adminProCre);}),
                       ContainerCustomAdmin(text: 'محصولات',
                           icon: Icons.dataset_outlined,
                           textColor
                               :kPurpleDark,
                           iconColor
                               :Colors.black,
-                          voidCallback: () { Get.toNamed(AppRoutes.showAllPro,
+                          voidCallback: () {FocusScope.of(context).unfocus(); Get.toNamed(AppRoutes.showAllPro,
                               arguments: 'all',
                               parameters: {'username': username});}),
                     ],

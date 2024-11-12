@@ -13,11 +13,11 @@ final Color color;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor:color,
         appBar: appBar,
       body: child,
         bottomNavigationBar:bottomNavigation,
-
       ),
     );
   }

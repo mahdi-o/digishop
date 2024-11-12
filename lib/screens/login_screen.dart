@@ -92,6 +92,7 @@ final String registerOne = Get.parameters['registerOne']!;
                       const Text("حساب کاربری ندارید؟",style: TextStyle(fontSize: 18),),
                       TextButton(
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           Get.toNamed(AppRoutes.register);
                         },
                         child: const Text(

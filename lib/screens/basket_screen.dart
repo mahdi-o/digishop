@@ -8,7 +8,6 @@ import 'package:digishop/models/Product.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/custom_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/navbar_custom.dart';
@@ -32,20 +31,19 @@ class BasketScreen extends GetView<BasketController> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const Icon(
+                      Icons.remove_shopping_cart_outlined,
+                      size: 130,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
                     const Center(
                       child: Text(
                         'شما در حال حاضر هیچ سبد خریدی ندارید!',
                         style: TextStyle(fontSize: 24, color: Colors.white),
                       ),
-                    ),
-                    const SizedBox(
-
-                      height: 30,
-                    ),
-                    const Icon(
-                      Icons.remove_shopping_cart_outlined,
-                      size: 130,
-                      color: Colors.white,
                     ),
                     const SizedBox(
                       height: 50,
@@ -58,6 +56,7 @@ class BasketScreen extends GetView<BasketController> {
                       fontSizeBtn: 22,
                       shadowColor: kPurpleDark,
                       onTapped: () {
+                        FocusScope.of(context).unfocus();
                         Get.back();
                       },
                       splashColor: kPurpleDark,
@@ -80,6 +79,7 @@ class BasketScreen extends GetView<BasketController> {
                       onTapIcon2: () {
                         dialogCustom('آیا از حذف همه سبدها اطمینان دارید؟', () {
                           controller.deleteBaskets();
+                          FocusScope.of(context).unfocus();
                           Get.back();
                         });
                       },
@@ -128,8 +128,12 @@ class BasketScreen extends GetView<BasketController> {
                                               BorderRadius.circular(150)),
                                       child: Image.asset(
                                         product.imageAddress!.isEmpty
-                                            ? proLaptopListCustom[Random().nextInt(10)].imageAddress.toString()
-                                            : product.imageAddress.toString(),width: 90,
+                                            ? proLaptopListCustom[
+                                                    Random().nextInt(10)]
+                                                .imageAddress
+                                                .toString()
+                                            : product.imageAddress.toString(),
+                                        width: 90,
                                       ),
                                     ),
                                     const SizedBox(
@@ -191,6 +195,8 @@ class BasketScreen extends GetView<BasketController> {
                                               child: Center(
                                                   child: GestureDetector(
                                                 onTap: () {
+                                                  FocusScope.of(context)
+                                                      .unfocus();
                                                   Get.toNamed(
                                                       'AppRoutes.proDet,arguments: product');
                                                 },
@@ -199,6 +205,8 @@ class BasketScreen extends GetView<BasketController> {
                                                     String username = basket
                                                         .usernameId
                                                         .toString();
+                                                    FocusScope.of(context)
+                                                        .unfocus();
                                                     Get.toNamed(
                                                         AppRoutes.proDet,
                                                         arguments: product,
@@ -318,7 +326,7 @@ class BasketScreen extends GetView<BasketController> {
                                 Text(
                                   '${separateDigits(controller.priceSum.value)} تومان',
                                   style: TextStyle(
-                                    fontFamily: 'Titr',
+                                      fontFamily: 'Titr',
                                       color: kPinkDark.withOpacity(0.7),
                                       fontSize: 20),
                                 ),

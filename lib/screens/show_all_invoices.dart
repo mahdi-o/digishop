@@ -5,26 +5,33 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constans.dart';
 import '../database/my_db.dart';
-import '../services/routes.dart';
 import '../widgets/base_widget.dart';
 
 class ShowAllInvoices extends GetView<InvoiceController> {
   ShowAllInvoices({super.key});
-  String argument = Get.arguments;
+
   String mapData = Get.parameters['username']!;
   MyDb myDb = Get.find<MyDb>();
 
   @override
   Widget build(BuildContext context) {
     return Obx(
-          () => BaseWidget(
+      () => BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
         appBar: AppBar(
           elevation: 0,
+          toolbarHeight: 70,
+          centerTitle: true,
+          title: const Text(
+            'فاکتورها',
+            style: TextStyle(
+                fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
+          ),
           backgroundColor: Colors.white,
           leading: GestureDetector(
               onTap: () {
+                FocusScope.of(context).unfocus();
                 Get.back();
               },
               child: const Icon(
@@ -44,11 +51,10 @@ class ShowAllInvoices extends GetView<InvoiceController> {
               scrollDirection: Axis.vertical,
               itemCount: controller.listInvoicesDb.length,
               itemBuilder: (context, index) {
-                print(controller.listInvoicesDb.length);
                 Invoice invoice = controller.listInvoicesDb[index];
                 return Padding(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: 270,
@@ -57,7 +63,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                         borderRadius: BorderRadius.circular(20)),
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(width: 2,color: kPurpleDark),
+                          border: Border.all(width: 2, color: kPurpleDark),
                           borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(30),
                               bottomRight: Radius.circular(30))),
@@ -136,13 +142,15 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                                       fontBtn: 'lalezar',
                                       fontSizeBtn: 22,
                                       shadowColor: kPurpleDark,
-                                      onTapped: ()async {},
+                                      onTapped: () async {},
                                       splashColor: kPurpleDark,
                                       borderColor: kPurpleDark,
                                       widthBtn: 160,
                                       heightBtn: 45,
                                     ),
-                                    SizedBox(width: 10,),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     CustomButton(
                                       colorBtn: Colors.white,
                                       textBtn: 'ویرایش',
@@ -150,7 +158,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                                       fontBtn: 'lalezar',
                                       fontSizeBtn: 22,
                                       shadowColor: kPurpleDark,
-                                      onTapped: ()async {
+                                      onTapped: () async {
                                         // print(await MyDb().readInvoiceProducts());
                                         print('readInvoices');
                                         print(await MyDb().readInvoices());
