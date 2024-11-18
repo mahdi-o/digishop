@@ -10,14 +10,7 @@ import 'package:get/get.dart';
 import '../models/invoiceProducts.dart';
 
 class InvoiceController extends GetxController {
-  RxList<Product> productListOrder = <Product>[].obs;
-  RxInt sumProPriceAll = 0.obs;
 
-  RxList<Product> listProductsForInvoice = <Product>[].obs;
-  RxList<Customer> listCustomersForInvoice = <Customer>[].obs;
-  RxList<String> listIdProducts = <String>[].obs;
-  RxList<String> listIdCustomers = <String>[].obs;
-  RxList<Invoice> listInvoicesDb = <Invoice>[].obs;
   Rx<TextEditingController> idProduct = TextEditingController().obs;
   Rx<TextEditingController> idCustomer = TextEditingController().obs;
   Rx<TextEditingController> priceFe = TextEditingController().obs;
@@ -25,12 +18,22 @@ class InvoiceController extends GetxController {
   Rx<TextEditingController> priceSum = TextEditingController().obs;
   Rx<TextEditingController> typePay = TextEditingController().obs;
   Rx<TextEditingController> discount = TextEditingController().obs;
+
+  RxInt sumProPriceAll = 0.obs;
   RxInt isPay = 0.obs;
-  RxList listOrders = [].obs;
   RxInt sumPriceAll = 0.obs;
-  RxList<Order> listOrder = <Order>[].obs;
   RxBool isProductExists = false.obs;
   String? selectedValueCus;
+
+  RxList<Product> productListOrder = <Product>[].obs;
+  RxList<Product> listProductsForInvoice = <Product>[].obs;
+  RxList<Customer> listCustomersForInvoice = <Customer>[].obs;
+  RxList<String> listIdProducts = <String>[].obs;
+  RxList<String> listIdCustomers = <String>[].obs;
+  RxList<Invoice> listInvoicesDb = <Invoice>[].obs;
+  RxList listOrders = [].obs;
+  RxList<Order> listOrder = <Order>[].obs;
+
 
   List<DropdownMenuItem<String>> addDividersAfterItemsCus(
       List<String> listIdCustomers) {
@@ -122,9 +125,12 @@ class InvoiceController extends GetxController {
     return itemsHeights;
   }
 
-  getListInvoice() async {
+  Future<List<Invoice>>getListInvoice() async {
     listInvoicesDb.value.clear();
     listInvoicesDb.value = await MyDb().getInvoice();
+    print(listInvoicesDb.value.toList().length);
+    print('babo babo babooooooooooooooo');
+    return listInvoicesDb.value;
   }
 
   Future<void> readListOrder() async {

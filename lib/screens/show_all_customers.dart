@@ -5,7 +5,6 @@ import 'package:digishop/models/Customer.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../services/routes.dart';
 
 class ShowAllCustomers extends StatelessWidget {
@@ -21,39 +20,41 @@ class ShowAllCustomers extends StatelessWidget {
       future: controller.getListCustomer(), // متد بارگذاری مشتریان از دیتابیس
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator()); // نمایش لودینگ
+          return mainWidget(
+              context, const CircularProgressIndicator()); // نمایش لودینگ
         } else if (snapshot.hasError) {
-          return const Center(child: Text('خطا در بارگذاری داده‌ها'));
+          return mainWidget(
+            context,
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 120.0),
+                child: Text(
+                  'خطا در بارگذاری داده ها!',
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
+                ),
+              ),
+            ),
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('هیچ مشتری موجود نیست'));
+          return mainWidget(
+            context,
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 120.0),
+                child: Text(
+                  'مشتری یافت نشد!',
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
+                ),
+              ),
+            ),
+          );
         }
 
         final customers = snapshot.data!;
 
-        return BaseWidget(
-          color: Colors.white,
-          bottomNavigation: null,
-          appBar: AppBar(
-            elevation: 0,
-            toolbarHeight: 70,
-            centerTitle: true,
-            title: const Text(
-              'مشتریان',
-              style: TextStyle(
-                  fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
-            ),
-            backgroundColor: Colors.white,
-            leading: GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                  Get.back();
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios_rounded,
-                  color: Colors.black,
-                )),
-          ),
-          child: ListView.builder(
+        return mainWidget(
+          context,
+          ListView.builder(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.only(bottom: 80),
             itemCount: customers.length,
@@ -159,6 +160,33 @@ class ShowAllCustomers extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget mainWidget(BuildContext context, Widget child) {
+    return BaseWidget(
+        color: Colors.white,
+        bottomNavigation: null,
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 70,
+          centerTitle: true,
+          title: const Text(
+            'مشتریان',
+            style: TextStyle(
+                fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
+          ),
+          backgroundColor: Colors.white,
+          leading: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                Get.back();
+              },
+              child: const Icon(
+                Icons.arrow_back_ios_rounded,
+                color: Colors.black,
+              )),
+        ),
+        child: child);
   }
 
   Widget _buildDetailsButton() {

@@ -22,19 +22,22 @@ class ShowAllProducts extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
-    if(argument == 'all')
-    {
-    statusAll.value = true;
+    if (argument == 'all') {
+      statusAll.value = true;
     }
     return Obx(
-          () => BaseWidget(
+      () => BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 70,
           centerTitle: true,
-          title: const Text('محصولات',style: TextStyle(fontFamily: 'lalezar',color: Colors.black,fontSize: 26),),
+          title: const Text(
+            'محصولات',
+            style: TextStyle(
+                fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
+          ),
           backgroundColor: Colors.white,
           leading: GestureDetector(
               onTap: () {
@@ -47,71 +50,42 @@ class ShowAllProducts extends GetView<ProductController> {
               )),
         ),
         child: argument == 'all'
-            ? _buildProductList(controller.listProductsDb,context)
+            ? _buildProductList(controller.listProductsDb, context)
             : _buildProductList(
-          controller.listProductsDb.where((p) => p.brand == argument).toList(),context
-        ),
+                controller.listProductsDb
+                    .where((p) => p.brand == argument)
+                    .toList(),
+                context),
       ),
     );
   }
 
-  Widget _buildProductList(List<Product> products,context) {
-    return products.isEmpty ?
-    Container(
-      decoration: const BoxDecoration(color: kPurpleDark),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.remove_shopping_cart_outlined,
-            size: 130,
-            color: Colors.white,
-          ),
-          const SizedBox(
-
-            height: 30,
-          ),
-          const Center(
-            child: Text(
-              'شما در حال حاضر محصولی از این برند ندارید!',
-              style: TextStyle(fontSize: 24, color: Colors.white),
+  Widget _buildProductList(List<Product> products, context) {
+    return products.isEmpty
+        ?
+    Center(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 120.0),
+              child: Text(
+                'محصولی یافت نشد!',
+                style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
+              ),
             ),
-          ),
-
-          const SizedBox(
-            height: 50,
-          ),
-          CustomButton(
-            colorBtn: Colors.white,
-            textBtn: 'برگشت به صفحه اصلی',
-            textColor: kPurpleDark,
-            fontBtn: 'lalezarPlus',
-            fontSizeBtn: 24,
-            shadowColor: kPurpleDark,
-            onTapped: () {
-              FocusScope.of(context).unfocus();
-              Get.back();
-            },
-            splashColor: kPurpleDark,
-            borderColor: kPurpleDark,
-            widthBtn: 330,
-            heightBtn: 65,
-          ),
-        ],
-      ),
-    )
+          )
         : ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        return _buildProductCard(products[index], index); // ارسال index به تابع
-      },
-    );
+            physics: const BouncingScrollPhysics(),
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return _buildProductCard(
+                  products[index], index); // ارسال index به تابع
+            },
+          );
   }
 
   Widget _buildProductCard(Product product, int index) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10), // برای اولین محصول padding بیشتری اعمال می‌شود
+      padding: const EdgeInsets.only(bottom: 10),
+      // برای اولین محصول padding بیشتری اعمال می‌شود
       child: Container(
         width: Get.width,
         height: 170,
@@ -132,7 +106,7 @@ class ShowAllProducts extends GetView<ProductController> {
 
   Widget _buildProductImage(String? imageAddress) {
     return Padding(
-      padding: const EdgeInsets.only(right: 20.0,left: 5),
+      padding: const EdgeInsets.only(right: 20.0, left: 5),
       child: Center(
         child: Container(
           decoration: BoxDecoration(
@@ -142,9 +116,9 @@ class ShowAllProducts extends GetView<ProductController> {
           child: imageAddress != null && imageAddress.isNotEmpty
               ? Image.asset(imageAddress, width: 150)
               : const CircleAvatar(
-            backgroundImage: AssetImage('assets/images/slider5.jpg'),
-            radius: 70,
-          ),
+                  backgroundImage: AssetImage('assets/images/slider5.jpg'),
+                  radius: 70,
+                ),
         ),
       ),
     );
@@ -164,12 +138,12 @@ class ShowAllProducts extends GetView<ProductController> {
               scrollDirection: Axis.horizontal,
               child: Text(
                 product.nameProduct.toString(),
-                style: const TextStyle(fontSize: 16,fontFamily: 'lalezar'),
+                style: const TextStyle(fontSize: 16, fontFamily: 'lalezar'),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 5,bottom: 15),
+            padding: const EdgeInsets.only(top: 5, bottom: 15),
             child: Text(
               '${separateDigits(int.parse(product.price.toString()))} تومان',
               style: TextStyle(
@@ -180,15 +154,18 @@ class ShowAllProducts extends GetView<ProductController> {
               ),
             ),
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Row(
             children: [
               IconButton(
-                onPressed: () => Get.toNamed(AppRoutes.adminProUpd, arguments: product),
+                onPressed: () =>
+                    Get.toNamed(AppRoutes.adminProUpd, arguments: product),
                 icon: const Icon(Icons.edit_rounded),
               ),
               const SizedBox(width: 5),
-              _buildDetailsButton(product,context),
+              _buildDetailsButton(product, context),
               const SizedBox(width: 20),
               _buildHeartIcon(),
             ],
@@ -198,7 +175,7 @@ class ShowAllProducts extends GetView<ProductController> {
     );
   }
 
-  Widget _buildDetailsButton(Product product,context) {
+  Widget _buildDetailsButton(Product product, context) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: kPurpleDark),
@@ -210,14 +187,11 @@ class ShowAllProducts extends GetView<ProductController> {
       child: Center(
         child: GestureDetector(
           onTap: () {
-            String username =
-            mapData.toString();
+            String username = mapData.toString();
             Get.toNamed(
               AppRoutes.proDet,
               arguments: product,
-              parameters: {
-                'username': username
-              },
+              parameters: {'username': username},
             );
           },
           child: const Text(
@@ -231,7 +205,7 @@ class ShowAllProducts extends GetView<ProductController> {
 
   Widget _buildHeartIcon() {
     return Obx(
-          () => GestureDetector(
+      () => GestureDetector(
         onTap: () => heartStatus.value = !heartStatus.value,
         child: Icon(
           heartStatus.value ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
@@ -242,4 +216,3 @@ class ShowAllProducts extends GetView<ProductController> {
     );
   }
 }
-

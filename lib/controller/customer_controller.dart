@@ -18,6 +18,8 @@ class CustomerController extends GetxController{
   Future<List<Customer>>getListCustomer()async{
     listCustomersDb.value.clear();
     listCustomersDb.value = await MyDb().getCustomer();
+    print(listCustomersDb.value.toList().length);
+    print('babo babo babooooooooooooooo');
     return listCustomersDb.value;
   }
   clear()async{

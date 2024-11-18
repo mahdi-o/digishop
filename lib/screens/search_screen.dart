@@ -92,15 +92,18 @@ class SearchScreen extends GetView<MySearchController> {
                                 controller.text.text.isNotEmpty
                             ? Expanded(
                                 child: Center(
-                                    child: Padding(
-                                padding: const EdgeInsets.only(bottom: 120.0),
-                                child: Text(
-                                  'محصولی یافت نشد!',
-                                  style: TextStyle(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 30),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 120.0),
+                                    child: Text(
+                                      'محصولی یافت نشد!',
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 30),
+                                    ),
+                                  ),
                                 ),
-                              )))
+                              )
                             : Expanded(
                                 child: Center(
                                   child: Padding(

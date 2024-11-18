@@ -474,7 +474,7 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                     padding: const EdgeInsets.only(bottom: 30.0),
                     child: CustomButton(
                       colorBtn: Colors.white,
-                      textBtn: 'چاپ فاکتور',
+                      textBtn: 'ثبت فاکتور',
                       textColor: kPurpleDark,
                       fontBtn: 'lalezarPlus',
                       fontSizeBtn: 26,
@@ -494,6 +494,8 @@ class _AdminInvoiceCreateState extends State<AdminInvoiceCreate> {
                         await controller.readListOrder();
                         print(controller.listOrder.length);
                         print('listOrder.length');
+                          FocusScope.of(context).unfocus();
+                          Get.back();
                       },
                       splashColor: kPurpleDark,
                       borderColor: kPurpleDark,
