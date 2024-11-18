@@ -11,6 +11,7 @@ import '../widgets/custom_button.dart';
 
 class AdminCustomerUpdate extends GetView<CustomerController> {
   AdminCustomerUpdate({super.key});
+
   final String mapData = Get.parameters['username']!;
 
   MyDb xController = Get.find<MyDb>();
@@ -26,7 +27,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
         height: 310,
         color: Colors.white,
         childWidget: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: SizedBox(
             height: Get.height,
             child: Column(children: [
