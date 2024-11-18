@@ -130,9 +130,10 @@ class ProductController extends GetxController {
   }
 
   // ehtemalan bayad hazf beshe in function
-  getListProduct()async{
+  Future<List<Product>>getListProduct()async{
     listProductsDb.value.clear();
     listProductsDb.value = await MyDb().getProduct();
+    return listProductsDb.value;
     print('list product por shod dar product controller');
     print(listProductsDb.length);
   }

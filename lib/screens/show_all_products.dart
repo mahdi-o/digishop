@@ -11,134 +11,120 @@ import 'package:path/path.dart';
 
 import '../widgets/custom_button.dart';
 
-class ShowAllProducts extends GetView<ProductController> {
+class ShowAllProducts extends StatelessWidget {
   ShowAllProducts({super.key});
 
-  final RxBool heartStatus = false.obs;
-  final String argument = Get.arguments;
   final String mapData = Get.parameters['username']!;
   final MyDb myDb = Get.find<MyDb>();
-  RxBool statusAll = false.obs;
+  final ProductController controller = Get.find<ProductController>();
 
   @override
   Widget build(BuildContext context) {
-    if (argument == 'all') {
-      statusAll.value = true;
-    }
-    return Obx(
-      () => BaseWidget(
-        color: Colors.white,
-        bottomNavigation: null,
-        appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 70,
-          centerTitle: true,
-          title: const Text(
-            'محصولات',
-            style: TextStyle(
-                fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
-          ),
-          backgroundColor: Colors.white,
-          leading: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                Get.back();
-              },
-              child: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.black,
-              )),
-        ),
-        child: argument == 'all'
-            ? _buildProductList(controller.listProductsDb, context)
-            : _buildProductList(
-                controller.listProductsDb
-                    .where((p) => p.brand == argument)
-                    .toList(),
-                context),
-      ),
-    );
-  }
-
-  Widget _buildProductList(List<Product> products, context) {
-    return products.isEmpty
-        ?
-    Center(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 120.0),
-              child: Text(
-                'محصولی یافت نشد!',
-                style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
+    return FutureBuilder<List<Product>>(
+      future: controller.getListProduct(), // متد بارگذاری محصولات از دیتابیس
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return mainWidget(
+              context, const CircularProgressIndicator()); // نمایش لودینگ
+        } else if (snapshot.hasError) {
+          return mainWidget(
+            context,
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 120.0),
+                child: Text(
+                  'خطا در بارگذاری داده ها!',
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
+                ),
               ),
             ),
-          )
-        : ListView.builder(
+          );
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return mainWidget(
+            context,
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 120.0),
+                child: Text(
+                  'محصولی یافت نشد!',
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
+                ),
+              ),
+            ),
+          );
+        }
+
+        final products = snapshot.data!;
+
+        return mainWidget(
+          context,
+          ListView.builder(
             physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: 80),
             itemCount: products.length,
             itemBuilder: (context, index) {
-              return _buildProductCard(
-                  products[index], index); // ارسال index به تابع
-            },
-          );
-  }
-
-  Widget _buildProductCard(Product product, int index) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      // برای اولین محصول padding بیشتری اعمال می‌شود
-      child: Container(
-        width: Get.width,
-        height: 170,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          children: [
-            _buildProductImage(product.imageAddress),
-            const SizedBox(width: 10),
-            _buildProductInfo(product),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProductImage(String? imageAddress) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20.0, left: 5),
-      child: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            color: kPurple,
-            borderRadius: BorderRadius.circular(150),
-          ),
-          child: imageAddress != null && imageAddress.isNotEmpty
-              ? Image.asset(imageAddress, width: 150)
-              : const CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/slider5.jpg'),
-                  radius: 70,
+              final product = products[index];
+              return Container(
+                width: double.infinity,
+                height: 140,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
                 ),
+                child: Row(
+                  children: [
+                    _buildProductImage(product),
+                    const SizedBox(width: 5),
+                    _buildProductInfo(product),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildProductImage(Product product) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        right: 10.0,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: kPurple,
+          borderRadius: BorderRadius.circular(140),
         ),
+        child: product.imageAddress != null && product.imageAddress!.isNotEmpty
+            ? Image.asset(product.imageAddress!, width: 140)
+            : const CircleAvatar(
+                backgroundImage: AssetImage('assets/images/slider5.jpg'),
+                radius: 70,
+              ),
       ),
     );
   }
+
+  ///
 
   Widget _buildProductInfo(Product product) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: 30,
+            height: 40,
             width: 200,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Text(
-                product.nameProduct.toString(),
-                style: const TextStyle(fontSize: 16, fontFamily: 'lalezar'),
+            child: Center(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Text(
+                  product.nameProduct ?? '',
+                  style: const TextStyle(fontSize: 16, fontFamily: 'lalezar'),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           ),
@@ -154,20 +140,32 @@ class ShowAllProducts extends GetView<ProductController> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Row(
             children: [
               IconButton(
-                onPressed: () =>
-                    Get.toNamed(AppRoutes.adminProUpd, arguments: product),
-                icon: const Icon(Icons.edit_rounded),
+                onPressed: () {
+                  Get.toNamed(
+                    AppRoutes.adminProUpd,
+                    arguments: product,
+                    parameters: {'username': mapData},
+                  );
+                },
+                icon: const Icon(Icons.edit_rounded, color: kPurpleDark),
               ),
               const SizedBox(width: 5),
-              _buildDetailsButton(product, context),
+              _buildDetailsButton(product),
               const SizedBox(width: 20),
-              _buildHeartIcon(),
+              GestureDetector(
+                onTap: () async {
+                  await myDb.deleteProduct(product.id ?? -1);
+                },
+                child: const Icon(
+                  Icons.delete_outline_rounded,
+                  size: 35,
+                  color: kPurpleDark,
+                ),
+              ),
             ],
           ),
         ],
@@ -175,7 +173,36 @@ class ShowAllProducts extends GetView<ProductController> {
     );
   }
 
-  Widget _buildDetailsButton(Product product, context) {
+  ///
+
+  Widget mainWidget(BuildContext context, Widget child) {
+    return BaseWidget(
+        color: Colors.white,
+        bottomNavigation: null,
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 70,
+          centerTitle: true,
+          title: const Text(
+            'محصولات',
+            style: TextStyle(
+                fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
+          ),
+          backgroundColor: Colors.white,
+          leading: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                Get.toNamed(AppRoutes.adminHome, arguments: mapData);
+              },
+              child: const Icon(
+                Icons.arrow_back_ios_rounded,
+                color: Colors.black,
+              )),
+        ),
+        child: child);
+  }
+
+  Widget _buildDetailsButton(Product product) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: kPurpleDark),
@@ -193,26 +220,15 @@ class ShowAllProducts extends GetView<ProductController> {
               arguments: product,
               parameters: {'username': username},
             );
-          },
+          }, // Add your navigation action here.
           child: const Text(
             'جزئیات',
-            style: TextStyle(fontFamily: 'Titr', fontSize: 15),
+            style: TextStyle(fontFamily: 'lalezarPlus', fontSize: 18),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildHeartIcon() {
-    return Obx(
-      () => GestureDetector(
-        onTap: () => heartStatus.value = !heartStatus.value,
-        child: Icon(
-          heartStatus.value ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-          color: heartStatus.value ? kPinkDark : kPurpleDark,
-          size: 27,
-        ),
-      ),
-    );
-  }
+  ///
 }

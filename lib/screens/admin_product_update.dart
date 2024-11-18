@@ -8,10 +8,13 @@ import 'package:digishop/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../services/routes.dart';
+
 class AdminProductUpdate extends GetView<ProductController> {
   AdminProductUpdate({super.key});
-
   final Product product = Get.arguments;
+  final String mapData = Get.parameters['username']!;
+
 
   @override
   Widget build(BuildContext context) {
@@ -183,6 +186,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                 child: GestureDetector(
                   onTap: () async {
                     var res = await MyDb().readAllProducts();
+                    print(res);
                   },
                   child: const Text(
                     'تغییر عکس',
@@ -236,8 +240,11 @@ class AdminProductUpdate extends GetView<ProductController> {
                       ),
                       backgroundColor: Colors.white,
                       colorText: kPinkDark,
+                      duration: const Duration(seconds: 1)
                     );
-                    Get.back();
+                    Future.delayed(const Duration(seconds: 2),() {
+                      Get.toNamed(AppRoutes.showAllPro,arguments: 'all',parameters: {'username': mapData},);
+                    },);
                   },
                   splashColor: kPurpleDark,
                   borderColor: kPurpleDark,

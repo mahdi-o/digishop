@@ -58,7 +58,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                           var result = await xController.readCustomers();
                           print(result);
                         },
-                        child: const Text('بروزرسانی اطلاعات مشتری',
+                        child: const Text('ویرایش اطلاعات مشتری',
                             style:
                                 TextStyle(fontSize: 26, color: Colors.white)),
                       )),
@@ -93,7 +93,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                     dialogTextFieldCheck(
                         'تغییر رمزعبور',
                         'برای تغییر رمز عبور ابتدا رمز عبور قبلی را وارد کنید',
-                        'تایید', ()async {
+                        'تایید', () async {
                       Get.back();
                       if (controller.changePassword.value.text.isNotEmpty) {
                         controller.password.value ==
@@ -107,7 +107,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                 height: 5,
               ),
               textFieldCustom(
-                  controller.name.value =
+                  controller.nameCustomer.value =
                       TextEditingController(text: customer.nameCustomer),
                   Colors.black87,
                   kPurpleDark.withOpacity(0.7),
@@ -171,34 +171,62 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                 padding: const EdgeInsets.only(bottom: 30.0),
                 child: CustomButton(
                   colorBtn: Colors.white,
-                  textBtn: 'بروزرسانی اطلاعات',
+                  textBtn: 'ویرایش اطلاعات',
                   textColor: kPurpleDark,
                   fontBtn: 'lalezar',
                   fontSizeBtn: 26,
                   shadowColor: kPurpleDark,
                   onTapped: () async {
-                    if(customer.id != null){
+                    if (customer.id != null) {
                       print(customer.id);
                       print('customer id id id id id id id');
-                      var idCus =await xController.getIdCustomer(customer.id??0);
-                     await xController.updateCustomer(idCus, Customer(
-                       id: idCus,
-                        nameCustomer: controller.name.value.text,
-                        username: controller.username.value.text,
-                        password: controller.password.value.text,
-                        email: controller.email.value.text,
-                        phoneNumber: controller.phoneNumber.value.text,
-                        wallet: controller.wallet.value.text,
-                        address: controller.address.value.text,
-                        description: customer.description,
-                        isDelete: 0,
-                        createdAt: customer.createdAt,
-                        updatedAt: DateTime.now().toString().split(".")[0],
-                      ));
-                    }else{
+                      var idCus =
+                          await xController.getIdCustomer(customer.id ?? 0);
+                      await xController.updateCustomer(
+                          idCus,
+                          Customer(
+                            id: idCus,
+                            nameCustomer: controller.nameCustomer.value.text,
+                            username: controller.username.value.text,
+                            password: controller.password.value.text,
+                            email: controller.email.value.text,
+                            phoneNumber: controller.phoneNumber.value.text,
+                            wallet: controller.wallet.value.text,
+                            address: controller.address.value.text,
+                            description: customer.description,
+                            isDelete: 0,
+                            createdAt: customer.createdAt,
+                            updatedAt: DateTime.now().toString().split(".")[0],
+                          ));
+                      FocusScope.of(context).unfocus();
+                      Get.snackbar(
+                          '',
+                          '',
+                          titleText: const Text(
+                            'ویرایش اطلاعات',
+                            style: TextStyle(fontSize: 18, color: kPurpleDark),
+                          ),
+                          messageText: const Text(
+                            'اطلاعات مشتری با موفقیت ویرایش شد',
+                            style: TextStyle(fontSize: 18, color: kPurpleDark),
+                          ),
+                          backgroundColor: Colors.white,
+                          colorText: kPinkDark,
+                          duration: const Duration(seconds: 1)
+                      );
+                      Future.delayed(
+                        const Duration(seconds: 2),
+                            () {
+                          Get.toNamed(
+                            AppRoutes.showAllCus,
+                            parameters: {'username': mapData},
+                          );
+                        },
+                      );
+                    } else {
                       Get.snackbar(
                         'عملیات ناموفق',
-                        'بروزرسانی اطلاعات با مشکل مواجه شد',
+                        'ویرایش اطلاعات با مشکل مواجه شد',
                         backgroundColor: kRedLight,
                         colorText: Colors.white,
                         icon: const Icon(
@@ -209,7 +237,6 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                         shouldIconPulse: false,
                       );
                     }
-                    Get.toNamed(AppRoutes.showAllCus, parameters: {'username': mapData},);
 
                   },
                   splashColor: kPurpleDark,

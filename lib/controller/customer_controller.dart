@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../database/my_db.dart';
 
 class CustomerController extends GetxController{
-  Rx<TextEditingController> name =TextEditingController().obs;
+  Rx<TextEditingController> nameCustomer =TextEditingController().obs;
   Rx<TextEditingController> username =TextEditingController().obs;
   Rx<TextEditingController> password =TextEditingController().obs;
   Rx<TextEditingController> phoneNumber =TextEditingController().obs;
@@ -23,7 +23,7 @@ class CustomerController extends GetxController{
     return listCustomersDb.value;
   }
   clear()async{
-     name.value.clear();
+    nameCustomer.value.clear();
      username.value.clear();
      password.value.clear();
      phoneNumber.value.clear();

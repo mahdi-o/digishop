@@ -23,7 +23,7 @@ class InvoiceController extends GetxController {
   RxInt isPay = 0.obs;
   RxInt sumPriceAll = 0.obs;
   RxBool isProductExists = false.obs;
-  String? selectedValueCus;
+
 
   RxList<Product> productListOrder = <Product>[].obs;
   RxList<Product> listProductsForInvoice = <Product>[].obs;
@@ -34,7 +34,7 @@ class InvoiceController extends GetxController {
   RxList listOrders = [].obs;
   RxList<Order> listOrder = <Order>[].obs;
 
-
+  RxString? selectedValueCus = ''.obs;
   List<DropdownMenuItem<String>> addDividersAfterItemsCus(
       List<String> listIdCustomers) {
     final List<DropdownMenuItem<String>> menuItems = [];
@@ -64,7 +64,6 @@ class InvoiceController extends GetxController {
     }
     return menuItems;
   }
-
   List<double> getCustomItemsHeightsCus() {
     final List<double> itemsHeights = [];
     for (int i = 0; i < (listIdCustomers.length * 2) - 1; i++) {
@@ -78,9 +77,7 @@ class InvoiceController extends GetxController {
     }
     return itemsHeights;
   }
-
-  String? selectedValue;
-
+  RxString? selectedValue = ''.obs;
   List<DropdownMenuItem<String>> addDividersAfterItems(
       List<String> listIdProducts) {
     final List<DropdownMenuItem<String>> menuItems = [];
@@ -110,7 +107,6 @@ class InvoiceController extends GetxController {
     }
     return menuItems;
   }
-
   List<double> getCustomItemsHeights() {
     final List<double> itemsHeights = [];
     for (int i = 0; i < (listIdProducts.length * 2) - 1; i++) {
@@ -219,6 +215,7 @@ class InvoiceController extends GetxController {
   }
 
   Future<void> addInvoice() async {
+
     final db = await MyDb().db();
     Invoice invoice = Invoice();
     Customer customer = Customer();
@@ -325,6 +322,15 @@ class InvoiceController extends GetxController {
     }
 
     print('Invoice with multiple orders added/updated successfully.');
+    idProduct.value.clear();
+    count.value.clear();
+    typePay.value.clear();
+    priceFe.value.clear();
+    priceSum.value.clear();
+    discount.value.clear();
+    listOrders.clear();
+    listOrder.clear();
+    listInvoicesDb.clear();
   }
 //////////////////////////
 //   Future<void> addInvoice() async {

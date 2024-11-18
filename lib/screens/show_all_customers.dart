@@ -179,7 +179,8 @@ class ShowAllCustomers extends StatelessWidget {
           leading: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
-                Get.back();
+                Get.toNamed(AppRoutes.adminHome,arguments: mapData);
+
               },
               child: const Icon(
                 Icons.arrow_back_ios_rounded,

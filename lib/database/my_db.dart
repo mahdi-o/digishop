@@ -159,7 +159,6 @@ class MyDb {
     return jam;
   }
 
-
   Future<List<Basket>> getBaskets() async {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
@@ -294,6 +293,7 @@ class MyDb {
           style: TextStyle(fontSize: 18, color: kPurpleDark),),
         backgroundColor: Colors.white,
         colorText: kPinkDark,
+        duration: const Duration(seconds: 1),
       );
       print('readAllProducts  // readAllProducts bad az create product');
       await readAllProducts();
@@ -349,8 +349,8 @@ class MyDb {
             imageAddress: pro.imageAddress,
             star: pro.star,
           ).toJson(),
-          where: "nameProduct=?",
-          whereArgs: [pro.nameProduct]);
+          where: "id=?",
+          whereArgs: [pro.id]);
     }
   }
 
@@ -503,8 +503,8 @@ class MyDb {
             createdAt: newCustomer.createdAt,
             updatedAt: DateTime.now().toString().split(".")[0],
           ).toJson(),
-          where: "nameCustomer=?",
-          whereArgs: [newCustomer.nameCustomer]);
+          where: "id=?",
+          whereArgs: [newCustomer.id]);
       print('update shod');
     }
   }
@@ -572,7 +572,7 @@ class MyDb {
           'حذف مشتری',
           style: TextStyle(fontSize: 18, color: kPurpleDark),
         ),
-        duration: Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 100),
         messageText: const Text(
           'مشتری با موفقیت حذف شد',
           style: TextStyle(fontSize: 18, color: kPurpleDark),

@@ -58,7 +58,7 @@ class BoxRowProduct extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 55.0, top: 10),
+                    padding: const EdgeInsets.only(right: 40.0, top: 10),
                     child: Row(
                       children: [
                         Text(
