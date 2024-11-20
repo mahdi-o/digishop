@@ -11,15 +11,21 @@ import 'package:path/path.dart';
 
 import '../widgets/custom_button.dart';
 
-class ShowAllProducts extends StatelessWidget {
+class ShowAllProducts extends GetView<ProductController> {
   ShowAllProducts({super.key});
 
+  final String brandHomeScreen = Get.arguments;
   final String mapData = Get.parameters['username']!;
   final MyDb myDb = Get.find<MyDb>();
   final ProductController controller = Get.find<ProductController>();
+  RxList<Product> listProducts = <Product>[].obs;
+  List<Product> products = [];
 
   @override
   Widget build(BuildContext context) {
+    print(brandHomeScreen);
+    print('brandHomeScreen brandHomeScreen brandHomeScreen brandHomeScreen');
+
     return FutureBuilder<List<Product>>(
       future: controller.getListProduct(), // متد بارگذاری محصولات از دیتابیس
       builder: (context, snapshot) {
@@ -54,33 +60,65 @@ class ShowAllProducts extends StatelessWidget {
           );
         }
 
-        final products = snapshot.data!;
-
+        if (brandHomeScreen == 'all') {
+          products = snapshot.data!;
+        } else {
+          for (var item in snapshot.data!) {
+            if (item.brand == brandHomeScreen) {
+              products.add(item);
+              print('addddddddd brand');
+              print(item.nameProduct);
+            } else {
+              // not product brand
+              false;
+            }
+          }
+        }
+        print(products.length);
         return mainWidget(
           context,
-          ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.only(bottom: 80),
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return Container(
-                width: double.infinity,
-                height: 140,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+          products.isEmpty
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 120.0),
+                    child: Text(
+                      'محصولی یافت نشد!',
+                      style:
+                          TextStyle(color: Colors.grey.shade600, fontSize: 30),
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.only(bottom: 80),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: double.infinity,
+                            height: 140,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              children: [
+                                _buildProductImage(product),
+                                const SizedBox(width: 5),
+                                _buildProductInfo(product),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Divider(color: Colors.grey),
+                      ],
+                    );
+                  },
                 ),
-                child: Row(
-                  children: [
-                    _buildProductImage(product),
-                    const SizedBox(width: 5),
-                    _buildProductInfo(product),
-                  ],
-                ),
-              );
-            },
-          ),
         );
       },
     );
@@ -192,7 +230,7 @@ class ShowAllProducts extends StatelessWidget {
           leading: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
-                Get.toNamed(AppRoutes.adminHome, arguments: mapData);
+                Get.back();
               },
               child: const Icon(
                 Icons.arrow_back_ios_rounded,

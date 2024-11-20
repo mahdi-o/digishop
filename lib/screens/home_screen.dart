@@ -114,6 +114,7 @@ class HomeScreen extends GetView<HomeController> {
                                 arguments: '${categoryList[i].name}',
                                 parameters: {'username': username},
                               );
+
                             },
                             child: CategoryContainer(
                               image: categoryList[i].imageAddress.toString(),
