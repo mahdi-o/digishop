@@ -262,7 +262,7 @@ class ProfileUser extends GetView<ProfileController> {
 myDialog(context)async {
   SharedPreferences pref =
       await SharedPreferences.getInstance();
-  return dialogCustom('آیا از حذف حساب کاربری اطمینان دارید؟', () {
+  return dialogCustom('آیا از حذف حساب کاربری اطمینان دارید؟',16, () {
     pref.clear();
     FocusScope.of(context).unfocus();
     Get.toNamed(AppRoutes.register);

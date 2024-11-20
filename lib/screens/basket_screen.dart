@@ -27,14 +27,14 @@ class BasketScreen extends GetView<BasketController> {
         bottomNavigation: null,
         child: controller.basketList.isEmpty
             ? Container(
-                decoration: const BoxDecoration(color: kPurpleDark),
+                decoration: const BoxDecoration(color: Colors.white),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
                       Icons.remove_shopping_cart_outlined,
                       size: 130,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     const SizedBox(
                       height: 30,
@@ -42,7 +42,7 @@ class BasketScreen extends GetView<BasketController> {
                     const Center(
                       child: Text(
                         'شما در حال حاضر هیچ سبد خریدی ندارید!',
-                        style: TextStyle(fontSize: 24, color: Colors.white),
+                        style: TextStyle(fontSize: 24, color: Colors.black),
                       ),
                     ),
                     const SizedBox(
@@ -75,9 +75,13 @@ class BasketScreen extends GetView<BasketController> {
                     NavbarCustom(
                       text1: ' سبد ',
                       text2: 'خرید',
+                      size1: 30,
+                      size2: 30,
+                      fontFace1:'Titr',
+                      fontFace2: 'Titr',
                       icon1: Icons.delete_outline_rounded,
                       onTapIcon2: () {
-                        dialogCustom('آیا از حذف همه سبدها اطمینان دارید؟', () {
+                        dialogCustom('آیا از حذف همه سبدها اطمینان دارید؟',16, () {
                           controller.deleteBaskets();
                           FocusScope.of(context).unfocus();
                           Get.back();

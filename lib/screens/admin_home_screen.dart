@@ -18,6 +18,15 @@ class AdminHomeScreen extends StatelessWidget {
     return BaseWidget(
       color: Colors.grey.shade300.withOpacity(0.1),
       appBar: null,
+      floating: FloatingActionButton(
+        onPressed: () {
+          Get.back();
+        },
+        elevation: 20,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.arrow_back_sharp,size: 30,),
+      ),
       bottomNavigation: null,
       child: AdminBaseWidget(
         height: 280,

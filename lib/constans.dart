@@ -44,10 +44,10 @@ String separateDigits(int number) {
   return result;
 }
 
-dialogCustom(String textBody, VoidCallback onTapped) {
+dialogCustom(String textBody,double sizeText, VoidCallback onTapped) {
   return Get.defaultDialog(
     backgroundColor: kPurpleDark,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
     title: 'اخطار',
     titleStyle: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
     content: Padding(
@@ -55,7 +55,7 @@ dialogCustom(String textBody, VoidCallback onTapped) {
       child: Text(
         textBody,
         textAlign: TextAlign.center,
-        style: const TextStyle(color: Colors.white, fontSize: 16),
+        style:  TextStyle(color: Colors.white, fontSize: sizeText),
       ),
     ),
     confirm: CustomButton(
@@ -63,7 +63,7 @@ dialogCustom(String textBody, VoidCallback onTapped) {
       textBtn: 'تایید',
       textColor: kPinkDark,
       fontBtn: 'lalezarPlus',
-      fontSizeBtn: 20,
+      fontSizeBtn: 22,
       shadowColor: Colors.transparent,
       onTapped: onTapped,
       splashColor: kPurpleDark.withOpacity(0.2),
@@ -76,7 +76,7 @@ dialogCustom(String textBody, VoidCallback onTapped) {
       textBtn: 'لغو',
       textColor: Colors.white,
       fontBtn: 'lalezarPlus',
-      fontSizeBtn: 20,
+      fontSizeBtn: 22,
       shadowColor: Colors.transparent,
       onTapped: () {
         Get.back();

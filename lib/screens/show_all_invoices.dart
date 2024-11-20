@@ -7,6 +7,7 @@ import '../constans.dart';
 import '../database/my_db.dart';
 import '../services/routes.dart';
 import '../widgets/base_widget.dart';
+import '../widgets/navbar_custom.dart';
 
 class ShowAllInvoices extends StatelessWidget {
   ShowAllInvoices({super.key});
@@ -55,18 +56,54 @@ class ShowAllInvoices extends StatelessWidget {
 
         return mainWidget(
           context,
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SizedBox(
-              height: Get.height,
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 80),
-                itemCount: invoices.length,
-                itemBuilder: (context, index) {
-                  final invoice = invoices[index];
-                  return _buildInvoiceInfo(invoice);
-                },
+          Padding(
+            padding:
+                const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 60),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: SizedBox(
+                height: Get.height,
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 0,
+                      child: NavbarCustom(
+                        text1: '  فاکتورها ',
+                        text2: '',
+                        size1: 28,
+                        size2: 26,
+                        fontFace1: 'lalezarPlus',
+                        fontFace2: 'lalezarPlus',
+                        icon1: Icons.delete_outline_rounded,
+                        onTapIcon2: () async {
+                          dialogCustom(
+                              'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',20,
+                              () {
+                            var result = MyDb().deleteInvoices;
+                            print(result);
+                            FocusScope.of(context).unfocus();
+                            Get.back();
+                          });
+                        },
+                        icon2: null,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.only(bottom: 80),
+                        itemCount: invoices.length,
+                        itemBuilder: (context, index) {
+                          final invoice = invoices[index];
+                          return _buildInvoiceInfo(invoice);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -75,10 +112,9 @@ class ShowAllInvoices extends StatelessWidget {
     );
   }
 
-
-  Widget _buildInvoiceInfo(Invoice invoice){
+  Widget _buildInvoiceInfo(Invoice invoice) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       child: Container(
         width: double.infinity,
         height: 240,
@@ -138,7 +174,9 @@ class ShowAllInvoices extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 2,),
+                  const SizedBox(
+                    height: 2,
+                  ),
                   Row(
                     children: [
                       CustomButton(
@@ -151,11 +189,11 @@ class ShowAllInvoices extends StatelessWidget {
                         onTapped: () async {},
                         splashColor: kPurpleDark,
                         borderColor: kPurpleDark,
-                        widthBtn: 160,
+                        widthBtn: 150,
                         heightBtn: 45,
                       ),
                       const SizedBox(
-                        width: 10,
+                        width: 7,
                       ),
                       CustomButton(
                         colorBtn: Colors.white,
@@ -174,9 +212,22 @@ class ShowAllInvoices extends StatelessWidget {
                         widthBtn: 110,
                         heightBtn: 45,
                       ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          var resultDelete = MyDb().deleteInvoice(invoice.id!);
+                          print(resultDelete);
+                        },
+                        child: const Icon(
+                          Icons.delete_outline_outlined,
+                          size: 36,
+                          color: Colors.black,
+                        ),
+                      ),
                     ],
                   ),
-
                 ],
               ),
             ],
@@ -190,27 +241,16 @@ class ShowAllInvoices extends StatelessWidget {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 70,
-          centerTitle: true,
-          title: const Text(
-            'فاکتورها',
-            style: TextStyle(
-                fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
-          ),
+        floating: FloatingActionButton(
+          onPressed: () {
+            Get.back();
+          },
+          elevation: 20,
+          foregroundColor: Colors.black,
           backgroundColor: Colors.white,
-          leading: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                Get.toNamed(AppRoutes.adminHome,arguments: mapData);
-              },
-              child: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.black,
-              )),
+          child: const Icon(Icons.arrow_back_sharp,size: 33,),
         ),
+        appBar: null,
         child: child);
   }
-
 }

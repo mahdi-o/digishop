@@ -40,6 +40,10 @@ class HomeScreen extends GetView<HomeController> {
                     child: NavbarCustom(
                       text1: ' دیجی ',
                       text2: 'شاپ',
+                      size1: 30,
+                      size2: 30,
+                      fontFace1: 'Titr',
+                      fontFace2: 'Titr',
                       icon2: Icons.account_circle_outlined,
                       icon1: Icons.shopping_cart,
                       onTapIcon1: () {

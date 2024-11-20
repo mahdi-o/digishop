@@ -109,8 +109,8 @@ class MyDb {
 
   //''''''''''''basket''''''''''''''''''''
 
-  Future<void> addBasket(nameBasket, usernameId, productId, count,
-      isPaying) async {
+  Future<void> addBasket(
+      nameBasket, usernameId, productId, count, isPaying) async {
     final db = await MyDb().db();
     await db.insert('baskets', {
       "nameBasket": nameBasket,
@@ -137,14 +137,14 @@ class MyDb {
       await db.update(
           "baskets",
           Basket(
-              id: bas.id,
-              nameBasket: bas.nameBasket,
-              usernameId: bas.usernameId,
-              productId: bas.productId,
-              isPaying: bas.isPaying,
-              count: bas.count! + 1,
-              createdAt: bas.createdAt,
-              updatedAt: DateTime.now().toString().split(".")[0])
+                  id: bas.id,
+                  nameBasket: bas.nameBasket,
+                  usernameId: bas.usernameId,
+                  productId: bas.productId,
+                  isPaying: bas.isPaying,
+                  count: bas.count! + 1,
+                  createdAt: bas.createdAt,
+                  updatedAt: DateTime.now().toString().split(".")[0])
               .toJson(),
           where: "id=?",
           whereArgs: [bas.id]);
@@ -154,7 +154,7 @@ class MyDb {
   checkDbForBaskets(String name) async {
     final db = await MyDb().db();
     var res =
-    await db.query("baskets", where: "nameBasket = ?", whereArgs: [name]);
+        await db.query("baskets", where: "nameBasket = ?", whereArgs: [name]);
     var jam = res.isNotEmpty ? Basket.fromJson(res.first) : Null;
     return jam;
   }
@@ -162,7 +162,7 @@ class MyDb {
   Future<List<Basket>> getBaskets() async {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
-    await db.query('baskets WHERE isPaying == 0');
+        await db.query('baskets WHERE isPaying == 0');
     if (maps.isEmpty) {
       print('basketList is khali');
       return basketList;
@@ -170,7 +170,7 @@ class MyDb {
       print('basket list is por');
       return List.generate(
         maps.length,
-            (i) {
+        (i) {
           basketList.add(Basket.fromJson(maps[i]));
           return (basketList[i]);
         },
@@ -181,7 +181,7 @@ class MyDb {
   getDataFullBasket() async {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
-    await db.query('baskets WHERE isPaying == 0');
+        await db.query('baskets WHERE isPaying == 0');
     if (maps.isEmpty) {
       print('return emptyyyyyyyyyyyyyyyyyy');
       return 'empty';
@@ -197,7 +197,7 @@ class MyDb {
     List idBasket = [];
     for (int i = 0; i < listId.length; i++) {
       idBasket =
-      await db.rawQuery('SELECT * FROM baskets WHERE id == ${listId[i]}');
+          await db.rawQuery('SELECT * FROM baskets WHERE id == ${listId[i]}');
       var nameBasketForDb = idBasket[i - i]['nameBasket'];
       var usernameIdBasketForDb = idBasket[i - i]['usernameId'];
       var productIdBasketForDb = idBasket[i - i]['productId'];
@@ -207,14 +207,14 @@ class MyDb {
       await db.update(
           "baskets",
           Basket(
-              id: myId,
-              nameBasket: nameBasketForDb,
-              productId: productIdBasketForDb,
-              usernameId: usernameIdBasketForDb,
-              isPaying: 1,
-              count: countBasketForDb,
-              createdAt: isCreatedBasketForDb,
-              updatedAt: DateTime.now().toString().split(".")[0])
+                  id: myId,
+                  nameBasket: nameBasketForDb,
+                  productId: productIdBasketForDb,
+                  usernameId: usernameIdBasketForDb,
+                  isPaying: 1,
+                  count: countBasketForDb,
+                  createdAt: isCreatedBasketForDb,
+                  updatedAt: DateTime.now().toString().split(".")[0])
               .toJson(),
           where: "id=?",
           whereArgs: [myId]);
@@ -244,14 +244,14 @@ class MyDb {
       await db.update(
           "baskets",
           Basket(
-              id: id,
-              nameBasket: nameBasketForDb,
-              productId: productIdBasketForDb,
-              usernameId: usernameIdBasketForDb,
-              isPaying: isPayingBasketForDb,
-              count: countBasketForDb! - 1,
-              createdAt: isCreatedBasketForDb,
-              updatedAt: DateTime.now().toString().split(".")[0])
+                  id: id,
+                  nameBasket: nameBasketForDb,
+                  productId: productIdBasketForDb,
+                  usernameId: usernameIdBasketForDb,
+                  isPaying: isPayingBasketForDb,
+                  count: countBasketForDb! - 1,
+                  createdAt: isCreatedBasketForDb,
+                  updatedAt: DateTime.now().toString().split(".")[0])
               .toJson(),
           where: "id=?",
           whereArgs: [id]);
@@ -286,11 +286,13 @@ class MyDb {
         '',
         '',
         titleText: const Text(
-          'ثبت محصول', style: TextStyle(fontSize: 18, color: kPurpleDark),
+          'ثبت محصول',
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
         ),
         messageText: const Text(
           'محصول با موفقیت ثبت شد',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),),
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
+        ),
         backgroundColor: Colors.white,
         colorText: kPinkDark,
         duration: const Duration(seconds: 1),
@@ -401,7 +403,7 @@ class MyDb {
     } else {
       return List.generate(
         maps.length,
-            (i) {
+        (i) {
           productList.value.add(Product.fromJson(maps[i]));
           return (productList.value[i]);
         },
@@ -420,7 +422,7 @@ class MyDb {
 
       return List.generate(
         maps.length,
-            (i) {
+        (i) {
           print('no empty 2');
           listProForPageBasket.value.add(Product.fromJson(maps[i]));
           print(listProForPageBasket.value[i].nameProduct);
@@ -604,7 +606,7 @@ class MyDb {
 
       return List.generate(
         maps.length,
-            (i) {
+        (i) {
           print('no empty 2');
           customerList.value.add(Customer.fromJson(maps[i]));
           return (customerList.value[i]);
@@ -636,13 +638,14 @@ class MyDb {
   Future<String> readInvoiceProduct(idInvoice) async {
     final db = await MyDb().db();
     InvoiceProducts invoicePro = InvoiceProducts();
-    var res = await db.query('invoiceProducts',
-        where: "idInvoice=?", whereArgs: [idInvoice]);
+    var res = await db
+        .query('invoiceProducts', where: "idInvoice=?", whereArgs: [idInvoice]);
     if (res.isEmpty) {
       return 'null res';
     } else {
-      var jam = res.isNotEmpty ?
-      invoicePro = InvoiceProducts.fromJson(res.first) : Null;
+      var jam = res.isNotEmpty
+          ? invoicePro = InvoiceProducts.fromJson(res.first)
+          : Null;
       if (jam != Null) {
         print({'${invoicePro.idInvoice}${invoicePro.idProduct}'}.toString());
         return {'${invoicePro.idInvoice}${invoicePro.idProduct}'}.toString();
@@ -656,7 +659,7 @@ class MyDb {
   Future<List<Map<String, dynamic>>> readInvoices() async {
     final db = await MyDb().db();
     List<Map<String, dynamic>> maps =
-    await db.query('invoices', where: "isPaying=?", whereArgs: [0]);
+        await db.query('invoices', where: "isPaying=?", whereArgs: [0]);
     if (maps.isEmpty) {
       print(maps.length);
       return maps;
@@ -668,8 +671,7 @@ class MyDb {
 
   Future<List<Map<String, dynamic>>> readInvoiceProducts() async {
     final db = await MyDb().db();
-    List<Map<String, dynamic>> maps =
-    await db.query('invoice_products');
+    List<Map<String, dynamic>> maps = await db.query('invoice_products');
     if (maps.isEmpty) {
       print(maps.length);
       return maps;
@@ -687,7 +689,7 @@ class MyDb {
     } else {
       return List.generate(
         maps.length,
-            (i) {
+        (i) {
           invoiceList.value.add(Invoice.fromJson(maps[i]));
           return (invoiceList.value[i]);
         },
@@ -701,10 +703,15 @@ class MyDb {
     return "successful delete incoices";
   }
 
+  Future<String> deleteInvoice(int id) async {
+    final db = await MyDb().db();
+    db.delete('invoices',where: "id=?",whereArgs:[id]);
+    return "successful delete incoices";
+  }
+
   Future<String> deleteInvoiceProducts() async {
     final db = await MyDb().db();
     await db.delete('invoice_products');
     return "successful delete invoice_products";
   }
-
 }
