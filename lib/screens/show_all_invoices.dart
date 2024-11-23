@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constans.dart';
 import '../database/my_db.dart';
+import '../models/User.dart';
 import '../services/routes.dart';
 import '../widgets/base_widget.dart';
 import '../widgets/navbar_custom.dart';
@@ -12,7 +13,7 @@ import '../widgets/navbar_custom.dart';
 class ShowAllInvoices extends StatelessWidget {
   ShowAllInvoices({super.key});
 
-  final String mapData = Get.parameters['username']!;
+  final User user = Get.arguments;
   final MyDb myDb = Get.find<MyDb>();
   final InvoiceController controller = Get.find<InvoiceController>();
 
@@ -241,16 +242,37 @@ class ShowAllInvoices extends StatelessWidget {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        floating: FloatingActionButton(
-          onPressed: () {
-            Get.back();
-          },
-          elevation: 20,
-          foregroundColor: Colors.black,
+        floating: null,
+      // FloatingActionButton(
+      //   onPressed: () {
+      //     Get.back();
+      //   },
+      //   elevation: 20,
+      //   foregroundColor: Colors.black,
+      //   backgroundColor: Colors.white,
+      //   child: const Icon(Icons.arrow_back_sharp,size: 33,),
+      // )
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 70,
+          centerTitle: true,
+          title: const Text(
+            'فاکتورها',
+            style: TextStyle(
+                fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
+          ),
           backgroundColor: Colors.white,
-          child: const Icon(Icons.arrow_back_sharp,size: 33,),
+          leading: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                Get.toNamed(AppRoutes.adminHome,arguments: user);
+
+              },
+              child: const Icon(
+                Icons.arrow_back_ios_rounded,
+                color: Colors.black,
+              )),
         ),
-        appBar: null,
         child: child);
   }
 }

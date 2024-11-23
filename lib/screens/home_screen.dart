@@ -56,7 +56,7 @@ class HomeScreen extends GetView<HomeController> {
                       },
                       moveHomeAdmin: () {
                         FocusScope.of(context).unfocus();
-                        Get.toNamed(AppRoutes.adminHome, arguments: username);
+                        Get.toNamed(AppRoutes.adminHome, arguments: user);
                       },
                     ),
                   ),

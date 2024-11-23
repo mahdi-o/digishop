@@ -9,13 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 
+import '../models/User.dart';
 import '../widgets/custom_button.dart';
 
 class ShowAllProducts extends GetView<ProductController> {
   ShowAllProducts({super.key});
 
-  final String brandHomeScreen = Get.arguments;
-  final String mapData = Get.parameters['username']!;
+  final User user = Get.arguments;
+  final String brandHomeScreen = Get.parameters['all']!;
   final MyDb myDb = Get.find<MyDb>();
   final ProductController controller = Get.find<ProductController>();
   RxList<Product> listProducts = <Product>[].obs;
@@ -186,7 +187,7 @@ class ShowAllProducts extends GetView<ProductController> {
                   Get.toNamed(
                     AppRoutes.adminProUpd,
                     arguments: product,
-                    parameters: {'username': mapData},
+                    parameters: {'username': user.username.toString()},
                   );
                 },
                 icon: const Icon(Icons.edit_rounded, color: kPurpleDark),
@@ -252,7 +253,7 @@ class ShowAllProducts extends GetView<ProductController> {
       child: Center(
         child: GestureDetector(
           onTap: () {
-            String username = mapData.toString();
+            String username = user.username.toString();
             Get.toNamed(
               AppRoutes.proDet,
               arguments: product,

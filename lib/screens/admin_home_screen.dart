@@ -7,20 +7,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../models/User.dart';
+
 class AdminHomeScreen extends StatelessWidget {
   AdminHomeScreen({super.key});
 
-  final String user = Get.arguments;
+  final User user = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
-    String username = user;
+    String username = user.username.toString();
     return BaseWidget(
       color: Colors.grey.shade300.withOpacity(0.1),
       appBar: null,
       floating: FloatingActionButton(
         onPressed: () {
-          Get.back();
+          Get.toNamed(AppRoutes.home,arguments: user);
         },
         elevation: 20,
         foregroundColor: Colors.black,
@@ -225,7 +227,7 @@ class AdminHomeScreen extends StatelessWidget {
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.showAllCus,
-                                parameters: {'username': username});
+                                arguments: user);
                           }),
                     ],
                   ),
@@ -252,7 +254,7 @@ class AdminHomeScreen extends StatelessWidget {
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.showAllInv,
-                                parameters: {'username': username});
+                                arguments: user);
                           }),
                     ],
                   ),
@@ -276,8 +278,8 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor
                               :Colors.black,
                           voidCallback: () {FocusScope.of(context).unfocus(); Get.toNamed(AppRoutes.showAllPro,
-                              arguments: 'all',
-                              parameters: {'username': username});}),
+                              arguments: user,
+                              parameters: {'all': 'all'});}),
                     ],
                   ),
                 ],

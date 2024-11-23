@@ -5,12 +5,13 @@ import 'package:digishop/models/Customer.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../models/User.dart';
 import '../services/routes.dart';
 
 class ShowAllCustomers extends StatelessWidget {
   ShowAllCustomers({super.key});
 
-  final String mapData = Get.parameters['username']!;
+  final User user = Get.arguments;
   final MyDb myDb = Get.find<MyDb>();
   final CustomerController controller = Get.find<CustomerController>();
 
@@ -138,7 +139,7 @@ class ShowAllCustomers extends StatelessWidget {
                 Get.toNamed(
                   AppRoutes.adminCusUpd,
                   arguments: customer,
-                  parameters: {'username': mapData},
+                  parameters: {'username': user.username.toString()},
                 );
               },
               icon: const Icon(Icons.edit_rounded, color: kPurpleDark),
@@ -166,7 +167,8 @@ class ShowAllCustomers extends StatelessWidget {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        appBar: AppBar(
+        appBar:
+        AppBar(
           elevation: 0,
           toolbarHeight: 70,
           centerTitle: true,
@@ -179,7 +181,7 @@ class ShowAllCustomers extends StatelessWidget {
           leading: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
-                Get.toNamed(AppRoutes.adminHome,arguments: mapData);
+                Get.toNamed(AppRoutes.adminHome,arguments: user);
 
               },
               child: const Icon(
