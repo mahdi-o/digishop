@@ -220,6 +220,7 @@ class ShowAllCustomers extends StatelessWidget {
           ),
         )
     );
+
   }
 
   Widget _buildDetailsButton() {

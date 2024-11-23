@@ -28,7 +28,7 @@ class AdminHomeScreen extends StatelessWidget {
         elevation: 20,
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
-        child: const Icon(Icons.arrow_back_sharp,size: 30,),
+        child: const Icon(Icons.arrow_back_sharp,size: 33,),
       ),
       floatingLocation: FloatingCustomButtons(),
       bottomNavigation: null,

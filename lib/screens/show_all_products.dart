@@ -98,6 +98,7 @@ class ShowAllProducts extends GetView<ProductController> {
                     final product = products[index];
                     return Column(
                       children: [
+
                         Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: Container(

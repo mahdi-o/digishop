@@ -235,6 +235,7 @@ class ShowAllInvoices extends StatelessWidget {
                     fontFace2: 'lalezarPlus',
                     icon1: Icons.delete_outline_rounded,
                     onTapIcon2: () async {
+
                       dialogCustom(
                           'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',20,
                               () {
