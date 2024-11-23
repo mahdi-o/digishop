@@ -595,6 +595,12 @@ class MyDb {
     return result;
   }
 
+  Future<int> deleteCustomers()async{
+    final db =await MyDb().db();
+    var result = db.delete('customers');
+    return result;
+  }
+
   Future<List<Customer>> getCustomer() async {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps = await db.query('customers');

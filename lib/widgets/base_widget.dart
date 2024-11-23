@@ -10,13 +10,14 @@ class BaseWidget extends GetView {
       required this.appBar,
       required this.bottomNavigation,
       required this.color,
-      this.floating});
+      this.floating,this.floatingLocation});
 
   final Widget child;
   final AppBar? appBar;
   final CurvedNavigationBar? bottomNavigation;
   final Color color;
   final Widget? floating;
+  final FloatingActionButtonLocation? floatingLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class BaseWidget extends GetView {
         backgroundColor: color,
         appBar: appBar,
         floatingActionButton: floating,
-        floatingActionButtonLocation: FloatingCustomButtons(),
+        floatingActionButtonLocation: floatingLocation,
         body: child,
         bottomNavigationBar: bottomNavigation,
       ),

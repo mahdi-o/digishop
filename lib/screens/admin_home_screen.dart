@@ -3,6 +3,7 @@ import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/container_custom_admin.dart';
+import 'package:digishop/widgets/floatingCustomButtons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,7 @@ class AdminHomeScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         child: const Icon(Icons.arrow_back_sharp,size: 30,),
       ),
+      floatingLocation: FloatingCustomButtons(),
       bottomNavigation: null,
       child: AdminBaseWidget(
         height: 280,

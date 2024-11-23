@@ -11,6 +11,7 @@ import 'package:path/path.dart';
 
 import '../models/User.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/navbar_custom.dart';
 
 class ShowAllProducts extends GetView<ProductController> {
   ShowAllProducts({super.key});
@@ -98,7 +99,7 @@ class ShowAllProducts extends GetView<ProductController> {
                     return Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(6.0),
                           child: Container(
                             width: double.infinity,
                             height: 140,
@@ -218,27 +219,82 @@ class ShowAllProducts extends GetView<ProductController> {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 70,
-          centerTitle: true,
-          title: const Text(
-            'محصولات',
-            style: TextStyle(
-                fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
-          ),
+        floating:
+        FloatingActionButton(
+          onPressed: () {
+            Get.back();
+          },
+          elevation: 20,
+          foregroundColor: Colors.black,
           backgroundColor: Colors.white,
-          leading: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                Get.back();
-              },
-              child: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.black,
-              )),
+          child: const Icon(Icons.arrow_back_sharp, size: 33,),
         ),
-        child: child);
+        floatingLocation: FloatingActionButtonLocation.startFloat,
+        appBar: null,
+        child: Padding(
+          padding: const EdgeInsets.only(
+              right: 10, left: 10, bottom: 20, top: 60),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SizedBox(
+              height: Get.height,
+              child: Column(children: [
+                Expanded(
+                  flex: 0,
+                  child: NavbarCustom(
+                    text1: '  محصولات ',
+                    text2: '',
+                    size1: 28,
+                    size2: 26,
+                    fontFace1: 'lalezarPlus',
+                    fontFace2: 'lalezarPlus',
+                    icon1: Icons.delete_outline_rounded,
+                    onTapIcon2: () async {
+                      dialogCustom(
+                          'آیا از حذف تمامی محصولات اطمینان دارید؟',20,
+                              () {
+                            var result = MyDb().deleteProducts();
+                            print(result);
+                            FocusScope.of(context).unfocus();
+                            Get.back();
+                          });
+                    },
+                    icon2: null,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(child: child)
+              ],),
+            ),
+          ),
+        )
+    );
+    // return BaseWidget(
+    //     color: Colors.white,
+    //     bottomNavigation: null,
+    //     appBar: AppBar(
+    //       elevation: 0,
+    //       toolbarHeight: 70,
+    //       centerTitle: true,
+    //       title: const Text(
+    //         'محصولات',
+    //         style: TextStyle(
+    //             fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
+    //       ),
+    //       backgroundColor: Colors.white,
+    //       leading: GestureDetector(
+    //           onTap: () {
+    //             FocusScope.of(context).unfocus();
+    //             Get.back();
+    //           },
+    //           child: const Icon(
+    //             Icons.arrow_back_ios_rounded,
+    //             color: Colors.black,
+    //           )),
+    //     ),
+    //     child: child);
   }
 
   Widget _buildDetailsButton(Product product) {

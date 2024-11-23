@@ -57,55 +57,15 @@ class ShowAllInvoices extends StatelessWidget {
 
         return mainWidget(
           context,
-          Padding(
-            padding:
-                const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 60),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SizedBox(
-                height: Get.height,
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 0,
-                      child: NavbarCustom(
-                        text1: '  فاکتورها ',
-                        text2: '',
-                        size1: 28,
-                        size2: 26,
-                        fontFace1: 'lalezarPlus',
-                        fontFace2: 'lalezarPlus',
-                        icon1: Icons.delete_outline_rounded,
-                        onTapIcon2: () async {
-                          dialogCustom(
-                              'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',20,
-                              () {
-                            var result = MyDb().deleteInvoices;
-                            print(result);
-                            FocusScope.of(context).unfocus();
-                            Get.back();
-                          });
-                        },
-                        icon2: null,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.only(bottom: 80),
-                        itemCount: invoices.length,
-                        itemBuilder: (context, index) {
-                          final invoice = invoices[index];
-                          return _buildInvoiceInfo(invoice);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+          Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(bottom: 80),
+              itemCount: invoices.length,
+              itemBuilder: (context, index) {
+                final invoice = invoices[index];
+                return _buildInvoiceInfo(invoice);
+              },
             ),
           ),
         );
@@ -167,7 +127,9 @@ class ShowAllInvoices extends StatelessWidget {
                         width: 20,
                       ),
                       Text(
-                        ' پرداخت شده : ${invoice.isPaying == 0 ? 'خیر' : 'بله'} ',
+                        ' پرداخت شده : ${invoice.isPaying == 0
+                            ? 'خیر'
+                            : 'بله'} ',
                         style: const TextStyle(
                             fontFamily: 'lalezar',
                             fontSize: 20,
@@ -242,37 +204,58 @@ class ShowAllInvoices extends StatelessWidget {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        floating: null,
-      // FloatingActionButton(
-      //   onPressed: () {
-      //     Get.back();
-      //   },
-      //   elevation: 20,
-      //   foregroundColor: Colors.black,
-      //   backgroundColor: Colors.white,
-      //   child: const Icon(Icons.arrow_back_sharp,size: 33,),
-      // )
-        appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 70,
-          centerTitle: true,
-          title: const Text(
-            'فاکتورها',
-            style: TextStyle(
-                fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
-          ),
+        floating:
+        FloatingActionButton(
+          onPressed: () {
+            Get.back();
+          },
+          elevation: 20,
+          foregroundColor: Colors.black,
           backgroundColor: Colors.white,
-          leading: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                Get.toNamed(AppRoutes.adminHome,arguments: user);
-
-              },
-              child: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.black,
-              )),
+          child: const Icon(Icons.arrow_back_sharp, size: 33,),
         ),
-        child: child);
+        floatingLocation: FloatingActionButtonLocation.startFloat,
+        appBar: null,
+        child: Padding(
+          padding: const EdgeInsets.only(
+              right: 10, left: 10, bottom: 20, top: 60),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SizedBox(
+              height: Get.height,
+              child: Column(children: [
+                Expanded(
+                  flex: 0,
+                  child: NavbarCustom(
+                    text1: '  فاکتورها ',
+                    text2: '',
+                    size1: 28,
+                    size2: 26,
+                    fontFace1: 'lalezarPlus',
+                    fontFace2: 'lalezarPlus',
+                    icon1: Icons.delete_outline_rounded,
+                    onTapIcon2: () async {
+                      dialogCustom(
+                          'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',20,
+                              () {
+                                var result = MyDb().deleteInvoices;
+                                print(result);
+                                FocusScope.of(context).unfocus();
+                                Get.back();
+                          });
+                    },
+                    icon2: null,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(child: child)
+              ],),
+            ),
+          ),
+        )
+    );
   }
 }
+
