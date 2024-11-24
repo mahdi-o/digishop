@@ -15,13 +15,14 @@ import '../widgets/navbar_custom.dart';
 
 class ShowAllProducts extends GetView<ProductController> {
   ShowAllProducts({super.key});
+
   final User user = Get.arguments;
   final String brandHomeScreen = Get.parameters['all']!;
   final MyDb myDb = Get.find<MyDb>();
   @override
   final ProductController controller = Get.find<ProductController>();
   RxList<Product> listProducts = <Product>[].obs;
-  List<Product> products = [];
+  RxList<Product> products = <Product>[].obs;
 
   @override
   Widget build(BuildContext context) {
@@ -61,22 +62,20 @@ class ShowAllProducts extends GetView<ProductController> {
             ),
           );
         }
-
         if (brandHomeScreen == 'all') {
-          products = snapshot.data!;
+          products.value = snapshot.data!;
         } else {
           for (var item in snapshot.data!) {
             if (item.brand == brandHomeScreen) {
-              products.add(item);
-              print('addddddddd brand');
               print(item.nameProduct);
-            } else {
-              // not product brand
-              false;
+
+              // چک کردن وجود محصول در لیست قبل از اضافه کردن آن
+              if (!products.any((existingItem) => existingItem.nameProduct == item.nameProduct)) {
+                products.add(item);
+              }
             }
           }
         }
-        print(products.length);
         return mainWidget(
           context,
           products.isEmpty
@@ -98,7 +97,6 @@ class ShowAllProducts extends GetView<ProductController> {
                     final product = products[index];
                     return Column(
                       children: [
-
                         Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: Container(
@@ -112,7 +110,7 @@ class ShowAllProducts extends GetView<ProductController> {
                               children: [
                                 _buildProductImage(product),
                                 const SizedBox(width: 5),
-                                _buildProductInfo(product),
+                                _buildProductInfo(product, context),
                               ],
                             ),
                           ),
@@ -147,9 +145,7 @@ class ShowAllProducts extends GetView<ProductController> {
     );
   }
 
-  ///
-
-  Widget _buildProductInfo(Product product) {
+  Widget _buildProductInfo(Product product, context) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: Column(
@@ -199,7 +195,13 @@ class ShowAllProducts extends GetView<ProductController> {
               const SizedBox(width: 20),
               GestureDetector(
                 onTap: () async {
-                  await myDb.deleteProduct(product.id ?? -1);
+                  dialogCustom('آیا از حذف این محصول اطمینان دارید؟', 20, () {
+                    var result = myDb.deleteProduct(product.id ?? -1);
+                    print(result);
+                    FocusScope.of(context).unfocus();
+                    Get.back();
+                    Get.offNamed(AppRoutes.home, arguments: user);
+                  });
                 },
                 child: const Icon(
                   Icons.delete_outline_rounded,
@@ -214,88 +216,58 @@ class ShowAllProducts extends GetView<ProductController> {
     );
   }
 
-  ///
-
   Widget mainWidget(BuildContext context, Widget child) {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        floating:
-        FloatingActionButton(
+        floating: FloatingActionButton(
           onPressed: () {
             Get.back();
           },
           elevation: 20,
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
-          child: const Icon(Icons.arrow_back_sharp, size: 33,),
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            size: 33,
+          ),
         ),
         floatingLocation: FloatingActionButtonLocation.startFloat,
         appBar: null,
         child: Padding(
-          padding: const EdgeInsets.only(
-              right: 10, left: 10, bottom: 20, top: 60),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SizedBox(
-              height: Get.height,
-              child: Column(children: [
-                Expanded(
-                  flex: 0,
-                  child: NavbarCustom(
-                    text1: '  محصولات ',
-                    text2: '',
-                    size1: 28,
-                    size2: 26,
-                    fontFace1: 'lalezarPlus',
-                    fontFace2: 'lalezarPlus',
-                    icon1: Icons.delete_outline_rounded,
-                    onTapIcon2: () async {
-                      dialogCustom(
-                          'آیا از حذف تمامی محصولات اطمینان دارید؟',20,
-                              () {
-                            var result = MyDb().deleteProducts();
-                            print(result);
-                            FocusScope.of(context).unfocus();
-                            Get.back();
-                          });
-                    },
-                    icon2: null,
-                  ),
+          padding:
+              const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
+          child: Column(
+            children: [
+              // ویجت NavbarCustom ثابت
+              SizedBox(
+                height: 60, // ارتفاع ثابت برای هدر
+                child: NavbarCustom(
+                  text1: '  محصولات ',
+                  text2: '',
+                  size1: 28,
+                  size2: 26,
+                  fontFace1: 'lalezarPlus',
+                  fontFace2: 'lalezarPlus',
+                  icon1: Icons.delete_outline_rounded,
+                  onTapIcon2: () async {
+                    dialogCustom('آیا از حذف تمامی محصولات اطمینان دارید؟', 20, () {
+                      var result = MyDb().deleteProducts();
+                      print(result);
+                      FocusScope.of(context).unfocus();
+                      Get.back();
+                    });
+                  },
+                  icon2: null,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(child: child)
-              ],),
-            ),
+              ),
+              // محتوای اسکرول‌شونده
+              Expanded(
+                child:child
+              ),
+            ],
           ),
-        )
-    );
-    // return BaseWidget(
-    //     color: Colors.white,
-    //     bottomNavigation: null,
-    //     appBar: AppBar(
-    //       elevation: 0,
-    //       toolbarHeight: 70,
-    //       centerTitle: true,
-    //       title: const Text(
-    //         'محصولات',
-    //         style: TextStyle(
-    //             fontFamily: 'lalezar', color: Colors.black, fontSize: 26),
-    //       ),
-    //       backgroundColor: Colors.white,
-    //       leading: GestureDetector(
-    //           onTap: () {
-    //             FocusScope.of(context).unfocus();
-    //             Get.back();
-    //           },
-    //           child: const Icon(
-    //             Icons.arrow_back_ios_rounded,
-    //             color: Colors.black,
-    //           )),
-    //     ),
-    //     child: child);
+        ));
   }
 
   Widget _buildDetailsButton(Product product) {
@@ -325,6 +297,4 @@ class ShowAllProducts extends GetView<ProductController> {
       ),
     );
   }
-
-  ///
 }

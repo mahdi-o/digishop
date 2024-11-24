@@ -57,23 +57,21 @@ class ShowAllInvoices extends StatelessWidget {
 
         return mainWidget(
           context,
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.only(bottom: 80),
-              itemCount: invoices.length,
-              itemBuilder: (context, index) {
-                final invoice = invoices[index];
-                return _buildInvoiceInfo(invoice);
-              },
-            ),
+          ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: 80),
+            itemCount: invoices.length,
+            itemBuilder: (context, index) {
+              final invoice = invoices[index];
+              return _buildInvoiceInfo(invoice,context);
+            },
           ),
         );
       },
     );
   }
 
-  Widget _buildInvoiceInfo(Invoice invoice) {
+  Widget _buildInvoiceInfo(Invoice invoice,context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       child: Container(
@@ -180,8 +178,14 @@ class ShowAllInvoices extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          var resultDelete = MyDb().deleteInvoice(invoice.id!);
-                          print(resultDelete);
+                          dialogCustom(
+                              'آیا از حذف این فاکتور اطمینان دارید؟',20,
+                                  () {
+                                    var resultDelete = MyDb().deleteInvoice(invoice.id!);
+                                    print(resultDelete);
+                                FocusScope.of(context).unfocus();
+                                Get.back();
+                              });
                         },
                         child: const Icon(
                           Icons.delete_outline_outlined,
@@ -216,45 +220,37 @@ class ShowAllInvoices extends StatelessWidget {
         ),
         floatingLocation: FloatingActionButtonLocation.startFloat,
         appBar: null,
-        child: Padding(
+        child:
+        Padding(
           padding: const EdgeInsets.only(
-              right: 10, left: 10, bottom: 20, top: 60),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SizedBox(
-              height: Get.height,
-              child: Column(children: [
-                Expanded(
-                  flex: 0,
-                  child: NavbarCustom(
-                    text1: '  فاکتورها ',
-                    text2: '',
-                    size1: 28,
-                    size2: 26,
-                    fontFace1: 'lalezarPlus',
-                    fontFace2: 'lalezarPlus',
-                    icon1: Icons.delete_outline_rounded,
-                    onTapIcon2: () async {
+              right: 10, left: 10, bottom: 20, top: 50),
+          child: Column(children: [
+            SizedBox(height: 60,
+              child: 
+              NavbarCustom(
+                text1: '  فاکتورها ',
+                text2: '',
+                size1: 28,
+                size2: 26,
+                fontFace1: 'lalezarPlus',
+                fontFace2: 'lalezarPlus',
+                icon1: Icons.delete_outline_rounded,
+                onTapIcon2: () async {
 
-                      dialogCustom(
-                          'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',20,
-                              () {
-                                var result = MyDb().deleteInvoices;
-                                print(result);
-                                FocusScope.of(context).unfocus();
-                                Get.back();
-                          });
-                    },
-                    icon2: null,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(child: child)
-              ],),
+                  dialogCustom(
+                      'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',20,
+                          () {
+                            var result = MyDb().deleteInvoices;
+                            print(result);
+                            FocusScope.of(context).unfocus();
+                            Get.back();
+                      });
+                },
+                icon2: null,
+              ),
             ),
-          ),
+            Expanded(child: child)
+          ],),
         )
     );
   }

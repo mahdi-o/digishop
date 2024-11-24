@@ -76,7 +76,7 @@ class ShowAllCustomers extends StatelessWidget {
                       children: [
                         _buildAvatar(),
                         const SizedBox(width: 10),
-                        _buildCustomerInfo(customer),
+                        _buildCustomerInfo(customer,context),
                       ],
                     ),
                     const Divider(
@@ -107,7 +107,7 @@ class ShowAllCustomers extends StatelessWidget {
     );
   }
 
-  Widget _buildCustomerInfo(Customer customer) {
+  Widget _buildCustomerInfo(Customer customer,context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +150,14 @@ class ShowAllCustomers extends StatelessWidget {
             const SizedBox(width: 20),
             GestureDetector(
               onTap: () async {
-                await myDb.deleteCustomer(customer.id ?? -1);
+                dialogCustom(
+                    'آیا از حذف تمام مشتریان اطمینان دارید؟',20,
+                        () {
+                      var result =  myDb.deleteCustomer(customer.id ?? -1);
+                      print(result);
+                      FocusScope.of(context).unfocus();
+                      Get.back();
+                    });
               },
               child: const Icon(
                 Icons.delete_outline_rounded,
@@ -182,42 +189,32 @@ class ShowAllCustomers extends StatelessWidget {
         appBar: null,
         child: Padding(
           padding: const EdgeInsets.only(
-              right: 10, left: 10, bottom: 20, top: 60),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SizedBox(
-              height: Get.height,
-              child: Column(children: [
-                Expanded(
-                  flex: 0,
-                  child: NavbarCustom(
-                    text1: '  مشتریان ',
-                    text2: '',
-                    size1: 28,
-                    size2: 26,
-                    fontFace1: 'lalezarPlus',
-                    fontFace2: 'lalezarPlus',
-                    icon1: Icons.delete_outline_rounded,
-                    onTapIcon2: () async {
-                      dialogCustom(
-                          'آیا از حذف تمام مشتریان اطمینان دارید؟',20,
-                              () {
-                                var result = MyDb().deleteCustomers();
-                                print(result);
-                                FocusScope.of(context).unfocus();
-                                Get.back();
-                          });
-                    },
-                    icon2: null,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(child: child)
-              ],),
+              right: 10, left: 10, bottom: 20, top: 50),
+          child: Column(children: [
+            SizedBox(height: 60,
+              child: NavbarCustom(
+                text1: '  مشتریان ',
+                text2: '',
+                size1: 28,
+                size2: 26,
+                fontFace1: 'lalezarPlus',
+                fontFace2: 'lalezarPlus',
+                icon1: Icons.delete_outline_rounded,
+                onTapIcon2: () async {
+                  dialogCustom(
+                      'آیا از حذف تمام مشتریان اطمینان دارید؟',20,
+                          () {
+                            var result = MyDb().deleteCustomers();
+                            print(result);
+                            FocusScope.of(context).unfocus();
+                            Get.back();
+                      });
+                },
+                icon2: null,
+              ),
             ),
-          ),
+            Expanded(child: child)
+          ],),
         )
     );
 

@@ -73,7 +73,7 @@ class HomeController extends GetxController {
   ].obs;
 
   getProductDbForHomeScreen()async{
-    listProductsBestDb.value.clear();
+    listProductsBestDb.clear();
     listProductsBestDb.value = await MyDb().getProduct();
     print('listProductsBestDb por shod');
     print(listProductsBestDb.length);
@@ -85,5 +85,12 @@ class HomeController extends GetxController {
     // TODO: implement onInit
     super.onInit();
      getProductDbForHomeScreen();
+  }
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+    getProductDbForHomeScreen();
+
   }
 }
