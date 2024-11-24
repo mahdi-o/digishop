@@ -15,10 +15,10 @@ import '../widgets/navbar_custom.dart';
 
 class ShowAllProducts extends GetView<ProductController> {
   ShowAllProducts({super.key});
-
   final User user = Get.arguments;
   final String brandHomeScreen = Get.parameters['all']!;
   final MyDb myDb = Get.find<MyDb>();
+  @override
   final ProductController controller = Get.find<ProductController>();
   RxList<Product> listProducts = <Product>[].obs;
   List<Product> products = [];

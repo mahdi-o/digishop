@@ -115,8 +115,8 @@ class HomeScreen extends GetView<HomeController> {
                               FocusScope.of(context).unfocus();
                               Get.toNamed(
                                 AppRoutes.showAllPro,
-                                arguments: '${categoryList[i].name}',
-                                parameters: {'username': username},
+                                arguments: user,
+                                parameters: {'all': '${categoryList[i].name}'},
                               );
 
                             },
@@ -150,8 +150,8 @@ class HomeScreen extends GetView<HomeController> {
                           onTap: () {
                             FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.showAllPro,
-                                arguments: 'all',
-                                parameters: {'username': username});
+                                arguments: user,
+                                parameters: {'all': 'all'});
                           },
                           child: Text(
                             'مشاهده همه',
@@ -200,9 +200,6 @@ class HomeScreen extends GetView<HomeController> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 5,
@@ -220,8 +217,8 @@ class HomeScreen extends GetView<HomeController> {
                           onTap: () {
                             FocusScope.of(context).unfocus();
                             Get.toNamed(AppRoutes.showAllPro,
-                                arguments: 'all',
-                                parameters: {'username': username});
+                                arguments: user,
+                                parameters: {'all': 'all'});
                           },
                           child: Text(
                             'مشاهده همه',
