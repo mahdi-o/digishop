@@ -178,6 +178,22 @@ class MyDb {
     }
   }
 
+  // Future<String> getBasket(int id)async{
+  //   final Database db =await MyDb().db();
+  //   Basket bas = Basket();
+  //   var res = await db.query("baskets",where: "id=?",whereArgs: [id]);
+  //   if(res.isEmpty){
+  //     return 'null res';
+  //   } else{
+  //     var jam = res.isNotEmpty ? bas = Basket.fromJson(res.first) : Null;
+  //     if (jam != Null) {
+  //       return bas.nameBasket ?? '';
+  //     } else {
+  //       return bas.nameBasket ?? '';
+  //     }
+  //   }
+  // }
+
   getDataFullBasket() async {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
@@ -391,6 +407,10 @@ class MyDb {
   Future<int> deleteProduct(int id) async {
     final db = await MyDb().db();
     var result = await db.rawDelete('DELETE FROM products WHERE id == $id');
+    var deleteProFromBas = await db.rawDelete('DELETE FROM baskets WHERE productId ==$id');
+    print(result);
+    print('delete pro and pro az bas');
+    print(deleteProFromBas);
     // var result = await db.delete('products', where: "id=?", whereArgs: [id]);
     return result;
   }
