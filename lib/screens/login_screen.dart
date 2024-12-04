@@ -8,13 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginPage extends GetView<RegisterLoginController> {
-   LoginPage({super.key});
-final String registerOne = Get.parameters['registerOne']!;
-   User user = Get.arguments;
+  LoginPage({super.key});
+
+  final String registerOne = Get.parameters['registerOne']!;
+  User user = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
-    return BaseWidget(color: Colors.white,
+    return BaseWidget(
+      color: Colors.white,
       bottomNavigation: null,
       appBar: null,
       child: Container(
@@ -29,22 +31,24 @@ final String registerOne = Get.parameters['registerOne']!;
                   const SizedBox(
                     height: 160,
                   ),
-
                   const Text(
                     "ورود",
-                    style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 46, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  const Text("اطلاعات را برای ورود به حساب خود وارد کنید",style: TextStyle(fontSize: 20)),
+                  const Text("اطلاعات را برای ورود به حساب خود وارد کنید",
+                      style: TextStyle(fontSize: 22,fontFamily: 'lalezarPlus')),
                   const SizedBox(
                     height: 60,
                   ),
                   TextField(
-                    controller:controller.usernameLogin,
+                    controller: controller.usernameLogin,
                     decoration: InputDecoration(
                         hintText: "نام کاربری",
+                        hintStyle:
+                        const TextStyle(fontSize: 18, fontFamily: 'lalezarPlus'),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
                             borderSide: BorderSide.none),
@@ -54,12 +58,14 @@ final String registerOne = Get.parameters['registerOne']!;
                   ),
                   const SizedBox(height: 10),
                   TextField(
-                    controller:controller.passwordLogin,
+                    controller: controller.passwordLogin,
                     decoration: InputDecoration(
                       hintText: "رمز عبور",
+                      hintStyle:
+                      const TextStyle(fontSize: 18, fontFamily: 'lalezarPlus'),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
-                          borderSide:BorderSide.none),
+                          borderSide: BorderSide.none),
                       fillColor: Colors.white,
                       filled: true,
                       prefixIcon: const Icon(Icons.password),
@@ -72,7 +78,7 @@ final String registerOne = Get.parameters['registerOne']!;
                     textBtn: 'ورود',
                     textColor: kPurpleDark,
                     fontBtn: 'lalezarPlus',
-                    fontSizeBtn: 28,
+                    fontSizeBtn: 30,
                     shadowColor: kPurpleDark,
                     onTapped: () {
                       controller.registerOne = registerOne;
@@ -89,7 +95,10 @@ final String registerOne = Get.parameters['registerOne']!;
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("حساب کاربری ندارید؟",style: TextStyle(fontSize: 18),),
+                      const Text(
+                        "حساب کاربری ندارید؟",
+                        style: TextStyle(fontSize: 18,fontFamily: 'lalezarPlus'),
+                      ),
                       TextButton(
                         onPressed: () {
                           FocusScope.of(context).unfocus();
@@ -97,7 +106,7 @@ final String registerOne = Get.parameters['registerOne']!;
                         },
                         child: const Text(
                           "ثبت نام",
-                          style: TextStyle(color: kPurpleDark,fontSize: 20),
+                          style: TextStyle(color: kPurpleDark, fontSize: 22,fontFamily: 'lalezarPlus'),
                         ),
                       ),
                     ],

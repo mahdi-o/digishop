@@ -9,6 +9,7 @@ class RegisterLoginController extends GetxController {
   TextEditingController name = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
+  TextEditingController phoneNumber = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController passwordAgain = TextEditingController();
   TextEditingController usernameLogin = TextEditingController();
@@ -19,6 +20,7 @@ class RegisterLoginController extends GetxController {
 
   registerUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+
     if (name.text == null ||
         name.text == '' ||
         name.text.isEmpty ||
@@ -85,10 +87,10 @@ class RegisterLoginController extends GetxController {
           );
         } else {
           pref.setString('email', email.text);
-          if (password.text == null ||
-              password.text == '' ||
-              password.text.isEmpty ||
-              password.text.length < 8) {
+          if (phoneNumber.text == null ||
+              phoneNumber.text == '' ||
+              phoneNumber.text.isEmpty ||
+              phoneNumber.text != phoneNumber.text.trim()) {
             Get.snackbar(
               '',
               '',
@@ -100,14 +102,15 @@ class RegisterLoginController extends GetxController {
                     color: Colors.white),
               ),
               messageText: const Text(
-                'رمزعبور نباید کمتر از 8 کاراکتر باشد',
+                'شماره موبایل وارد نشده است',
                 style: TextStyle(color: Colors.white),
               ),
               duration: const Duration(milliseconds: 1500),
               backgroundColor: kRedLight,
             );
           } else {
-            if (passwordAgain.text == null ||
+            pref.setString('phoneNumber', phoneNumber.text.trim());
+            if (password.text == null ||
                 password.text == '' ||
                 password.text.isEmpty ||
                 password.text.length < 8) {
@@ -122,14 +125,17 @@ class RegisterLoginController extends GetxController {
                       color: Colors.white),
                 ),
                 messageText: const Text(
-                  'تکرار رمزعبور وارد نشده است',
+                  'رمزعبور نباید کمتر از 8 کاراکتر باشد',
                   style: TextStyle(color: Colors.white),
                 ),
                 duration: const Duration(milliseconds: 1500),
                 backgroundColor: kRedLight,
               );
             } else {
-              if (password.text != passwordAgain.text) {
+              if (passwordAgain.text == null ||
+                  password.text == '' ||
+                  password.text.isEmpty ||
+                  password.text.length < 8) {
                 Get.snackbar(
                   '',
                   '',
@@ -141,25 +147,50 @@ class RegisterLoginController extends GetxController {
                         color: Colors.white),
                   ),
                   messageText: const Text(
-                    'رمزعبور با تکرار آن برابر نمی باشد',
+                    'تکرار رمزعبور وارد نشده است',
                     style: TextStyle(color: Colors.white),
                   ),
                   duration: const Duration(milliseconds: 1500),
                   backgroundColor: kRedLight,
                 );
               } else {
-                pref.setString('password', password.text);
-                accessR = 1;
-                pref.setInt('access', accessR);
-                if (accessR == 1) {
-                  pref.setInt('wallet', 0);
-                  pref.setString('imageAddress', '');
-                  user.name = name.text;
-                  user.email = email.text;
-                  user.username = username.text;
-                  user.wallet = 0;
-                  Get.offAndToNamed(AppRoutes.login,arguments: user,parameters: {'username':'$username','registerOne':'yes'});
-
+                if (password.text != passwordAgain.text) {
+                  Get.snackbar(
+                    '',
+                    '',
+                    titleText: const Text(
+                      'خطا',
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    messageText: const Text(
+                      'رمزعبور با تکرار آن برابر نمی باشد',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    duration: const Duration(milliseconds: 1500),
+                    backgroundColor: kRedLight,
+                  );
+                } else {
+                  pref.setString('password', password.text);
+                  accessR = 1;
+                  pref.setInt('access', accessR);
+                  if (accessR == 1) {
+                    pref.setInt('wallet', 0);
+                    pref.setString('imageAddress', '');
+                    user.name = name.text;
+                    user.email = email.text;
+                    user.phoneNumber = phoneNumber.text;
+                    user.username = username.text;
+                    user.wallet = 0;
+                    Get.offAndToNamed(AppRoutes.login,
+                        arguments: user,
+                        parameters: {
+                          'username': '$username',
+                          'registerOne': 'yes'
+                        });
+                  }
                 }
               }
             }
@@ -216,7 +247,10 @@ class RegisterLoginController extends GetxController {
       username.clear();
       usernameLogin.clear();
       email.clear();
-      Get.offAndToNamed(registerOne!='yes'?AppRoutes.home:AppRoutes.intro,arguments: user,parameters: {'username':usernamePref,'registerOne':'yes'});
+      phoneNumber.clear();
+      Get.offAndToNamed(registerOne != 'yes' ? AppRoutes.home : AppRoutes.intro,
+          arguments: user,
+          parameters: {'username': usernamePref, 'registerOne': 'yes'});
     }
   }
 }

@@ -18,7 +18,7 @@ class IntroScreen extends GetView<RegisterLoginController> {
       bottomNavigation: null,
       appBar: null,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 100),
+        padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 90),
         child: Column(
           children: [
             Stack(
@@ -95,8 +95,9 @@ class IntroScreen extends GetView<RegisterLoginController> {
                       child: Text(
                         'خرید در انتظار شماست',
                         style: TextStyle(
+                          fontFamily: 'lalezarPlus',
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 18,
                         ),
                       ),
                     ),
@@ -116,7 +117,7 @@ class IntroScreen extends GetView<RegisterLoginController> {
                       textBtn: 'برو بریم!',
                       textColor: kPurpleDark,
                       fontBtn: 'lalezarPlus',
-                      fontSizeBtn: 28,
+                      fontSizeBtn: 30,
                       shadowColor: kPurpleDark,
                       onTapped: () {
                         FocusScope.of(context).unfocus();

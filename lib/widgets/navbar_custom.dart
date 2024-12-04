@@ -11,7 +11,7 @@ class NavbarCustom extends StatelessWidget {
     required this.size2,
     required this.fontFace1,
     required this.fontFace2,
-    required this.icon1,
+    this.icon1,
     this.icon2,
     this.onTapIcon1,
     this.onTapIcon2,
@@ -21,7 +21,7 @@ class NavbarCustom extends StatelessWidget {
   final String text1, text2;
   final double size1, size2;
   final String fontFace1,fontFace2;
-  final IconData icon1;
+  final IconData? icon1;
   final IconData? icon2;
   final VoidCallback? onTapIcon1, onTapIcon2;
   final VoidCallback? moveHomeAdmin;

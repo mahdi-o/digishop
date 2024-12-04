@@ -61,9 +61,6 @@ class ProfileUser extends GetView<ProfileController> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
               // const Text(
               //   'مشخصات کاربر',
               //   style: TextStyle(fontSize: 35,),
@@ -99,7 +96,7 @@ class ProfileUser extends GetView<ProfileController> {
                     ),
                   )),
               const SizedBox(
-                height: 40,
+                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -227,8 +224,7 @@ class ProfileUser extends GetView<ProfileController> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text(
-                              '${separateDigits(int.parse(controller.wallet.value.toString()))} تومان',
+                            Text(controller.phoneNumber.value.toString(),
                               style: TextStyle(
                                   fontSize: 18, color: Colors.grey.shade800),
                             ),

@@ -7,6 +7,7 @@ class ProfileController extends GetxController {
   Rx<String> name = ''.obs;
   Rx<String> username = ''.obs;
   Rx<String> email = ''.obs;
+  Rx<String> phoneNumber = ''.obs;
   RxInt wallet = 0.obs;
   Rx<String> imageAddress=''.obs;
 
@@ -15,6 +16,7 @@ class ProfileController extends GetxController {
     name.value = pref.getString('name')??'';
     username.value = pref.getString('username')??'';
     email.value = pref.getString('email')??'';
+    phoneNumber.value = pref.getString('phoneNumber')??'';
     wallet.value = pref.getInt('wallet')??0;
     imageAddress.value = pref.getString('imageAddress')??'';
   }
