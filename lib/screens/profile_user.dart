@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../database/my_db.dart';
 import '../services/routes.dart';
+import '../widgets/navbar_custom.dart';
 
 class ProfileUser extends GetView<ProfileController> {
   const ProfileUser({super.key});
@@ -14,51 +16,64 @@ class ProfileUser extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => BaseWidget(color: Colors.white,
+      () => BaseWidget(
+        color: Colors.white,
         bottomNavigation: null,
-        appBar: AppBar(
-          elevation: 0,
+        appBar: null,
+        floating: FloatingActionButton(
+          onPressed: () {
+            Get.back();
+          },
+          elevation: 20,
+          foregroundColor: Colors.black,
           backgroundColor: Colors.white,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: InkWell(
-                  onTap: () async {
-                    myDialog(context);
-                  },
-                  child: const Icon(
-                    Icons.logout_rounded,
-                    color: Colors.black,
-                    size: 30,
-                  )),
-            ),
-          ],
-          leading: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                Get.back();
-              },
-              child: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.black,
-              )),
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            size: 33,
+          ),
         ),
+        floatingLocation: FloatingActionButtonLocation.startFloat,
         child: Center(
           child: Column(
             children: [
+              Padding(
+                padding:
+                const EdgeInsets.only(right: 20, left: 10, bottom: 20, top: 50),
+                child: Column(
+                  children: [
+                    // ویجت NavbarCustom ثابت
+                    SizedBox(
+                      height: 60, // ارتفاع ثابت برای هدر
+                      child: NavbarCustom(
+                        text1: 'پروفایل کاربر',
+                        text2: '',
+                        size1: 28,
+                        size2: 26,
+                        fontFace1: 'lalezarPlus',
+                        fontFace2: 'lalezarPlus',
+                        icon1: Icons.logout_rounded,
+                        onTapIcon2: () async {
+                           myDialog(context);
+                        },
+                        icon2: null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(
-                height: 40,
+                height: 10,
               ),
-              const Text(
-                'مشخصات کاربر',
-                style: TextStyle(fontSize: 35,),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
+              // const Text(
+              //   'مشخصات کاربر',
+              //   style: TextStyle(fontSize: 35,),
+              // ),
+              // const SizedBox(
+              //   height: 30,
+              // ),
               CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: 60,
+                radius: 75,
                 // backgroundImage: AssetImage('assets/images/user1.png'),
                 child: Image.asset(
                   'assets/images/user3.png',
@@ -70,7 +85,8 @@ class ProfileUser extends GetView<ProfileController> {
                 height: 20,
               ),
               Container(
-                width: 350,
+                  width: 250,
+                  height: 50,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: Colors.black,
@@ -79,24 +95,24 @@ class ProfileUser extends GetView<ProfileController> {
                   child: Center(
                     child: Text(
                       controller.name.value,
-                      style: const TextStyle(color: Colors.white, fontSize: 20),
+                      style: const TextStyle(color: Colors.white, fontSize: 22),
                     ),
                   )),
               const SizedBox(
-                height: 50,
+                height: 40,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Container(
-                  width: 350,
+                  width: Get.width-30,
                   height: 82,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(35), color: kPurple),
+                      borderRadius: BorderRadius.circular(40), color: kPurple),
                   child: Row(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 10,
+                          top: 8,
                           bottom: 5,
                           right: 40.0,
                         ),
@@ -107,12 +123,9 @@ class ProfileUser extends GetView<ProfileController> {
                             const Text(
                               'نام کاربری',
                               style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                            const SizedBox(
-                              height: 2,
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             Text(
                               controller.username.value,
@@ -135,9 +148,9 @@ class ProfileUser extends GetView<ProfileController> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Container(
-                  width: 350,
+                  width: Get.width-30,
                   height: 80,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
@@ -146,7 +159,7 @@ class ProfileUser extends GetView<ProfileController> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 10,
+                          top: 8,
                           bottom: 0,
                           right: 40.0,
                         ),
@@ -159,19 +172,16 @@ class ProfileUser extends GetView<ProfileController> {
                               const Text(
                                 'ایمیل',
                                 style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                   ),
-                              ),
-                              const SizedBox(
-                                height: 2,
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Text(
                                   controller.email.value,
                                   style: TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 18,
                                       color: Colors.grey.shade800),
                                 ),
                               ),
@@ -192,18 +202,75 @@ class ProfileUser extends GetView<ProfileController> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Container(
-                  width: 350,
+                  width: Get.width-30,
                   height: 80,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(35),
-                      color: kPurple),
+                      borderRadius: BorderRadius.circular(35), color: kPurple),
                   child: Row(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 10,
+                          top: 8,
+                          bottom: 5,
+                          right: 40.0,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'شماره موبایل',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '${separateDigits(int.parse(controller.wallet.value.toString()))} تومان',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.grey.shade800),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onDoubleTap: () async {
+                          SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                          pref.setInt('phoneNumber', 900000000);
+                        },
+                        onLongPress: () async {
+                          SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                          pref.setInt('phoneNumber', 0);
+                        },
+                        child: const Icon(
+                          CupertinoIcons.phone_circle,
+                          size: 45,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 25,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Container(
+                  width: Get.width-30,
+                  height: 80,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(35), color: kPurpleLight),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8,
                           bottom: 5,
                           right: 40.0,
                         ),
@@ -214,29 +281,28 @@ class ProfileUser extends GetView<ProfileController> {
                             const Text(
                               'موجودی کیف پول',
                               style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                            const SizedBox(
-                              height: 2,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             Text(
-                               '${separateDigits(int.parse(controller.wallet.value.toString()))} تومان',
+                              '${separateDigits(int.parse(controller.wallet.value.toString()))} تومان',
                               style: TextStyle(
-                                  fontSize: 17, color: Colors.grey.shade800),
+                                  fontSize: 18, color: Colors.grey.shade800),
                             ),
                           ],
                         ),
                       ),
                       const Spacer(),
                       GestureDetector(
-                        onDoubleTap: ()async{
-                          SharedPreferences pref =await SharedPreferences.getInstance();
+                        onDoubleTap: () async {
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
                           pref.setInt('wallet', 900000000);
                         },
-                        onLongPress: ()async{
-                          SharedPreferences pref =await SharedPreferences.getInstance();
+                        onLongPress: () async {
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
                           pref.setInt('wallet', 0);
                         },
                         child: const Icon(
@@ -259,13 +325,11 @@ class ProfileUser extends GetView<ProfileController> {
   }
 }
 
-myDialog(context)async {
-  SharedPreferences pref =
-      await SharedPreferences.getInstance();
-  return dialogCustom('آیا از حذف حساب کاربری اطمینان دارید؟',16, () {
+myDialog(context) async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  return dialogCustom('آیا از حذف حساب کاربری اطمینان دارید؟', 16, () {
     pref.clear();
     FocusScope.of(context).unfocus();
     Get.toNamed(AppRoutes.register);
   });
-
 }

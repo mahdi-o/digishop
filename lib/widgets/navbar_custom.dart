@@ -53,15 +53,16 @@ class NavbarCustom extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        GestureDetector(onTap: onTapIcon1, child: Icon(icon2, size: 30,)),
+        GestureDetector(onTap: onTapIcon1, child: Icon(icon2, size: 35,)),
         icon2 != null ? const SizedBox(width: 20,) : const SizedBox(width: 0,),
         GestureDetector(
             onTap: onTapIcon2,
             child: Icon(
               icon1,
-              size: 35,
+              size: 33,
               color: Colors.black,
             )),
+        const SizedBox(width: 5,),
       ],
     );
   }

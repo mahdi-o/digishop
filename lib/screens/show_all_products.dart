@@ -220,7 +220,8 @@ class ShowAllProducts extends GetView<ProductController> {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        floating: FloatingActionButton(
+        floating:
+        FloatingActionButton(
           onPressed: () {
             Get.back();
           },
@@ -234,7 +235,8 @@ class ShowAllProducts extends GetView<ProductController> {
         ),
         floatingLocation: FloatingActionButtonLocation.startFloat,
         appBar: null,
-        child: Padding(
+        child:
+        Padding(
           padding:
               const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
           child: Column(
@@ -243,7 +245,7 @@ class ShowAllProducts extends GetView<ProductController> {
               SizedBox(
                 height: 60, // ارتفاع ثابت برای هدر
                 child: NavbarCustom(
-                  text1: '  محصولات ',
+                  text1: 'محصولات',
                   text2: '',
                   size1: 28,
                   size2: 26,

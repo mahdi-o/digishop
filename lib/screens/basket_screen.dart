@@ -8,6 +8,7 @@ import 'package:digishop/models/Product.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/custom_button.dart';
+import 'package:digishop/widgets/floatingCustomButtons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widgets/navbar_custom.dart';
@@ -326,6 +327,16 @@ class BasketScreen extends GetView<BasketController> {
         color: Colors.white,
         appBar: null,
         bottomNavigation: null,
+        floating: FloatingActionButton( onPressed: () {
+          Get.back();
+        },
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            size: 33,
+          ),),
+        floatingLocation: FloatingActionButtonLocation.startFloat,
         child: controller.basketList.isEmpty
             ? Container(
                 decoration: const BoxDecoration(color: Colors.white),
@@ -441,15 +452,15 @@ class BasketScreen extends GetView<BasketController> {
                                           color: kPurpleLight,
                                           borderRadius:
                                               BorderRadius.circular(150)),
-                                      // child: Image.asset(
-                                      //   product.imageAddress!.isEmpty
-                                      //       ? proLaptopListCustom[
-                                      //               Random().nextInt(10)]
-                                      //           .imageAddress
-                                      //           .toString()
-                                      //       : product.imageAddress.toString(),
-                                      //   width: 90,
-                                      // ),
+                                      child: Image.asset(
+                                        product.imageAddress!.isEmpty
+                                            ? proLaptopListCustom[
+                                                    Random().nextInt(10)]
+                                                .imageAddress
+                                                .toString()
+                                            : product.imageAddress.toString(),
+                                        width: 90,
+                                      ),
                                     ),
                                     const SizedBox(
                                       width: 15,
@@ -563,7 +574,7 @@ class BasketScreen extends GetView<BasketController> {
                                                   color: kPinkDark,
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: 'Titr',
-                                                  fontSize: 18),
+                                                  fontSize: 16),
                                             ),
                                           ),
                                         ),
