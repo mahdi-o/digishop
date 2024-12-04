@@ -201,6 +201,8 @@ import 'package:digishop/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../widgets/navbar_custom.dart';
+
 class AdminCustomerCreate extends GetView<CustomerController> {
   AdminCustomerCreate({super.key});
 
@@ -211,6 +213,19 @@ class AdminCustomerCreate extends GetView<CustomerController> {
     return BaseWidget(
       appBar: null,
       bottomNavigation: null,
+      floatingLocation: FloatingActionButtonLocation.startFloat,
+      floating: FloatingActionButton(
+        onPressed: () {
+          Get.back();
+        },
+        elevation: 20,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.arrow_back_sharp,
+          size: 33,
+        ),
+      ),
       color: Colors.grey.shade300,
       child: AdminBaseWidget(
         height: 310,
@@ -221,35 +236,38 @@ class AdminCustomerCreate extends GetView<CustomerController> {
             height: Get.height,
             child: Column(children: [
               const SizedBox(
-                height: 60,
+                height: 50,
               ),
               Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0, left: 100),
-                        child: GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            Get.back();
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_outlined,
-                            color: Colors.white,
+                  const Padding(
+                    padding:
+                    EdgeInsets.only(right: 135, left: 10),
+                    child: Column(
+                      children: [
+                        // ویجت NavbarCustom ثابت
+                        SizedBox(
+                          height: 50, // ارتفاع ثابت برای هدر
+                          child: NavbarCustom(
+                            text1: '',
+                            text2: 'ثبت مشتری جدید',
+                            colorText2: Colors.white,
+                            size1: 28,
+                            size2: 26,
+                            fontFace1: 'lalezarPlus',
+                            fontFace2: 'lalezarPlus',
+                            icon1: null,
+                            icon2: null,
                           ),
                         ),
-                      ),
-                      const Center(
-                          child: Text('افزودن مشتری', style:
-                          TextStyle(fontSize: 26, color: Colors.white))),
-                    ],
+                        // محتوای اسکرول‌شونده
+                      ],
+                    ),
                   ),
                   textFieldCustom(
                       controller.username.value, Colors.white,
                       Colors.white70, Colors.white, Colors.white38,
-                      'نام کاربری', 30, 7, TextAlign.right, 20),
+                      'نام کاربری', 10, 0, TextAlign.right, 20),
                   textFieldCustom(
                       controller.password.value, Colors.white, Colors.white70,
                       Colors.white, Colors.white38, 'رمزعبور',
@@ -257,7 +275,7 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                 ],
               ),
               const SizedBox(
-                height: 5,
+                height: 15,
               ),
               textFieldCustom(
                   controller.nameCustomer.value,

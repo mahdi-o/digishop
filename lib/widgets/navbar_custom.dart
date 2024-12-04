@@ -7,6 +7,8 @@ class NavbarCustom extends StatelessWidget {
   const NavbarCustom({super.key,
     required this.text1,
     required this.text2,
+    this.colorText1,
+    this.colorText2,
     required this.size1,
     required this.size2,
     required this.fontFace1,
@@ -19,6 +21,7 @@ class NavbarCustom extends StatelessWidget {
   });
 
   final String text1, text2;
+  final Color? colorText1,colorText2;
   final double size1, size2;
   final String fontFace1,fontFace2;
   final IconData? icon1;
@@ -37,16 +40,16 @@ class NavbarCustom extends StatelessWidget {
               text: text1,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: kPurpleDark,
+                  color: colorText1??kPurpleDark,
                   fontSize: size1,
-                  fontFamily: fontFace1),
+                  fontFamily: fontFace1,),
               children: <TextSpan>[
                 TextSpan(
                     text: text2,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: size2,
-                        color: Colors.black,
+                        color: colorText2??Colors.black,
                         fontFamily: fontFace2)),
               ],
             ),

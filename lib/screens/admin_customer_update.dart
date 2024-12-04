@@ -8,6 +8,7 @@ import '../constans.dart';
 import '../models/Customer.dart';
 import '../widgets/base_widget.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/navbar_custom.dart';
 
 class AdminCustomerUpdate extends GetView<CustomerController> {
   AdminCustomerUpdate({super.key});
@@ -21,6 +22,19 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
   Widget build(BuildContext context) {
     return BaseWidget(
       appBar: null,
+      floatingLocation: FloatingActionButtonLocation.startFloat,
+      floating: FloatingActionButton(
+        onPressed: () {
+          Get.back();
+        },
+        elevation: 20,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.arrow_back_sharp,
+          size: 33,
+        ),
+      ),
       bottomNavigation: null,
       color: Colors.grey.shade300,
       child: AdminBaseWidget(
@@ -36,33 +50,29 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
               ),
               Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0, left: 60),
-                        child: GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            Get.back();
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_outlined,
-                            color: Colors.white,
+                  const Padding(
+                    padding:
+                    EdgeInsets.only(right: 105, left: 10),
+                    child: Column(
+                      children: [
+                        // ویجت NavbarCustom ثابت
+                        SizedBox(
+                          height: 50, // ارتفاع ثابت برای هدر
+                          child: NavbarCustom(
+                            text1: '',
+                            text2: 'ویرایش اطلاعات مشتری',
+                            colorText2: Colors.white,
+                            size1: 28,
+                            size2: 26,
+                            fontFace1: 'lalezarPlus',
+                            fontFace2: 'lalezarPlus',
+                            icon1: null,
+                            icon2: null,
                           ),
                         ),
-                      ),
-                      Center(
-                          child: GestureDetector(
-                        onTap: () async {
-                          var result = await xController.readCustomers();
-                          print(result);
-                        },
-                        child: const Text('ویرایش اطلاعات مشتری',
-                            style:
-                                TextStyle(fontSize: 26, color: Colors.white)),
-                      )),
-                    ],
+                        // محتوای اسکرول‌شونده
+                      ],
+                    ),
                   ),
                   textFieldCustom(
                       controller.username.value =
@@ -73,9 +83,10 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                       Colors.white38,
                       'نام کاربری',
                       30,
-                      7,
+                      0,
                       TextAlign.right,
                       20),
+                  SizedBox(height: 10,),
                   textFieldCustom(
                       controller.password.value =
                           TextEditingController(text: customer.password),
@@ -85,7 +96,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                       Colors.white38,
                       'رمزعبور',
                       30,
-                      7,
+                      0,
                       TextAlign.right,
                       20,
                       readOnly: true,
@@ -104,7 +115,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                 ],
               ),
               const SizedBox(
-                height: 5,
+                height: 20,
               ),
               textFieldCustom(
                   controller.nameCustomer.value =
@@ -181,7 +192,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                       print(customer.id);
                       print('customer id id id id id id id');
                       var idCus =
-                          await xController.getIdCustomer(customer.id ?? 0);
+                      await xController.getIdCustomer(customer.id ?? 0);
                       await xController.updateCustomer(
                           idCus,
                           Customer(

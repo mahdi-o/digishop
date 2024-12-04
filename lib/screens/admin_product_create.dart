@@ -7,6 +7,8 @@ import 'package:digishop/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../widgets/navbar_custom.dart';
+
 class AdminProductCreate extends GetView<ProductController> {
   AdminProductCreate({super.key});
 
@@ -17,6 +19,19 @@ class AdminProductCreate extends GetView<ProductController> {
     return BaseWidget(
       appBar: null,
       bottomNavigation: null,
+      floatingLocation: FloatingActionButtonLocation.startFloat,
+      floating: FloatingActionButton(
+        onPressed: () {
+          Get.back();
+        },
+        elevation: 20,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.arrow_back_sharp,
+          size: 33,
+        ),
+      ),
       color: Colors.grey.shade300,
       child: AdminBaseWidget(height: 300,
         color: Colors.grey.shade200,
@@ -29,27 +44,29 @@ class AdminProductCreate extends GetView<ProductController> {
               ),
               Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0, left: 80),
-                        child: GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            Get.back();
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_outlined,
-                            color: Colors.white,
+                  const Padding(
+                    padding:
+                    EdgeInsets.only(right: 125, left: 10),
+                    child: Column(
+                      children: [
+                        // ویجت NavbarCustom ثابت
+                        SizedBox(
+                          height: 40, // ارتفاع ثابت برای هدر
+                          child: NavbarCustom(
+                            text1: '',
+                            text2: 'ثبت محصول جدید',
+                            colorText2: Colors.white,
+                            size1: 28,
+                            size2: 26,
+                            fontFace1: 'lalezarPlus',
+                            fontFace2: 'lalezarPlus',
+                            icon1: null,
+                            icon2: null,
                           ),
                         ),
-                      ),
-                       const Center(
-                          child: Text('ایجاد محصول جدید',
-                              style: TextStyle(
-                                  fontSize: 23, color: Colors.white))),
-                    ],
+                        // محتوای اسکرول‌شونده
+                      ],
+                    ),
                   ),
                   textFieldCustom(
                     controller.nameProduct.value,
@@ -59,7 +76,7 @@ class AdminProductCreate extends GetView<ProductController> {
                     Colors.white38,
                     'نام محصول',
                     30,
-                    7,
+                    0,
                     TextAlign.right,20
                   ),
                   textFieldCustom(
@@ -169,7 +186,7 @@ class AdminProductCreate extends GetView<ProductController> {
                 ],
               ),
               const Padding(
-                padding: EdgeInsets.only(top: 40, bottom: 5),
+                padding: EdgeInsets.only(top: 30, bottom: 5),
                 child: Text(
                   'افزودن عکس',
                   style: TextStyle(color: kPurpleDark, fontSize: 20),

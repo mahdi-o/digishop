@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../widgets/custom_button.dart';
+import '../widgets/navbar_custom.dart';
 
 class AdminInvoiceCreate extends GetView<InvoiceController> {
   const AdminInvoiceCreate({super.key});
@@ -21,6 +22,19 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
       () => BaseWidget(
         appBar: null,
         bottomNavigation: null,
+        floatingLocation: FloatingActionButtonLocation.startFloat,
+        floating: FloatingActionButton(
+          onPressed: () {
+            Get.back();
+          },
+          elevation: 20,
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            size: 33,
+          ),
+        ),
         color: Colors.grey.shade300,
         child: AdminBaseWidget(
           height: 380,
@@ -32,39 +46,29 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                   const SizedBox(height: 50),
                   Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(right: 15.0, left: 100),
-                            child: GestureDetector(
-                              onTap: () {
-                                FocusScope.of(context).unfocus();
-                                Get.back();
-                              },
-                              child: const Icon(
-                                Icons.arrow_back_outlined,
-                                color: Colors.white,
+                      const Padding(
+                        padding:
+                        EdgeInsets.only(right: 135, left: 10),
+                        child: Column(
+                          children: [
+                            // ویجت NavbarCustom ثابت
+                            SizedBox(
+                              height: 50, // ارتفاع ثابت برای هدر
+                              child: NavbarCustom(
+                                text1: '',
+                                text2: 'ثبت فاکتور جدید',
+                                colorText2: Colors.white,
+                                size1: 28,
+                                size2: 26,
+                                fontFace1: 'lalezarPlus',
+                                fontFace2: 'lalezarPlus',
+                                icon1: null,
+                                icon2: null,
                               ),
                             ),
-                          ),
-                          Center(
-                            child: GestureDetector(
-                              onTap: () async {
-                                await MyDb().deleteInvoiceProducts();
-                                await MyDb().deleteInvoices();
-                              },
-                              child: const Text(
-                                'ثبت فاکتور جدید',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                            // محتوای اسکرول‌شونده
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(

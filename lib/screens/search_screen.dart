@@ -19,6 +19,7 @@ class SearchScreen extends GetView<MySearchController> {
 
   @override
   Widget build(BuildContext context) {
+    double height = Get.height;
     return Obx(
       () => BaseWidget(
           color: Colors.white,
@@ -39,10 +40,10 @@ class SearchScreen extends GetView<MySearchController> {
           ),
           child: Column(
             children: [
-              const Padding(
+               Padding(
                 padding:
-                    EdgeInsets.only(right: 140, left: 0, bottom: 10, top: 50),
-                child: Column(
+                    EdgeInsets.only(right: height/6, left: 0, bottom: 10, top: 50),
+                child: const Column(
                   children: [
                     // ویجت NavbarCustom ثابت
                     SizedBox(
