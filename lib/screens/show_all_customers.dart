@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../models/User.dart';
 import '../services/routes.dart';
 import '../widgets/navbar_custom.dart';
+import 'admin_home_screen.dart';
 
 class ShowAllCustomers extends StatelessWidget {
   ShowAllCustomers({super.key});
@@ -15,6 +16,7 @@ class ShowAllCustomers extends StatelessWidget {
   final User user = Get.arguments;
   final MyDb myDb = Get.find<MyDb>();
   final CustomerController controller = Get.find<CustomerController>();
+  MyDb xController = Get.find<MyDb>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class ShowAllCustomers extends StatelessWidget {
             context,
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 120.0),
+                padding: const EdgeInsets.only(bottom: 100.0),
                 child: Text(
                   'مشتری یافت نشد!',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
@@ -76,7 +78,7 @@ class ShowAllCustomers extends StatelessWidget {
                       children: [
                         _buildAvatar(),
                         const SizedBox(width: 10),
-                        _buildCustomerInfo(customer,context),
+                        _buildCustomerInfo(customer, context),
                       ],
                     ),
                     const Divider(
@@ -107,7 +109,7 @@ class ShowAllCustomers extends StatelessWidget {
     );
   }
 
-  Widget _buildCustomerInfo(Customer customer,context) {
+  Widget _buildCustomerInfo(Customer customer, context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -139,8 +141,10 @@ class ShowAllCustomers extends StatelessWidget {
               onPressed: () {
                 Get.toNamed(
                   AppRoutes.adminCusUpd,
-                  arguments: customer,
-                  parameters: {'username': user.username.toString()},
+                  arguments: {
+                    'customer':customer,
+                    'user':user
+                  }
                 );
               },
               icon: const Icon(Icons.edit_rounded, color: kPurpleDark),
@@ -149,15 +153,24 @@ class ShowAllCustomers extends StatelessWidget {
             _buildDetailsButton(),
             const SizedBox(width: 20),
             GestureDetector(
-              onTap: () async {
-                dialogCustom(
-                    'آیا از حذف تمام مشتریان اطمینان دارید؟',20,
-                        () {
-                      var result =  myDb.deleteCustomer(customer.id ?? -1);
-                      print(result);
-                      FocusScope.of(context).unfocus();
-                      Get.back();
+              onTap: () {
+                dialogCustom('آیا از حذف این مشتری اطمینان دارید؟', 20, ()async{
+                  Get.back();
+                  var result = await myDb.deleteCustomer(customer.id ?? -1);
+                  if (result == 1) {
+                    FocusScope.of(context).unfocus();
+                    Future.delayed(const Duration(milliseconds: 2500), () {
+                      Get.off(
+                        () => AdminHomeScreen(), arguments: user,
+                        // صفحه مقصد
+                        transition: Transition.zoom,
+                        // نوع انیمیشن
+                        duration: const Duration(
+                            milliseconds: 500), // مدت زمان انیمیشن
+                      );
                     });
+                  }
+                });
               },
               child: const Icon(
                 Icons.delete_outline_rounded,
@@ -175,49 +188,63 @@ class ShowAllCustomers extends StatelessWidget {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        floating:
-        FloatingActionButton(
+        floating: FloatingActionButton(
           onPressed: () {
             Get.back();
           },
           elevation: 20,
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
-          child: const Icon(Icons.arrow_back_sharp, size: 33,),
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            size: 33,
+          ),
         ),
         floatingLocation: FloatingActionButtonLocation.startFloat,
         appBar: null,
         child: Padding(
-          padding: const EdgeInsets.only(
-              right: 10, left: 10, bottom: 20, top: 50),
-          child: Column(children: [
-            SizedBox(height: 60,
-              child: NavbarCustom(
-                text1: '  مشتریان ',
-                text2: '',
-                size1: 28,
-                size2: 26,
-                fontFace1: 'lalezarPlus',
-                fontFace2: 'lalezarPlus',
-                icon1: Icons.delete_outline_rounded,
-                onTapIcon2: () async {
-                  dialogCustom(
-                      'آیا از حذف تمام مشتریان اطمینان دارید؟',20,
-                          () {
-                            var result = MyDb().deleteCustomers();
-                            print(result);
-                            FocusScope.of(context).unfocus();
-                            Get.back();
-                      });
-                },
-                icon2: null,
+          padding:
+              const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 60,
+                child: NavbarCustom(
+                  text1: '  مشتریان ',
+                  text2: '',
+                  size1: 28,
+                  size2: 26,
+                  fontFace1: 'lalezarPlus',
+                  fontFace2: 'lalezarPlus',
+                  icon1: Icons.delete_outline_rounded,
+                  onTapIcon2: ()  {
+                    dialogCustom('آیا از حذف تمام مشتریان اطمینان دارید؟', 20,
+                        () async{
+                        Get.back();
+                      var result =await MyDb().deleteCustomers();
+                      print(result);
+                      if(result != 0){
+                        FocusScope.of(context).unfocus();
+                        Future.delayed(const Duration(milliseconds: 2500), () {
+                          Get.off(
+                                () => AdminHomeScreen(), arguments: user,
+                            // صفحه مقصد
+                            transition: Transition.rightToLeft,
+                            // نوع انیمیشن
+                            duration: const Duration(
+                                milliseconds: 500), // مدت زمان انیمیشن
+                          );
+                        });
+                      }
+                    });
+                  },
+                  icon2: null,
+                ),
               ),
-            ),
-            Expanded(child: child)
-          ],),
-        )
-    );
-
+              Expanded(child: child)
+            ],
+          ),
+        ));
   }
 
   Widget _buildDetailsButton() {

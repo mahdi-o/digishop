@@ -1,11 +1,13 @@
 import 'package:digishop/controller/customer_controller.dart';
 import 'package:digishop/database/my_db.dart';
+import 'package:digishop/screens/show_all_customers.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constans.dart';
 import '../models/Customer.dart';
+import '../models/User.dart';
 import '../widgets/base_widget.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/navbar_custom.dart';
@@ -13,10 +15,10 @@ import '../widgets/navbar_custom.dart';
 class AdminCustomerUpdate extends GetView<CustomerController> {
   AdminCustomerUpdate({super.key});
 
-  final String mapData = Get.parameters['username']!;
+  final User user = Get.arguments['user'];
 
   MyDb xController = Get.find<MyDb>();
-  final Customer customer = Get.arguments;
+  final Customer customer = Get.arguments['customer'];
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +53,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
               Column(
                 children: [
                   const Padding(
-                    padding:
-                    EdgeInsets.only(right: 105, left: 10),
+                    padding: EdgeInsets.only(right: 105, left: 10),
                     child: Column(
                       children: [
                         // ویجت NavbarCustom ثابت
@@ -86,7 +87,9 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                       0,
                       TextAlign.right,
                       20),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   textFieldCustom(
                       controller.password.value =
                           TextEditingController(text: customer.password),
@@ -189,66 +192,35 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                   shadowColor: kPurpleDark,
                   onTapped: () async {
                     if (customer.id != null) {
-                      print(customer.id);
-                      print('customer id id id id id id id');
                       var idCus =
-                      await xController.getIdCustomer(customer.id ?? 0);
-                      await xController.updateCustomer(
-                          idCus,
-                          Customer(
-                            id: idCus,
-                            nameCustomer: controller.nameCustomer.value.text,
-                            username: controller.username.value.text,
-                            password: controller.password.value.text,
-                            email: controller.email.value.text,
-                            phoneNumber: controller.phoneNumber.value.text,
-                            wallet: controller.wallet.value.text,
-                            address: controller.address.value.text,
-                            description: customer.description,
-                            isDelete: 0,
-                            createdAt: customer.createdAt,
-                            updatedAt: DateTime.now().toString().split(".")[0],
-                          ));
-                      FocusScope.of(context).unfocus();
-                      Get.snackbar(
-                          '',
-                          '',
-                          titleText: const Text(
-                            'ویرایش اطلاعات',
-                            style: TextStyle(fontSize: 18, color: kPurpleDark),
-                          ),
-                          messageText: const Text(
-                            'اطلاعات مشتری با موفقیت ویرایش شد',
-                            style: TextStyle(fontSize: 18, color: kPurpleDark),
-                          ),
-                          backgroundColor: Colors.white,
-                          colorText: kPinkDark,
-                          duration: const Duration(seconds: 1)
-                      );
-                      Future.delayed(
-                        const Duration(seconds: 2),
-                            () {
-                          Get.toNamed(
-                            AppRoutes.showAllCus,
-                            parameters: {'username': mapData},
-                          );
-                        },
-                      );
-                    } else {
-                      Get.snackbar(
-                        'عملیات ناموفق',
-                        'ویرایش اطلاعات با مشکل مواجه شد',
-                        backgroundColor: kRedLight,
-                        colorText: Colors.white,
-                        icon: const Icon(
-                          Icons.remove_shopping_cart_outlined,
-                          size: 30,
-                          color: Colors.white,
+                          await xController.getIdCustomer(customer.id ?? 0);
+                     var result = await xController.updateCustomer(
+                        idCus,
+                        Customer(
+                          id: idCus,
+                          nameCustomer: controller.nameCustomer.value.text,
+                          username: controller.username.value.text,
+                          password: controller.password.value.text,
+                          email: controller.email.value.text,
+                          phoneNumber: controller.phoneNumber.value.text,
+                          wallet: controller.wallet.value.text,
+                          address: controller.address.value.text,
+                          description: customer.description,
+                          isDelete: 0,
+                          createdAt: customer.createdAt,
+                          updatedAt: DateTime.now().toString().split(".")[0],
                         ),
-                        shouldIconPulse: false,
                       );
+                      if(result != 0){
+                        FocusScope.of(context).unfocus();
+                        Future.delayed(const Duration(milliseconds: 2500), () {
+                          Get.off(() => ShowAllCustomers(),arguments: user, // صفحه مقصد
+                            transition: Transition.zoom,  // نوع انیمیشن
+                            duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
+                          );
+                        });
+                      }
                     }
-
                   },
                   splashColor: kPurpleDark,
                   borderColor: kPurpleDark,

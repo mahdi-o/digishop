@@ -184,8 +184,8 @@ class ShowAllProducts extends GetView<ProductController> {
                 onPressed: () {
                   Get.toNamed(
                     AppRoutes.adminProUpd,
-                    arguments: product,
-                    parameters: {'username': user.username.toString()},
+                    arguments: {'product':product,'user':user},
+                    parameters: {'all':brandHomeScreen}
                   );
                 },
                 icon: const Icon(Icons.edit_rounded, color: kPurpleDark),

@@ -219,7 +219,6 @@ class InvoiceController extends GetxController {
     final db = await MyDb().db();
     Invoice invoice = Invoice();
     Customer customer = Customer();
-
     // اگر لیست سفارش‌ها خالی است، تابع خاتمه می‌یابد.
     if (listOrder.isEmpty) return;
 
@@ -297,6 +296,21 @@ class InvoiceController extends GetxController {
           where: 'id = ?',
           whereArgs: [existingProduct.id],
         );
+        Get.snackbar(
+          '',
+          '',
+          titleText: const Text(
+            'بروزرسانی تعداد محصول',
+            style: TextStyle(fontSize: 18, color: kPurpleDark),
+          ),
+          messageText: const Text(
+            'بروزرسانی تعداد محصول با موفقیت ثبت شد',
+            style: TextStyle(fontSize: 18, color: kPurpleDark),
+          ),
+          backgroundColor: Colors.white,
+          colorText: kPinkDark,
+          duration: const Duration(milliseconds: 1500),
+        );
       } else {
         // اگر محصول جدید است، آن را به فاکتور اضافه می‌کنیم
         await db.insert('invoice_products', {
@@ -304,6 +318,21 @@ class InvoiceController extends GetxController {
           "idProduct": product.id,
           "count": order.countOrder ?? 0,  // استفاده از ?? 0 برای جلوگیری از null
         });
+        Get.snackbar(
+          '',
+          '',
+          titleText: const Text(
+            'افزودن محصول',
+            style: TextStyle(fontSize: 18, color: kPurpleDark),
+          ),
+          messageText: const Text(
+            'محصول با موفقیت در فاکتور ثبت شد',
+            style: TextStyle(fontSize: 18, color: kPurpleDark),
+          ),
+          backgroundColor: Colors.white,
+          colorText: kPinkDark,
+          duration: const Duration(milliseconds: 1500),
+        );
       }
 
       // بروزرسانی موجودی محصول در دیتابیس
@@ -319,8 +348,8 @@ class InvoiceController extends GetxController {
         where: 'id = ?',
         whereArgs: [product.id],
       );
-    }
 
+    }
     print('Invoice with multiple orders added/updated successfully.');
     idProduct.value.clear();
     count.value.clear();

@@ -23,14 +23,14 @@ class MySearchController extends GetxController{
           ),
           messageText: const Text(
             'متنی برای جست و جو وارد نشده است!',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white,fontSize: 18),
           ),
           duration: const Duration(milliseconds: 1500),
           backgroundColor: kRedLight,
           padding:
           const EdgeInsets.only(left: 30, right: 10, top: 15, bottom: 15),
           icon: const Icon(
-            Icons.highlight_remove_rounded,
+            Icons.highlight_off,
             color: Colors.white,
             size: 35,
           ));

@@ -1,19 +1,22 @@
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/database/my_db.dart';
+import 'package:digishop/screens/admin_home_screen.dart';
+import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../models/User.dart';
 import '../widgets/navbar_custom.dart';
 
 class AdminProductCreate extends GetView<ProductController> {
   AdminProductCreate({super.key});
 
   MyDb xController = Get.find<MyDb>();
-
+  final User user = Get.arguments;
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
@@ -227,7 +230,15 @@ class AdminProductCreate extends GetView<ProductController> {
                       controller.screenProduct.value.text,
                       4,
                     );
-                    controller.clear();
+                   if(xController.status == true){
+                     Future.delayed(const Duration(milliseconds: 2500), () {
+                       Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد
+                         transition: Transition.zoom,  // نوع انیمیشن
+                         duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
+                       );
+                     });
+                     controller.clear();
+                   }
                   },
                   splashColor: kPurpleDark,
                   borderColor: kPurpleDark,

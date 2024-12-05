@@ -201,12 +201,15 @@ import 'package:digishop/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../models/User.dart';
 import '../widgets/navbar_custom.dart';
+import 'admin_home_screen.dart';
 
 class AdminCustomerCreate extends GetView<CustomerController> {
   AdminCustomerCreate({super.key});
 
   MyDb xController = Get.find<MyDb>();
+  final User user = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -267,7 +270,7 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                   textFieldCustom(
                       controller.username.value, Colors.white,
                       Colors.white70, Colors.white, Colors.white38,
-                      'نام کاربری', 10, 0, TextAlign.right, 20),
+                      'نام کاربری', 30, 0, TextAlign.right, 20),
                   textFieldCustom(
                       controller.password.value, Colors.white, Colors.white70,
                       Colors.white, Colors.white38, 'رمزعبور',
@@ -312,7 +315,7 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                   fontSizeBtn: 26,
                   shadowColor: kPurpleDark,
                   onTapped: () async {
-                    await xController.addCustomer(
+                   var result = await xController.addCustomer(
                         controller.nameCustomer.value.text,
                         controller.username.value.text,
                         controller.password.value.text,
@@ -321,17 +324,16 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                         controller.wallet.value.text,
                         controller.address.value.text,
                         '');
-                    Get.snackbar(
-                      '', '', titleText: const Text('ثبت مشتری',
-                      style: TextStyle(fontSize: 18, color: kPurpleDark),
-                    ),
-                      messageText: const Text(
-                        'اطلاعات مشتری با موفقیت ثبت شد',
-                        style: TextStyle(fontSize: 18, color: kPurpleDark),
-                      ),
-                      backgroundColor: Colors.white,
-                      colorText: kPinkDark,
-                    );
+                    if(result != 0){
+                      Future.delayed(const Duration(milliseconds: 2500), () {
+                        Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد
+                          transition: Transition.zoom,  // نوع انیمیشن
+                          duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
+                        );
+                      });
+                      controller.clear();
+                    }
+
                     controller.clear();
                   },
                   splashColor: kPurpleDark,

@@ -219,7 +219,7 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor: kPurpleDark,
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
-                            Get.toNamed(AppRoutes.adminCusCre);
+                            Get.toNamed(AppRoutes.adminCusCre,arguments: user);
                           }),
                       ContainerCustomAdmin(
                           text: 'مشتریان',
@@ -272,7 +272,8 @@ class AdminHomeScreen extends StatelessWidget {
                               :Colors.black,
                           iconColor
                               :kPurpleDark,
-                          voidCallback: () {FocusScope.of(context).unfocus(); Get.toNamed(AppRoutes.adminProCre);}),
+                          voidCallback: () {FocusScope.of(context).unfocus();
+                        Get.toNamed(AppRoutes.adminProCre,arguments: user);}),
                       ContainerCustomAdmin(text: 'محصولات',
                           icon: Icons.dataset_outlined,
                           textColor

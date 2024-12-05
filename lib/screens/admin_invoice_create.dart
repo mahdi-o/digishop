@@ -626,7 +626,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                       onTapped: () async {
                         if (controller.idCustomer.value.text != "" &&
                             controller.listOrder.isNotEmpty) {
-                          controller.addInvoice();
+                         var result = await controller.addInvoice();
                         } else {
                           Get.snackbar(
                             'خطا',

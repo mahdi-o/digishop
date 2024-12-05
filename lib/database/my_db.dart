@@ -5,6 +5,7 @@ import 'package:digishop/models/Customer.dart';
 import 'package:digishop/models/Invoice.dart';
 import 'package:digishop/models/invoiceProducts.dart';
 import 'package:digishop/models/Product.dart';
+import 'package:digishop/services/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
@@ -16,7 +17,7 @@ class MyDb {
   RxList<Customer> customerList = <Customer>[].obs;
   RxList<Invoice> invoiceList = <Invoice>[].obs;
   RxList<Product> listProForPageBasket = <Product>[].obs;
-
+  RxBool status = false.obs;
   Future<Database> db() async {
     return await openDatabase(
       join(await getDatabasesPath(), "digi.db"),
@@ -277,8 +278,9 @@ class MyDb {
 
 //''''''''''''product''''''''''''''''''''
 
-  Future<void> addProduct(nameProduct, price, brand, imageAddress, count, ram,
+  Future<int> addProduct(nameProduct, price, brand, imageAddress, count, ram,
       hard, cpu, screen, star) async {
+    status.value = false;
     final db = await MyDb().db();
     var res = await db
         .query("products", where: "nameProduct = ?", whereArgs: [nameProduct]);
@@ -298,6 +300,9 @@ class MyDb {
         "createdAt": DateTime.now().toString().split(".")[0],
         "updatedAt": DateTime.now().toString().split(".")[0]
       });
+      status.value = true;
+      print('readAllProducts  // readAllProducts bad az create product');
+      await readAllProducts();
       Get.snackbar(
         '',
         '',
@@ -311,44 +316,57 @@ class MyDb {
         ),
         backgroundColor: Colors.white,
         colorText: kPinkDark,
-        duration: const Duration(seconds: 1),
+        duration: const Duration(milliseconds: 1500),
       );
-      print('readAllProducts  // readAllProducts bad az create product');
-      await readAllProducts();
+      return 1;
     } else {
       Get.snackbar(
-        'عملیات ناموفق',
-        'محصولی با این نام قبلا در سیستم ثبت شده است',
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'محصولی با این نام قبلا در سیستم ثبت شده است',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
         backgroundColor: kRedLight,
         colorText: Colors.white,
-        icon: const Icon(
-          Icons.remove_shopping_cart_outlined,
-          size: 30,
-          color: Colors.white,
-        ),
-        shouldIconPulse: false,
+        duration: const Duration(milliseconds: 1500),
       );
+        return 0;
     }
   }
 
-  Future<void> updateProduct(int id, Product pro) async {
+  Future<int> updateProduct(int id, Product pro) async {
     final db = await MyDb().db();
     Product product = Product();
     var res = await db.query("products", where: "id = ?", whereArgs: [id]);
     var jam = res.isNotEmpty ? product = Product.fromJson(res.first) : Null;
     if (jam == Null) {
       Get.snackbar(
-        'عملیات ناموفق',
-        'این محصول در سیستم موجود نمی باشد',
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'این محصول در سیستم موجود نمی باشد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
         backgroundColor: kRedLight,
         colorText: Colors.white,
-        icon: const Icon(
-          Icons.remove_shopping_cart_outlined,
-          size: 30,
-          color: Colors.white,
-        ),
-        shouldIconPulse: false,
+        duration: const Duration(milliseconds: 1500),
       );
+      return 0;
     } else {
       await db.update(
           'products',
@@ -369,6 +387,23 @@ class MyDb {
           ).toJson(),
           where: "id=?",
           whereArgs: [pro.id]);
+
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'ویرایش اطلاعات',
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
+        ),
+        messageText: const Text(
+          'اطلاعات محصول با موفقیت ویرایش شد',
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
+        ),
+        backgroundColor: Colors.white,
+        colorText: kPinkDark,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
     }
   }
 
@@ -454,7 +489,7 @@ class MyDb {
   }
 
 //''''''''''''customer''''''''''''''''''''
-  Future<void> addCustomer(nameCustomer, username, password, email, phoneNumber,
+  Future<int> addCustomer(nameCustomer, username, password, email, phoneNumber,
       wallet, address, description) async {
     final db = await MyDb().db();
     var res = await db
@@ -474,44 +509,72 @@ class MyDb {
         "createdAt": DateTime.now().toString().split(".")[0],
         "updatedAt": DateTime.now().toString().split(".")[0],
       });
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'ثبت مشتری',
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
+        ),
+        messageText: const Text(
+          'اطلاعات مشتری با موفقیت ثبت شد',
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
+        ),
+        backgroundColor: Colors.white,
+        colorText: kPinkDark,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
     } else {
       Get.snackbar(
-        'عملیات ناموفق',
-        'مشتری با این نام کاربری قبلا در سیستم ثبت شده است',
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'مشتری با این نام کاربری قبلا در سیستم ثبت شده است',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
         backgroundColor: kRedLight,
         colorText: Colors.white,
-        icon: const Icon(
-          Icons.remove_shopping_cart_outlined,
-          size: 30,
-          color: Colors.white,
-        ),
-        shouldIconPulse: false,
+        duration: const Duration(milliseconds: 1500),
       );
-    }
+      return 0;}
   }
 
-  Future<void> updateCustomer(int id, Customer newCustomer) async {
+  Future<int> updateCustomer(int id, Customer newCustomer) async {
     var db = await MyDb().db();
     Customer customer = Customer();
     var res = await db.query("customers", where: "id = ?", whereArgs: [id]);
     var jam = res.isNotEmpty ? customer = Customer.fromJson(res.first) : Null;
     if (jam == Null) {
       Get.snackbar(
-        'عملیات ناموفق',
-        'این مشتری در سیستم موجود نمی باشد',
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'این مشتری در سیستم موجود نمی باشد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
         backgroundColor: kRedLight,
         colorText: Colors.white,
-        icon: const Icon(
-          Icons.remove_shopping_cart_outlined,
-          size: 30,
-          color: Colors.white,
-        ),
-        shouldIconPulse: false,
+        duration: const Duration(milliseconds: 1500),
       );
+      return 0;
     } else {
-      await db.update(
-          'customers',
-          Customer(
+      await db.update('customers', Customer(
             id: newCustomer.id,
             nameCustomer: newCustomer.nameCustomer,
             username: newCustomer.username,
@@ -524,10 +587,24 @@ class MyDb {
             isDelete: newCustomer.isDelete,
             createdAt: newCustomer.createdAt,
             updatedAt: DateTime.now().toString().split(".")[0],
-          ).toJson(),
-          where: "id=?",
-          whereArgs: [newCustomer.id]);
+          ).toJson(), where: "id=?", whereArgs: [newCustomer.id]);
       print('update shod');
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'ویرایش اطلاعات',
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
+        ),
+        messageText: const Text(
+          'اطلاعات مشتری با موفقیت ویرایش شد',
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
+        ),
+        backgroundColor: Colors.white,
+        colorText: kPinkDark,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
     }
   }
 
@@ -574,6 +651,7 @@ class MyDb {
   }
 
   Future<int> deleteCustomer(int id) async {
+    status.value = false;
     final db = await MyDb().db();
     // حذف مشتری از دیتابیس
     var result = await db.delete(
@@ -581,44 +659,92 @@ class MyDb {
       where: 'id = ?',
       whereArgs: [id],
     );
+     var isDelete = await db.query('customers',where: 'id = ?',whereArgs: [id]);
+     print(isDelete);
+     print('isDelete isDelete isDelete isDeleteisDelete');
+      if(isDelete.isEmpty){
+        status.value = true;
+        Get.snackbar(
+          '',
+          '',
+          titleText: const Text(
+            'حذف مشتری',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+          messageText: const Text(
+            'مشتری با موفقیت حذف شد',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+          backgroundColor: kPurpleDark,
+          colorText: Colors.white,
+          duration: const Duration(milliseconds: 1500),
+        );
+      }else{
+        Get.snackbar(
+          '',
+          '',
+          titleText: const Text(
+            'عملیات ناموفق',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+          messageText: const Text(
+            'حذف مشتری با خطا مواجه شد',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
 
-    if (result > 0) {
-      // در صورت موفقیت، حذف مشتری از لیست مشتری‌ها
-      customerList.removeWhere((customer) => customer.id == id);
-
-      // نمایش پیغام تایید
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'حذف مشتری',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
-        ),
-        duration: const Duration(milliseconds: 100),
-        messageText: const Text(
-          'مشتری با موفقیت حذف شد',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
-        ),
-        backgroundColor: Colors.white,
-        colorText: kPinkDark,
-      );
-    } else {
-      // نمایش پیغام خطا در صورت عدم موفقیت
-      Get.snackbar(
-        'خطا',
-        'حذف مشتری با خطا مواجه شد',
-        backgroundColor: Colors.redAccent,
-        colorText: Colors.white,
-      );
-    }
-
+          icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+          shouldIconPulse: false,
+          backgroundColor: kRedLight,
+          colorText: Colors.white,
+          duration: const Duration(milliseconds: 1500),
+        );
+      }
     return result;
   }
 
   Future<int> deleteCustomers()async{
     final db =await MyDb().db();
-    var result = db.delete('customers');
+    var result =await db.delete('customers');
+    if(result != 0){
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف مشتریان',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'تمام مشتریان با موفقیت حذف شدند',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+    }else{
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف مشتری با خطا مواجه شد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+    }
     return result;
+
   }
 
   Future<List<Customer>> getCustomer() async {

@@ -7,13 +7,16 @@ import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../models/User.dart';
 import '../services/routes.dart';
 
 class AdminProductUpdate extends GetView<ProductController> {
   AdminProductUpdate({super.key});
-  final Product product = Get.arguments;
-  final String mapData = Get.parameters['username']!;
+  final Product product = Get.arguments['product'];
+  final User user = Get.arguments['user'];
+  final String brandHomeScreen = Get.parameters['all']!;
+
+  MyDb xController = Get.find<MyDb>();
 
 
   @override
@@ -209,8 +212,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                   fontSizeBtn: 26,
                   shadowColor: kPurpleDark,
                   onTapped: () async {
-                    await MyDb().updateProduct(
-                        product.id!,
+                   var result = await MyDb().updateProduct(product.id!,
                         Product(
                           id: product.id,
                           nameProduct: controller.nameProduct.value.text,
@@ -226,25 +228,12 @@ class AdminProductUpdate extends GetView<ProductController> {
                           createdAt: product.createdAt,
                           updatedAt: DateTime.now().toString().split(".")[0],
                         ));
-                    FocusScope.of(context).unfocus();
-                    Get.snackbar(
-                      '',
-                      '',
-                      titleText: const Text(
-                        'ویرایش اطلاعات',
-                        style: TextStyle(fontSize: 18, color: kPurpleDark),
-                      ),
-                      messageText: const Text(
-                        'اطلاعات محصول با موفقیت ویرایش شد',
-                        style: TextStyle(fontSize: 18, color: kPurpleDark),
-                      ),
-                      backgroundColor: Colors.white,
-                      colorText: kPinkDark,
-                      duration: const Duration(seconds: 1)
-                    );
-                    Future.delayed(const Duration(seconds: 2),() {
-                      Get.toNamed(AppRoutes.showAllPro,arguments: 'all',parameters: {'username': mapData},);
-                    },);
+                    if(result != 0){
+                      FocusScope.of(context).unfocus();
+                      Future.delayed(const Duration(milliseconds: 2500),() {
+                        Get.toNamed(AppRoutes.showAllPro,arguments: user,parameters: {'all':brandHomeScreen});
+                      },);
+                    }
                   },
                   splashColor: kPurpleDark,
                   borderColor: kPurpleDark,
