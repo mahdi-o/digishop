@@ -1,5 +1,6 @@
 import 'package:digishop/controller/invoice_controller.dart';
 import 'package:digishop/models/Invoice.dart';
+import 'package:digishop/models/invoiceProducts.dart';
 import 'package:digishop/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,13 +10,13 @@ import '../models/User.dart';
 import '../services/routes.dart';
 import '../widgets/base_widget.dart';
 import '../widgets/navbar_custom.dart';
+import 'admin_home_screen.dart';
 
-class ShowAllInvoices extends StatelessWidget {
+class ShowAllInvoices extends GetView<InvoiceController> {
   ShowAllInvoices({super.key});
 
   final User user = Get.arguments;
   final MyDb myDb = Get.find<MyDb>();
-  final InvoiceController controller = Get.find<InvoiceController>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class ShowAllInvoices extends StatelessWidget {
             context,
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 120.0),
+                padding: const EdgeInsets.only(bottom: 100.0),
                 child: Text(
                   'فاکتوری یافت نشد!',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
@@ -63,7 +64,7 @@ class ShowAllInvoices extends StatelessWidget {
             itemCount: invoices.length,
             itemBuilder: (context, index) {
               final invoice = invoices[index];
-              return _buildInvoiceInfo(invoice,context);
+              return _buildInvoiceInfo(invoice, context);
             },
           ),
         );
@@ -71,133 +72,159 @@ class ShowAllInvoices extends StatelessWidget {
     );
   }
 
-  Widget _buildInvoiceInfo(Invoice invoice,context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-      child: Container(
-        width: double.infinity,
-        height: 240,
-        decoration: BoxDecoration(
-            border: Border.all(width: 2, color: kPurpleDark),
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30))),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    ' نام مشتری : ${invoice.nameCustomer.toString()} ',
-                    style: const TextStyle(
-                        fontFamily: 'lalezar',
-                        fontSize: 20,
-                        color: Colors.black),
-                  ),
-                  Text(
-                    ' آِیدی فاکتور : ${invoice.id.toString()} ',
-                    style: const TextStyle(
-                        fontFamily: 'lalezar',
-                        fontSize: 20,
-                        color: Colors.black),
-                  ),
-                  Text(
-                    ' نوع پرداخت : ${invoice.typePay.toString()} ',
-                    style: const TextStyle(
-                        fontFamily: 'lalezar',
-                        fontSize: 20,
-                        color: Colors.black),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        ' مقدار تخفیف : ${invoice.discount.toString()} ',
-                        style: const TextStyle(
-                            fontFamily: 'lalezar',
-                            fontSize: 20,
-                            color: Colors.black),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        ' پرداخت شده : ${invoice.isPaying == 0
-                            ? 'خیر'
-                            : 'بله'} ',
-                        style: const TextStyle(
-                            fontFamily: 'lalezar',
-                            fontSize: 20,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Row(
-                    children: [
-                      CustomButton(
-                        colorBtn: Colors.white,
-                        textBtn: 'پرداخت شد',
-                        textColor: kPurpleDark,
-                        fontBtn: 'lalezar',
-                        fontSizeBtn: 22,
-                        shadowColor: kPurpleDark,
-                        onTapped: () async {},
-                        splashColor: kPurpleDark,
-                        borderColor: kPurpleDark,
-                        widthBtn: 150,
-                        heightBtn: 45,
-                      ),
-                      const SizedBox(
-                        width: 7,
-                      ),
-                      CustomButton(
-                        colorBtn: Colors.white,
-                        textBtn: 'ویرایش',
-                        textColor: kPinkLight,
-                        fontBtn: 'lalezar',
-                        fontSizeBtn: 22,
-                        shadowColor: kPurpleDark,
-                        onTapped: () async {
-                          // print(await MyDb().readInvoiceProducts());
-                          print('readInvoices');
-                          print(await MyDb().readInvoices());
-                        },
-                        splashColor: kPinkLight,
-                        borderColor: kPinkLight,
-                        widthBtn: 110,
-                        heightBtn: 45,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          dialogCustom(
-                              'آیا از حذف این فاکتور اطمینان دارید؟',20,
-                                  () {
-                                    var resultDelete = MyDb().deleteInvoice(invoice.id!);
-                                    print(resultDelete);
-                                FocusScope.of(context).unfocus();
-                                Get.back();
-                              });
-                        },
-                        child: const Icon(
-                          Icons.delete_outline_outlined,
-                          size: 36,
-                          color: Colors.black,
+  Widget _buildInvoiceInfo(Invoice invoice, context) {
+    return GestureDetector(
+      onTap: (){
+        Get.toNamed(AppRoutes.invDet,arguments: {'invoice':invoice,'user':user});
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+        child: Container(
+          width: double.infinity,
+          height: 240,
+          decoration: BoxDecoration(
+              border: Border.all(width: 2, color: kPurpleDark),
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30))),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      ' نام مشتری : ${invoice.nameCustomer.toString()} ',
+                      style: const TextStyle(
+                          fontFamily: 'lalezar',
+                          fontSize: 20,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      ' آِیدی فاکتور : ${invoice.id.toString()} ',
+                      style: const TextStyle(
+                          fontFamily: 'lalezar',
+                          fontSize: 20,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      ' نوع پرداخت : ${invoice.typePay.toString()} ',
+                      style: const TextStyle(
+                          fontFamily: 'lalezar',
+                          fontSize: 20,
+                          color: Colors.black),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          ' مقدار تخفیف : ${invoice.discount!.isEmpty?0:invoice.discount.toString()} ',
+                          style: const TextStyle(
+                              fontFamily: 'lalezar',
+                              fontSize: 20,
+                              color: Colors.black),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          ' پرداخت شده : ${invoice.isPaying == 0 ? 'خیر' : 'بله'} ',
+                          style: const TextStyle(
+                              fontFamily: 'lalezar',
+                              fontSize: 20,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Row(
+                      children: [
+                        CustomButton(
+                          colorBtn: Colors.white,
+                          textBtn: 'پرداخت',
+                          textColor: kPurpleDark,
+                          fontBtn: 'lalezar',
+                          fontSizeBtn: 22,
+                          shadowColor: kPurpleDark,
+                          onTapped: () async {
+                            var result = await myDb.changePayInvoice(invoice.id!);
+                            if(result != 0){
+                              FocusScope.of(context).unfocus();
+                              Future.delayed(const Duration(milliseconds: 2500), () {
+                                Get.off(
+                                      () => AdminHomeScreen(), arguments: user,
+                                  // صفحه مقصد
+                                  transition: Transition.zoom,
+                                  // نوع انیمیشن
+                                  duration: const Duration(
+                                      milliseconds: 500), // مدت زمان انیمیشن
+                                );
+                              });
+                            }
+                          },
+                          splashColor: kPurpleDark,
+                          borderColor: kPurpleDark,
+                          widthBtn: 150,
+                          heightBtn: 45,
+                        ),
+                        const SizedBox(
+                          width: 7,
+                        ),
+                        CustomButton(
+                          colorBtn: Colors.white,
+                          textBtn: 'ویرایش',
+                          textColor: kPinkLight,
+                          fontBtn: 'lalezar',
+                          fontSizeBtn: 22,
+                          shadowColor: kPurpleDark,
+                          onTapped: () async {
+                            Get.toNamed(AppRoutes.adminInvUpd,arguments: user);
+                          },
+                          splashColor: kPinkLight,
+                          borderColor: kPinkLight,
+                          widthBtn: 110,
+                          heightBtn: 45,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: (){
+                            dialogCustom(
+                                'آیا از حذف این فاکتور اطمینان دارید؟', 20, ()async {
+                              Get.back();
+                              var result = await MyDb().deleteInvoice(invoice.id!);
+                              if (result == 1) {
+                                FocusScope.of(context).unfocus();
+                                Future.delayed(const Duration(milliseconds: 2500), () {
+                                  Get.off(
+                                        () => AdminHomeScreen(), arguments: user,
+                                    // صفحه مقصد
+                                    transition: Transition.zoom,
+                                    // نوع انیمیشن
+                                    duration: const Duration(
+                                        milliseconds: 500), // مدت زمان انیمیشن
+                                  );
+                                });
+                              }
+                            });
+                          },
+                          child: const Icon(
+                            Icons.delete_outline_outlined,
+                            size: 36,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -208,51 +235,62 @@ class ShowAllInvoices extends StatelessWidget {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        floating:
-        FloatingActionButton(
+        floating: FloatingActionButton(
           onPressed: () {
-            Get.back();
+            Get.toNamed(AppRoutes.adminHome, arguments: user);
           },
           elevation: 20,
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
-          child: const Icon(Icons.arrow_back_sharp, size: 33,),
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            size: 33,
+          ),
         ),
         floatingLocation: FloatingActionButtonLocation.startFloat,
         appBar: null,
-        child:
-        Padding(
-          padding: const EdgeInsets.only(
-              right: 10, left: 10, bottom: 20, top: 50),
-          child: Column(children: [
-            SizedBox(height: 60,
-              child: 
-              NavbarCustom(
-                text1: '  فاکتورها ',
-                text2: '',
-                size1: 28,
-                size2: 26,
-                fontFace1: 'lalezarPlus',
-                fontFace2: 'lalezarPlus',
-                icon1: Icons.delete_outline_rounded,
-                onTapIcon2: () async {
-
-                  dialogCustom(
-                      'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',20,
-                          () {
-                            var result = MyDb().deleteInvoices;
-                            print(result);
-                            FocusScope.of(context).unfocus();
-                            Get.back();
-                      });
-                },
-                icon2: null,
+        child: Padding(
+          padding:
+              const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 60,
+                child: NavbarCustom(
+                  text1: '  فاکتورها ',
+                  text2: '',
+                  size1: 28,
+                  size2: 26,
+                  fontFace1: 'lalezarPlus',
+                  fontFace2: 'lalezarPlus',
+                  icon1: Icons.delete_outline_rounded,
+                  onTapIcon2: () {
+                    dialogCustom(
+                        'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟', 20,
+                        () async {
+                      Get.back();
+                      var result = await MyDb().deleteInvoices();
+                      if (result != 0) {
+                        FocusScope.of(context).unfocus();
+                        Future.delayed(const Duration(milliseconds: 2500), () {
+                          Get.off(
+                            () => AdminHomeScreen(), arguments: user,
+                            // صفحه مقصد
+                            transition: Transition.zoom,
+                            // نوع انیمیشن
+                            duration: const Duration(
+                                milliseconds: 500), // مدت زمان انیمیشن
+                          );
+                        });
+                      }
+                    });
+                  },
+                  icon2: null,
+                ),
               ),
-            ),
-            Expanded(child: child)
-          ],),
-        )
-    );
+              Expanded(child: child)
+            ],
+          ),
+        ));
   }
 }
-

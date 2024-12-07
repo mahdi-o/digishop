@@ -212,7 +212,7 @@ textFieldCustom(
     child: TextField(
       controller: controller,
       textAlign: textAlign,
-      style: TextStyle(color: textColor, fontSize: double),
+      style: TextStyle(color: textColor, fontSize: double,fontFamily: 'lalezar'),
       decoration: InputDecoration(
         label: textAlign == TextAlign.center
             ? Center(child: Text(label))

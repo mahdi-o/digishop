@@ -11,6 +11,7 @@ import 'package:digishop/widgets/custom_button.dart';
 import 'package:digishop/widgets/floatingCustomButtons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../models/User.dart';
 import '../widgets/navbar_custom.dart';
 
 // class BasketScreen extends GetView<BasketController> {
@@ -319,6 +320,7 @@ class BasketScreen extends GetView<BasketController> {
 
   Future<List<Product>> proListDb = MyDb().getProduct();
   List<int> basketId = [];
+  final User user = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -328,7 +330,7 @@ class BasketScreen extends GetView<BasketController> {
         appBar: null,
         bottomNavigation: null,
         floating: FloatingActionButton( onPressed: () {
-          Get.back();
+          Get.toNamed(AppRoutes.home,arguments: user);
         },
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,

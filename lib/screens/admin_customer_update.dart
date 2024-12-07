@@ -27,7 +27,8 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
       floatingLocation: FloatingActionButtonLocation.startFloat,
       floating: FloatingActionButton(
         onPressed: () {
-          Get.back();
+          controller.clear();
+          Get.toNamed(AppRoutes.showAllCus,arguments: user);
         },
         elevation: 20,
         foregroundColor: Colors.black,

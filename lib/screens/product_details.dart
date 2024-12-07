@@ -4,17 +4,21 @@ import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/custom_button.dart';
-import 'package:digishop/widgets/row_details_product.dart';
+import 'package:digishop/widgets/row_details_models.dart';
 import 'package:digishop/widgets/star_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/basket_controller.dart';
+import '../models/User.dart';
+import '../services/routes.dart';
 import '../widgets/navbar_custom.dart';
 
 class ProductDetails extends GetView<ProductController> {
   ProductDetails({super.key});
-  final Product product = Get.arguments;
-  String mapData = Get.parameters['username']!;
+  final Product product = Get.arguments['product'];
+  final User user = Get.arguments['user'];
+  final String brandHomeScreen = Get.parameters['all']!;
+
   BasketController basket = BasketController();
   @override
   Widget build(BuildContext context) {
@@ -23,22 +27,10 @@ class ProductDetails extends GetView<ProductController> {
     return BaseWidget(color: Colors.white,
       bottomNavigation: null,
       appBar:null,
-      // AppBar(
-      //   elevation: 0,
-      //   backgroundColor: Colors.white,
-      //   leading: GestureDetector(
-      //       onTap: () {
-      //         Get.back();
-      //       },
-      //       child: const Icon(
-      //         Icons.arrow_back_ios_rounded,
-      //         color: Colors.black,
-      //       )),
-      // ),
       floatingLocation: FloatingActionButtonLocation.startFloat,
       floating: FloatingActionButton(
         onPressed: () {
-          Get.back();
+          Get.toNamed(AppRoutes.showAllPro,arguments: user,parameters: {'all':brandHomeScreen});
         },
         elevation: 20,
         foregroundColor: Colors.black,
@@ -52,14 +44,15 @@ class ProductDetails extends GetView<ProductController> {
         children: [
           Padding(
             padding:
-            EdgeInsets.only(right: height/6.5, left: 0, bottom: 0, top: 50),
+            EdgeInsets.only(right: height/7.5, left: 0, bottom: 0, top: 50),
             child: const Column(
+
               children: [
                 // ویجت NavbarCustom ثابت
                 SizedBox(
                   height: 60, // ارتفاع ثابت برای هدر
                   child: NavbarCustom(
-                    text1: 'جزئیات محصول',
+                    text1: 'مشخصات محصول',
                     text2: '',
                     size1: 28,
                     size2: 26,
@@ -78,6 +71,8 @@ class ProductDetails extends GetView<ProductController> {
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Column(
                 children: [
+                  const Divider(endIndent: 0.9,indent: 0.2,thickness: 0.4,color: Colors.grey,height: 1.5),
+
                   Center(
                       child: GestureDetector(
                     onTap: () async {
@@ -91,6 +86,7 @@ class ProductDetails extends GetView<ProductController> {
                       product.imageAddress.toString(),
                       fit: BoxFit.cover,
                       width: 250,
+                      height: 200,
                     ),
                   )),
                   Column(
@@ -128,18 +124,18 @@ class ProductDetails extends GetView<ProductController> {
                       const SizedBox(
                         height: 5,
                       ),
-                      RowDetailsProduct(
-                          title: 'حافظه رم', body: product.ram.toString()),
-                      RowDetailsProduct(
-                          title: 'تعداد', body: product.count.toString()),
-                      RowDetailsProduct(
-                          title: 'قطر صفحه نمایش', body: product.screen.toString()),
-                      RowDetailsProduct(
-                          title: 'پردازنده', body: product.cpu.toString()),
-                      RowDetailsProduct(
-                          title: 'حافظه داخلی', body: product.hard.toString()),
+                      RowDetailsModels(
+                          typeRow: 'product',title: 'حافظه رم', body: product.ram.toString()),
+                      RowDetailsModels(
+                          typeRow: 'product', title: 'تعداد', body: product.count.toString()),
+                      RowDetailsModels(
+                          typeRow: 'product', title: 'قطر صفحه نمایش', body: product.screen.toString()),
+                      RowDetailsModels(
+                          typeRow: 'product',title: 'پردازنده', body: product.cpu.toString()),
+                      RowDetailsModels(
+                          typeRow: 'product',title: 'حافظه داخلی', body: product.hard.toString()),
                       const SizedBox(
-                        height: 40,
+                        height: 30,
                       ),
 
                       CustomButton(
@@ -151,7 +147,7 @@ class ProductDetails extends GetView<ProductController> {
                         shadowColor: kPurpleDark,
                         onTapped: () {
                           basket.addBasketToDb(
-                              "$mapData,${product.id}", mapData, product.id, 1.toInt(), 0);
+                              "${user.username},${product.id}", user.username, product.id, 1.toInt(), 0);
                           Get.snackbar(
                             'افزودن به سبد خرید',
                             'کالا با موفقیت در سبد خرید اضافه شد',

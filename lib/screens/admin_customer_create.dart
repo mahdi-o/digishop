@@ -202,6 +202,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/User.dart';
+import '../services/routes.dart';
 import '../widgets/navbar_custom.dart';
 import 'admin_home_screen.dart';
 
@@ -219,7 +220,8 @@ class AdminCustomerCreate extends GetView<CustomerController> {
       floatingLocation: FloatingActionButtonLocation.startFloat,
       floating: FloatingActionButton(
         onPressed: () {
-          Get.back();
+          controller.clear();
+          Get.toNamed(AppRoutes.adminHome,arguments: user);
         },
         elevation: 20,
         foregroundColor: Colors.black,
@@ -333,7 +335,6 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                       });
                       controller.clear();
                     }
-
                     controller.clear();
                   },
                   splashColor: kPurpleDark,

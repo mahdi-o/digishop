@@ -7,14 +7,17 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../database/my_db.dart';
+import '../models/User.dart';
 import '../services/routes.dart';
 import '../widgets/navbar_custom.dart';
 
 class ProfileUser extends GetView<ProfileController> {
-  const ProfileUser({super.key});
+   ProfileUser({super.key});
+  final User user = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+
     return Obx(
       () => BaseWidget(
         color: Colors.white,
@@ -22,7 +25,7 @@ class ProfileUser extends GetView<ProfileController> {
         appBar: null,
         floating: FloatingActionButton(
           onPressed: () {
-            Get.back();
+            Get.toNamed(AppRoutes.home,arguments: user);
           },
           elevation: 20,
           foregroundColor: Colors.black,

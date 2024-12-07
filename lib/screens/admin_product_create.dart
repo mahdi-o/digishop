@@ -25,7 +25,8 @@ class AdminProductCreate extends GetView<ProductController> {
       floatingLocation: FloatingActionButtonLocation.startFloat,
       floating: FloatingActionButton(
         onPressed: () {
-          Get.back();
+          controller.clear();
+          Get.toNamed(AppRoutes.adminHome,arguments: user);
         },
         elevation: 20,
         foregroundColor: Colors.black,

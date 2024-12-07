@@ -150,7 +150,7 @@ class ShowAllCustomers extends StatelessWidget {
               icon: const Icon(Icons.edit_rounded, color: kPurpleDark),
             ),
             const SizedBox(width: 5),
-            _buildDetailsButton(),
+            _buildDetailsButton(customer),
             const SizedBox(width: 20),
             GestureDetector(
               onTap: () {
@@ -190,7 +190,7 @@ class ShowAllCustomers extends StatelessWidget {
         bottomNavigation: null,
         floating: FloatingActionButton(
           onPressed: () {
-            Get.back();
+            Get.toNamed(AppRoutes.adminHome,arguments: user);
           },
           elevation: 20,
           foregroundColor: Colors.black,
@@ -247,7 +247,7 @@ class ShowAllCustomers extends StatelessWidget {
         ));
   }
 
-  Widget _buildDetailsButton() {
+  Widget _buildDetailsButton(Customer customer) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: kPurpleDark),
@@ -258,7 +258,11 @@ class ShowAllCustomers extends StatelessWidget {
       height: 35,
       child: Center(
         child: GestureDetector(
-          onTap: null, // Add your navigation action here.
+          onTap: (){
+            Get.toNamed(
+                AppRoutes.cusDet,
+                arguments: {'customer':customer, 'user':user});
+          }, // Add your navigation action here.
           child: const Text(
             'جزئیات',
             style: TextStyle(fontFamily: 'lalezarPlus', fontSize: 18),

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/User.dart';
 import '../services/routes.dart';
+import '../widgets/navbar_custom.dart';
 
 class AdminProductUpdate extends GetView<ProductController> {
   AdminProductUpdate({super.key});
@@ -23,6 +24,20 @@ class AdminProductUpdate extends GetView<ProductController> {
   Widget build(BuildContext context) {
     return BaseWidget(
       appBar: null,
+      floatingLocation: FloatingActionButtonLocation.startFloat,
+      floating: FloatingActionButton(
+        onPressed: () {
+          controller.clear();
+          Get.toNamed(AppRoutes.showAllPro,arguments: user,parameters: {'all':brandHomeScreen});
+        },
+        elevation: 20,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.arrow_back_sharp,
+          size: 33,
+        ),
+      ),
       bottomNavigation: null,
       color: Colors.grey.shade300,
       child: AdminBaseWidget(
@@ -37,27 +52,28 @@ class AdminProductUpdate extends GetView<ProductController> {
               ),
               Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0, left: 70),
-                        child: GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            Get.back();
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_outlined,
-                            color: Colors.white,
+                  const Padding(
+                    padding: EdgeInsets.only(right: 100, left: 10),
+                    child: Column(
+                      children: [
+                        // ویجت NavbarCustom ثابت
+                        SizedBox(
+                          height: 40, // ارتفاع ثابت برای هدر
+                          child: NavbarCustom(
+                            text1: '',
+                            text2: 'ویرایش اطلاعات محصول',
+                            colorText2: Colors.white,
+                            size1: 28,
+                            size2: 26,
+                            fontFace1: 'lalezarPlus',
+                            fontFace2: 'lalezarPlus',
+                            icon1: null,
+                            icon2: null,
                           ),
                         ),
-                      ),
-                      const Center(
-                          child: Text('ویرایش اطلاعات محصول',
-                              style: TextStyle(
-                                  fontSize: 20, color: Colors.white))),
-                    ],
+                        // محتوای اسکرول‌شونده
+                      ],
+                    ),
                   ),
                   textFieldCustom(
                       controller.nameProduct.value =
@@ -68,9 +84,9 @@ class AdminProductUpdate extends GetView<ProductController> {
                       Colors.white38,
                       'نام محصول',
                       30,
-                      7,
+                      0,
                       TextAlign.right,
-                      20),
+                      22),
                   textFieldCustom(
                       controller.priceProduct.value =
                           TextEditingController(text: product.price),
@@ -82,11 +98,8 @@ class AdminProductUpdate extends GetView<ProductController> {
                       30,
                       7,
                       TextAlign.right,
-                      20),
+                      22),
                 ],
-              ),
-              const SizedBox(
-                height: 20,
               ),
               Row(
                 children: [
@@ -102,7 +115,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                         30,
                         10,
                         TextAlign.right,
-                        20),
+                        22),
                   ),
                   Expanded(
                     child: textFieldCustom(
@@ -116,7 +129,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                         30,
                         10,
                         TextAlign.right,
-                        20),
+                        22),
                   ),
                 ],
               ),
@@ -134,7 +147,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                         30,
                         10,
                         TextAlign.right,
-                        20),
+                        22),
                   ),
                   Expanded(
                     child: textFieldCustom(
@@ -148,7 +161,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                         30,
                         10,
                         TextAlign.right,
-                        20),
+                        22),
                   ),
                 ],
               ),
@@ -166,7 +179,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                         30,
                         10,
                         TextAlign.right,
-                        20),
+                        22),
                   ),
                   Expanded(
                     child: textFieldCustom(
@@ -180,12 +193,12 @@ class AdminProductUpdate extends GetView<ProductController> {
                         30,
                         10,
                         TextAlign.right,
-                        20),
+                        22),
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 40, bottom: 5),
+                padding: const EdgeInsets.only(top: 30, bottom: 5),
                 child: GestureDetector(
                   onTap: () async {
                     var res = await MyDb().readAllProducts();
@@ -209,7 +222,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                   textBtn: 'ویرایش اطلاعات',
                   textColor: kPurpleDark,
                   fontBtn: 'lalezarPlus',
-                  fontSizeBtn: 26,
+                  fontSizeBtn: 28,
                   shadowColor: kPurpleDark,
                   onTapped: () async {
                    var result = await MyDb().updateProduct(product.id!,

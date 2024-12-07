@@ -246,7 +246,7 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor: Colors.black,
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
-                            Get.toNamed(AppRoutes.adminInvCre);
+                            Get.toNamed(AppRoutes.adminInvCre,arguments: user);
                           }),
                       ContainerCustomAdmin(
                           text: 'فاکتورها',

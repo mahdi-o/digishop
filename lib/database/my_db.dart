@@ -17,6 +17,7 @@ class MyDb {
   RxList<Customer> customerList = <Customer>[].obs;
   RxList<Invoice> invoiceList = <Invoice>[].obs;
   RxList<Product> listProForPageBasket = <Product>[].obs;
+  RxList<InvoiceProducts> invoiceProductsList = <InvoiceProducts>[].obs;
   RxBool status = false.obs;
   Future<Database> db() async {
     return await openDatabase(
@@ -433,10 +434,50 @@ class MyDb {
     }
   }
 
-  Future<String> deleteProducts() async {
+  Future<int> deleteProducts() async {
     final db = await MyDb().db();
-    await db.delete('products');
-    return "successful delete baskets";
+    var result = await db.delete('products');
+    if(result != 0){
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف محصولات',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'تمامی محصولات با موفقیت حذف شدند',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    }
+    else{
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف محصولات با خطا مواجه شد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
+
   }
 
   Future<int> deleteProduct(int id) async {
@@ -446,8 +487,46 @@ class MyDb {
     print(result);
     print('delete pro and pro az bas');
     print(deleteProFromBas);
-    // var result = await db.delete('products', where: "id=?", whereArgs: [id]);
-    return result;
+    if(result != 0){
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف محصول',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'محصول با موفقیت حذف شد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    }else{
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف محصول با خطا مواجه شد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
+
   }
 
   Future<List<Product>> getProduct() async {
@@ -663,7 +742,6 @@ class MyDb {
      print(isDelete);
      print('isDelete isDelete isDelete isDeleteisDelete');
       if(isDelete.isEmpty){
-        status.value = true;
         Get.snackbar(
           '',
           '',
@@ -679,6 +757,7 @@ class MyDb {
           colorText: Colors.white,
           duration: const Duration(milliseconds: 1500),
         );
+        return 1;
       }else{
         Get.snackbar(
           '',
@@ -699,8 +778,8 @@ class MyDb {
           colorText: Colors.white,
           duration: const Duration(milliseconds: 1500),
         );
+        return 0;
       }
-    return result;
   }
 
   Future<int> deleteCustomers()async{
@@ -722,6 +801,7 @@ class MyDb {
         colorText: Colors.white,
         duration: const Duration(milliseconds: 1500),
       );
+      return 1;
     }else{
       Get.snackbar(
         '',
@@ -731,7 +811,7 @@ class MyDb {
           style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         messageText: const Text(
-          'حذف مشتری با خطا مواجه شد',
+          'حذف مشتریان با خطا مواجه شد',
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
 
@@ -742,9 +822,8 @@ class MyDb {
         colorText: Colors.white,
         duration: const Duration(milliseconds: 1500),
       );
+      return 0;
     }
-    return result;
-
   }
 
   Future<List<Customer>> getCustomer() async {
@@ -787,24 +866,25 @@ class MyDb {
     }
   }
 
-  Future<String> readInvoiceProduct(idInvoice) async {
+  Future<List<InvoiceProducts>> readInvoiceProduct(idInvoice) async {
+    invoiceProductsList.clear();
     final db = await MyDb().db();
     InvoiceProducts invoicePro = InvoiceProducts();
-    var res = await db
-        .query('invoiceProducts', where: "idInvoice=?", whereArgs: [idInvoice]);
-    if (res.isEmpty) {
-      return 'null res';
+    List<Map<String, dynamic>> maps = await db
+        .query('invoice_products', where: "idInvoice=?", whereArgs: [idInvoice]);
+    if (maps.isEmpty) {
+      print('null');
+      return invoiceProductsList.value;
     } else {
-      var jam = res.isNotEmpty
-          ? invoicePro = InvoiceProducts.fromJson(res.first)
-          : Null;
-      if (jam != Null) {
-        print({'${invoicePro.idInvoice}${invoicePro.idProduct}'}.toString());
-        return {'${invoicePro.idInvoice}${invoicePro.idProduct}'}.toString();
-      } else {
-        print({'${invoicePro.idInvoice}${invoicePro.idProduct}'}.toString());
-        return {'${invoicePro.idInvoice}${invoicePro.idProduct}'}.toString();
-      }
+      print('no null');
+      return List.generate(
+        maps.length,
+            (i) {
+          invoiceProductsList.value.add(InvoiceProducts.fromJson(maps[i]));
+          return (invoiceProductsList.value[i]);
+
+        },
+      );
     }
   }
 
@@ -849,16 +929,94 @@ class MyDb {
     }
   }
 
-  Future<String> deleteInvoices() async {
+  Future<int> deleteInvoices() async {
     final db = await MyDb().db();
-    await db.delete('invoices');
-    return "successful delete incoices";
+    var result = await db.delete('invoices');
+    if(result != 0){
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف فاکتورها',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'تمام فاکتورها با موفقیت حذف شدند',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    }else{
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف فاکتورها با خطا مواجه شد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+
+      return 0;
+    }
   }
 
-  Future<String> deleteInvoice(int id) async {
+  Future<int> deleteInvoice(int id) async {
     final db = await MyDb().db();
-    db.delete('invoices',where: "id=?",whereArgs:[id]);
-    return "successful delete incoices";
+     var result = await db.delete('invoices',where: "id=?",whereArgs:[id]);
+    if(result!=0){
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف فاکتور',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'فاکتور با موفقیت حذف شد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    }
+    else{
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف فاکتور با خطا مواجه شد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
   }
 
   Future<String> deleteInvoiceProducts() async {
@@ -866,4 +1024,79 @@ class MyDb {
     await db.delete('invoice_products');
     return "successful delete invoice_products";
   }
+
+  Future<int> changePayInvoice(int id)async{
+    final Database db = await MyDb().db();
+    Invoice invoice = Invoice();
+    var res = await db.query("invoices",where: "id=?",whereArgs: [id]);
+    var jam = res.isNotEmpty?invoice=Invoice.fromJson(res.first):Null;
+    if(jam != Null){
+     // factor vojod dard baraye update
+      if(invoice.isPaying == 0){
+        await db.update('invoices', Invoice(
+          id: invoice.id,
+          idCustomer: invoice.idCustomer,
+          nameCustomer: invoice.nameCustomer,
+          discount: invoice.discount,
+          typePay: invoice.typePay,
+          createdAt: invoice.createdAt,
+          isPaying: 1,
+          updatedAt: DateTime.now().toString().split(".")[0],
+        ).toJson(), where: "id=?", whereArgs: [id]);
+        Get.snackbar(
+          '',
+          '',
+          titleText: const Text(
+            'پرداخت فاکتور',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+          messageText: const Text(
+            'وضعیت فاکتور با موفقیت به پرداخت شده تغییر کرد',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+          backgroundColor: kPurpleDark,
+          colorText: kPinkDark,
+          duration: const Duration(milliseconds: 1500),
+        );
+        return 1;
+      }
+      else if(invoice.isPaying == 1){
+        Get.snackbar(
+          '',
+          '',
+          titleText: const Text(
+            'اخطار',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+          messageText: const Text(
+            'وضعیت فاکتور پرداخت شده می باشد',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+          backgroundColor: kRedLight,
+          colorText: kPinkDark,
+          duration: const Duration(milliseconds: 1500),
+        );
+        return 0;
+      }
+      return 3;
+    }
+    else{
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'پرداخت ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'فاکتور برای تغییر به حالت پرداخت شده یافت نشد!',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        backgroundColor: kRedLight,
+        colorText: kPinkDark,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;}
+  }
+
 }

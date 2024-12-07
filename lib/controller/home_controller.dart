@@ -15,7 +15,7 @@ class HomeController extends GetxController {
   List<Widget> homeWidget = [
     BasketScreen(),
     HomeScreen(),
-    const ProfileUser(),
+    ProfileUser(),
   ];
 
   Rx<CarouselController> controllerCarouser = CarouselController().obs;

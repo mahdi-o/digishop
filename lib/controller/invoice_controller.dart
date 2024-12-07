@@ -18,12 +18,14 @@ class InvoiceController extends GetxController {
   Rx<TextEditingController> priceSum = TextEditingController().obs;
   Rx<TextEditingController> typePay = TextEditingController().obs;
   Rx<TextEditingController> discount = TextEditingController().obs;
+  Rx<TextEditingController> isPaying = TextEditingController().obs;
+  Rx<TextEditingController> createAt = TextEditingController().obs;
+  Rx<TextEditingController> updateAt = TextEditingController().obs;
 
   RxInt sumProPriceAll = 0.obs;
   RxInt isPay = 0.obs;
   RxInt sumPriceAll = 0.obs;
   RxBool isProductExists = false.obs;
-
 
   RxList<Product> productListOrder = <Product>[].obs;
   RxList<Product> listProductsForInvoice = <Product>[].obs;
@@ -848,6 +850,25 @@ class InvoiceController extends GetxController {
     return c;
   }
 
+  clear()async{
+    idProduct.value.clear();
+    idCustomer.value.clear();
+    priceFe.value.clear();
+    count.value.clear();
+    priceSum.value.clear();
+    typePay.value.clear();
+    discount.value.clear();
+    isPaying.value.clear();
+    createAt.value.clear();
+    updateAt.value.clear();
+    sumPriceAll = 0.obs;
+    isPay = 0.obs;
+    sumProPriceAll = 0.obs;
+    isProductExists = false.obs;
+    listOrders.clear();
+    listOrder.clear();
+    listInvoicesDb.clear();
+  }
   @override
   void onInit() {
     // TODO: implement onInit

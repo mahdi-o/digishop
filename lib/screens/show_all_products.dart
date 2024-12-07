@@ -12,6 +12,7 @@ import 'package:path/path.dart';
 import '../models/User.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/navbar_custom.dart';
+import 'admin_home_screen.dart';
 
 class ShowAllProducts extends GetView<ProductController> {
   ShowAllProducts({super.key});
@@ -40,7 +41,7 @@ class ShowAllProducts extends GetView<ProductController> {
             context,
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 120.0),
+                padding: const EdgeInsets.only(bottom: 100.0),
                 child: Text(
                   'خطا در بارگذاری داده ها!',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
@@ -159,7 +160,7 @@ class ShowAllProducts extends GetView<ProductController> {
                 scrollDirection: Axis.horizontal,
                 child: Text(
                   product.nameProduct ?? '',
-                  style: const TextStyle(fontSize: 16, fontFamily: 'lalezar'),
+                  style: const TextStyle(fontSize: 22, fontFamily: 'lalezar'),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -195,12 +196,24 @@ class ShowAllProducts extends GetView<ProductController> {
               const SizedBox(width: 20),
               GestureDetector(
                 onTap: () async {
-                  dialogCustom('آیا از حذف این محصول اطمینان دارید؟', 20, () {
-                    var result = myDb.deleteProduct(product.id ?? -1);
-                    print(result);
-                    FocusScope.of(context).unfocus();
+                  dialogCustom('آیا از حذف این محصول اطمینان دارید؟', 20, () async{
                     Get.back();
-                    Get.offNamed(AppRoutes.home, arguments: user);
+                    var result = await myDb.deleteProduct(product.id ?? -1);
+                    print(result);
+                    if(result != 0){
+                      FocusScope.of(context).unfocus();
+                      Future.delayed(const Duration(milliseconds: 2500), () {
+                        Get.off(
+                              () => AdminHomeScreen(), arguments: user,
+                          // صفحه مقصد
+                          transition: Transition.zoom,
+                          // نوع انیمیشن
+                          duration: const Duration(
+                              milliseconds: 500), // مدت زمان انیمیشن
+                        );
+                      });
+
+                    }
                   });
                 },
                 child: const Icon(
@@ -223,7 +236,7 @@ class ShowAllProducts extends GetView<ProductController> {
         floating:
         FloatingActionButton(
           onPressed: () {
-            Get.back();
+            Get.toNamed(AppRoutes.adminHome,arguments: user);
           },
           elevation: 20,
           foregroundColor: Colors.black,
@@ -253,11 +266,24 @@ class ShowAllProducts extends GetView<ProductController> {
                   fontFace2: 'lalezarPlus',
                   icon1: Icons.delete_outline_rounded,
                   onTapIcon2: () async {
-                    dialogCustom('آیا از حذف تمامی محصولات اطمینان دارید؟', 20, () {
-                      var result = MyDb().deleteProducts();
-                      print(result);
-                      FocusScope.of(context).unfocus();
+                    dialogCustom('آیا از حذف تمامی محصولات اطمینان دارید؟', 20, () async{
                       Get.back();
+                      var result =await MyDb().deleteProducts();
+                      print(result);
+                      if(result != 0){
+                        FocusScope.of(context).unfocus();
+                        Future.delayed(const Duration(milliseconds: 2500), () {
+                          Get.off(
+                                () => AdminHomeScreen(), arguments: user,
+                            // صفحه مقصد
+                            transition: Transition.zoom,
+                            // نوع انیمیشن
+                            duration: const Duration(
+                                milliseconds: 500), // مدت زمان انیمیشن
+                          );
+                        });
+
+                      }
                     });
                   },
                   icon2: null,
@@ -284,12 +310,10 @@ class ShowAllProducts extends GetView<ProductController> {
       child: Center(
         child: GestureDetector(
           onTap: () {
-            String username = user.username.toString();
             Get.toNamed(
               AppRoutes.proDet,
-              arguments: product,
-              parameters: {'username': username},
-            );
+              arguments: {'product':product, 'user':user},
+                parameters: {'all':brandHomeScreen});
           }, // Add your navigation action here.
           child: const Text(
             'جزئیات',

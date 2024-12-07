@@ -6,17 +6,18 @@ import 'package:digishop/widgets/base_widget.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../models/User.dart';
+import '../services/routes.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/navbar_custom.dart';
 
 class AdminInvoiceCreate extends GetView<InvoiceController> {
-  const AdminInvoiceCreate({super.key});
+   AdminInvoiceCreate({super.key});
+  final User user = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
     MyDb xController = Get.find<MyDb>();
-    InvoiceController controller = Get.find<InvoiceController>();
 
     return Obx(
       () => BaseWidget(
@@ -25,7 +26,8 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
         floatingLocation: FloatingActionButtonLocation.startFloat,
         floating: FloatingActionButton(
           onPressed: () {
-            Get.back();
+            controller.clear();
+            Get.toNamed(AppRoutes.adminHome,arguments: user);
           },
           elevation: 20,
           foregroundColor: Colors.black,
@@ -518,7 +520,8 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                                 ),
                               ],
                             )
-                          : Obx(
+                          :
+                      Obx(
                               () => ListView.builder(
                                 itemCount: controller.listOrder.length,
                                 itemBuilder: (context, index) {

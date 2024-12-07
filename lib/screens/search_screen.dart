@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/Product.dart';
+import '../models/User.dart';
 import '../widgets/navbar_custom.dart';
 
 class SearchScreen extends GetView<MySearchController> {
@@ -15,7 +16,7 @@ class SearchScreen extends GetView<MySearchController> {
 
   RxBool heartStatus = false.obs;
   Random random = Random();
-  final String username = Get.parameters['username']!;
+  final User user = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class SearchScreen extends GetView<MySearchController> {
           floatingLocation: FloatingActionButtonLocation.startFloat,
           floating: FloatingActionButton(
             onPressed: () {
-              Get.back();
+              Get.toNamed(AppRoutes.home,arguments: user);
             },
             elevation: 20,
             foregroundColor: Colors.black,
@@ -211,11 +212,10 @@ class SearchScreen extends GetView<MySearchController> {
                                                       .unfocus();
                                                   Get.toNamed(
                                                     AppRoutes.proDet,
-                                                    arguments: product,
-                                                    parameters: {
-                                                      'username': username
-                                                    },
-                                                  );
+                                                    arguments: {
+                                                        'product':product,
+                                                        'user':user
+                                                      });
                                                 },
                                                 child: const Text(
                                                   'جزئیات',
