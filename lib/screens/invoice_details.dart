@@ -18,16 +18,13 @@ class InvoiceDetails extends GetView<InvoiceController> {
 
   final Invoice invoice = Get.arguments['invoice'];
   final User user = Get.arguments['user'];
-  MyDb xController = Get.find<MyDb>();
-  RxList listInvoiceProduct = [].obs;
-  BasketController basket = BasketController();
+  final xController = Get.find<MyDb>();
+  final listInvoiceProduct = [].obs;
+  final basket = BasketController();
 
   @override
   Widget build(BuildContext context) {
-    print(invoice.id);
-    print('LPLPLPLPLPLPLPLPLP');
     onInit();
-
     return BaseWidget(
       color: Colors.white,
       bottomNavigation: null,
@@ -47,32 +44,25 @@ class InvoiceDetails extends GetView<InvoiceController> {
       ),
       child: Column(
         children: [
-          Expanded(
+          const Expanded(
             flex: 0,
             child: Padding(
               padding: EdgeInsets.only(
-                  right: 130, left: 0, top: 50),
+                  right: 130, left: 0, top: 50,bottom: 10),
               child: Column(
                 children: [
                   // ویجت NavbarCustom ثابت
                   SizedBox(
                     height: 60, // ارتفاع ثابت برای هدر
-                    child: GestureDetector(
-                      onTap: () async {
-                        print(invoice.id);
-                        var res = await xController.readInvoiceProduct(invoice.id);
-                        print(res.first.idInvoice);
-                      },
-                      child: const NavbarCustom(
-                        text1: 'مشخصات فاکتور',
-                        text2: '',
-                        size1: 28,
-                        size2: 26,
-                        fontFace1: 'lalezarPlus',
-                        fontFace2: 'lalezarPlus',
-                        icon1: null,
-                        icon2: null,
-                      ),
+                    child: NavbarCustom(
+                      text1: 'مشخصات فاکتور',
+                      text2: '',
+                      size1: 28,
+                      size2: 26,
+                      fontFace1: 'lalezarPlus',
+                      fontFace2: 'lalezarPlus',
+                      icon1: null,
+                      icon2: null,
                     ),
                   ),
                 ],
@@ -141,16 +131,14 @@ class InvoiceDetails extends GetView<InvoiceController> {
               ),
             ),
           ),
-          Expanded(
+          const Expanded(
               flex: 0,
               child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Container(
-                  child: const Text(
-                    'سفارشات موجود در فاکتور',
-                    style: TextStyle(
-                      fontSize: 26,color: kPurpleDark,
-                    ),
+                padding: EdgeInsets.only(top: 20.0),
+                child: Text(
+                  'سفارشات موجود در فاکتور',
+                  style: TextStyle(
+                    fontSize: 26,color: kPurpleDark,
                   ),
                 ),
               )),
@@ -164,11 +152,10 @@ class InvoiceDetails extends GetView<InvoiceController> {
                   Product product = xController.productList
                       .where((p0) => p0.id == invoicePro.idProduct)
                       .first;
-                    print(invoice.id);
-                    print('00000000000000000000000000000000');
+                  var sumPrice = invoicePro.count! * (int.parse(product.price!));
                   return Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 5.0, vertical: 5),
+                        horizontal: 15.0, vertical: 5),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
@@ -198,18 +185,7 @@ class InvoiceDetails extends GetView<InvoiceController> {
                               const SizedBox(width: 20),
                               Column(
                                 children: [
-                                  const Text('تعداد'),
-                                  Text(
-                                    product.count.toString(),
-                                    style:
-                                    const TextStyle(color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 20),
-                              Column(
-                                children: [
-                                  const Text(' سفارش تعداد'),
+                                  const Text(' تعداد'),
                                   Text(
                                     invoicePro.count.toString(),
                                     style:
@@ -233,26 +209,11 @@ class InvoiceDetails extends GetView<InvoiceController> {
                                 children: [
                                   const Text('قیمت کل'),
                                   Text(
-                                    '${separateDigits(int.parse(product.price.toString()))} ت',
+                                    '${separateDigits(sumPrice)} ت',
                                     style:
                                     const TextStyle(color: Colors.white),
                                   ),
                                 ],
-                              ),
-                              const SizedBox(width: 20),
-                              GestureDetector(
-                                onTap: () {
-                                  // await controller.deleteOrder(
-                                  //         order.id!);
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.only(left: 5.0),
-                                  child: Icon(
-                                    Icons.delete_forever_outlined,
-                                    color: Colors.black,
-                                    size: 30,
-                                  ),
-                                ),
                               ),
                             ],
                           ),
@@ -272,13 +233,8 @@ class InvoiceDetails extends GetView<InvoiceController> {
   onInit() async {
     listInvoiceProduct.clear();
     var res = await xController.readInvoiceProduct(invoice.id);
-    print(invoice.id);
-    print('=111111111111111111============');
     for (var item in res) {
-      print('JJJJJJJJJJJJJJJJJJJJJJJ');
       listInvoiceProduct.add(item);
-      print(item.idProduct);
     }
-    print('[[[[[[[[[[[[[object]]]]]]]]]]]]]');
   }
 }
