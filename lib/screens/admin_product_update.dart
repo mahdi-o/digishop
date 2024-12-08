@@ -240,6 +240,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                           star: product.star,
                           createdAt: product.createdAt,
                           updatedAt: DateTime.now().toString().split(".")[0],
+                          deleteStatus: 0,
                         ));
                     if(result != 0){
                       FocusScope.of(context).unfocus();

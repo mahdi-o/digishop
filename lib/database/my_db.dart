@@ -398,6 +398,7 @@ class MyDb {
             price: pro.price,
             imageAddress: pro.imageAddress,
             star: pro.star,
+            deleteStatus: pro.deleteStatus,
           ).toJson(),
           where: "id=?",
           whereArgs: [pro.id]);

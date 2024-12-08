@@ -9,6 +9,7 @@ class Invoice {
   int? isPaying;
   String? createdAt;
   String? updatedAt;
+  int? deleteStatus;
 
   Invoice(
       {this.id,
@@ -18,7 +19,8 @@ class Invoice {
       this.discount,
       this.isPaying,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.deleteStatus});
 
   Invoice.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -29,6 +31,7 @@ class Invoice {
     isPaying = json['isPaying'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    deleteStatus=json['deleteStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -41,6 +44,7 @@ class Invoice {
     data['isPaying'] = isPaying;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['deleteStatus']=deleteStatus;
     return data;
   }
 }

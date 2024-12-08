@@ -11,6 +11,7 @@ class Customer {
   int? isDelete;
   String? createdAt;
   String? updatedAt;
+  int? deleteStatus;
 
   Customer({
     this.id,
@@ -25,6 +26,7 @@ class Customer {
     this.isDelete,
     this.createdAt,
     this.updatedAt,
+    this.deleteStatus
   });
 
   Customer.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class Customer {
     isDelete = json['isDelete'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    deleteStatus=json['deleteStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +59,7 @@ class Customer {
     data['isDelete'] = isDelete;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['deleteStatus']=deleteStatus;
     return data;
   }
 }

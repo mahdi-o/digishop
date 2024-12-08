@@ -11,6 +11,7 @@ class Order {
   String? status;
   String? createdAt;
   String? updatedAt;
+  int?deleteStatus;
 
   Order(
       {this.id,
@@ -24,7 +25,8 @@ class Order {
       this.typePay,
       this.status,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.deleteStatus});
   Order.fromJson(Map<String,dynamic>json){
     id = json['id'];
     idProduct = json['idProduct'];
@@ -38,6 +40,7 @@ class Order {
     status = json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    deleteStatus=json['deleteStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -54,6 +57,7 @@ class Order {
     data['status'] =status;
     data['createdAt'] =createdAt;
     data['updatedAt'] =updatedAt;
+    data['deleteStatus']=deleteStatus;
     return data;
   }
 
