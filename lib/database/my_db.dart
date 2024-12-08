@@ -102,20 +102,7 @@ class MyDb {
     );
   }
 
-  Future<void> addTest() async {
-    print('vorod 1 test');
-    final db = await MyDb().db();
-    print('vorod 2 test');
-    await db.insert('invoice_products', {
-      "idInvoice": 1,
-      "idProduct": 2,
-      "count": 11,
-    });
-    print('succ test');
-  }
-
   //''''''''''''basket''''''''''''''''''''
-
 
   Future<void> addBasket(
       nameBasket, usernameId, productId, count, isPaying) async {
@@ -185,22 +172,6 @@ class MyDb {
       );
     }
   }
-
-  // Future<String> getBasket(int id)async{
-  //   final Database db =await MyDb().db();
-  //   Basket bas = Basket();
-  //   var res = await db.query("baskets",where: "id=?",whereArgs: [id]);
-  //   if(res.isEmpty){
-  //     return 'null res';
-  //   } else{
-  //     var jam = res.isNotEmpty ? bas = Basket.fromJson(res.first) : Null;
-  //     if (jam != Null) {
-  //       return bas.nameBasket ?? '';
-  //     } else {
-  //       return bas.nameBasket ?? '';
-  //     }
-  //   }
-  // }
 
   getDataFullBasket() async {
     final Database db = await MyDb().db();
@@ -296,7 +267,7 @@ class MyDb {
     status.value = false;
     final db = await MyDb().db();
     var res = await db
-        .query("products", where: "nameProduct = ?", whereArgs: [nameProduct]);
+        .query("products", where: "nameProduct = ? AND deleteStatus=?", whereArgs: [nameProduct,0]);
     var jam = res.isNotEmpty ? Product.fromJson(res.first) : Null;
     if (jam == Null) {
       await db.insert('products', {
@@ -451,7 +422,22 @@ class MyDb {
 
   Future<int> deleteProducts() async {
     final db = await MyDb().db();
-    var result = await db.delete('products');
+    // تغییر وضعیت deleteStatus به 1
+    var result = await db.update(
+      'products',
+      {'deleteStatus': 1}, // تغییر وضعیت به حذف شده
+    );
+
+    // تغییر وضعیت محصولات در سبد خرید (در صورتی که لازم باشد)
+    var deleteProFromBas = await db.rawUpdate(
+      'UPDATE baskets SET productId = NULL AND deleteStatus = 1',
+       // تغییر وضعیت سبد خرید برای تمام محصولات و سبد های خریذ
+    );
+    // چاپ نتیجه‌ها برای بررسی
+    print(result);
+    print('update pro status to deleted in products');
+    print(deleteProFromBas);
+
     if(result != 0){
       Get.snackbar(
         '',
@@ -494,7 +480,6 @@ class MyDb {
     }
 
   }
-
 
   Future<int> deleteProduct(int id) async {
     final db = await MyDb().db();
@@ -646,10 +631,10 @@ class MyDb {
 
 //''''''''''''customer''''''''''''''''''''
   Future<int> addCustomer(nameCustomer, username, password, email, phoneNumber,
-      wallet, address, description) async {
+      wallet, address, description,deleteStatus) async {
     final db = await MyDb().db();
     var res = await db
-        .query("customers", where: "username = ?", whereArgs: [username]);
+        .query("customers", where: "username = ? AND deleteStatus=?", whereArgs: [username,0]);
     var jam = res.isNotEmpty ? Customer.fromJson(res.first) : Null;
     if (jam == Null) {
       await db.insert('customers', {
@@ -664,6 +649,7 @@ class MyDb {
         "isDelete": 0,
         "createdAt": DateTime.now().toString().split(".")[0],
         "updatedAt": DateTime.now().toString().split(".")[0],
+        "deleteStatus":deleteStatus,
       });
       Get.snackbar(
         '',
@@ -707,7 +693,7 @@ class MyDb {
   Future<int> updateCustomer(int id, Customer newCustomer) async {
     var db = await MyDb().db();
     Customer customer = Customer();
-    var res = await db.query("customers", where: "id = ?", whereArgs: [id]);
+    var res = await db.query("customers", where: "id = ? AND deleteStatus=?", whereArgs: [id,0]);
     var jam = res.isNotEmpty ? customer = Customer.fromJson(res.first) : Null;
     if (jam == Null) {
       Get.snackbar(
@@ -743,6 +729,7 @@ class MyDb {
             isDelete: newCustomer.isDelete,
             createdAt: newCustomer.createdAt,
             updatedAt: DateTime.now().toString().split(".")[0],
+            deleteStatus: newCustomer.deleteStatus
           ).toJson(), where: "id=?", whereArgs: [newCustomer.id]);
       print('update shod');
       Get.snackbar(
@@ -767,7 +754,7 @@ class MyDb {
   Future<String> readCustomer(int id) async {
     final db = await MyDb().db();
     Customer cus = Customer();
-    var res = await db.query("customers", where: "id = ?", whereArgs: [id]);
+    var res = await db.query("customers", where: "id = ? AND deleteStatus=?", whereArgs: [id,0]);
     if (res.isEmpty) {
       return 'null res';
     } else {
@@ -783,7 +770,7 @@ class MyDb {
   Future<int> getIdCustomer(int id) async {
     final db = await MyDb().db();
     Customer cus = Customer();
-    var res = await db.query("customers", where: "id = ?", whereArgs: [id]);
+    var res = await db.query("customers", where: "id = ? AND deleteStatus=?", whereArgs: [id,0]);
     if (res.isEmpty) {
       return -1;
     } else {
@@ -798,7 +785,7 @@ class MyDb {
 
   Future<List<Map<String, dynamic>>> readCustomers() async {
     final db = await MyDb().db();
-    List<Map<String, dynamic>> maps = await db.query('customers');
+    List<Map<String, dynamic>> maps = await db.query('customers',where: "deleteStatus=?",whereArgs: [0]);
     if (maps.isEmpty) {
       return maps;
     } else {
@@ -807,15 +794,15 @@ class MyDb {
   }
 
   Future<int> deleteCustomer(int id) async {
-    status.value = false;
     final db = await MyDb().db();
     // حذف مشتری از دیتابیس
-    var result = await db.delete(
+    var result = await db.update(
       'customers',
+      {'deleteStatus': 1},
       where: 'id = ?',
       whereArgs: [id],
     );
-     var isDelete = await db.query('customers',where: 'id = ?',whereArgs: [id]);
+     var isDelete = await db.query('customers',where: 'id = ? AND deleteStatus=?',whereArgs: [id,0]);
      print(isDelete);
      print('isDelete isDelete isDelete isDeleteisDelete');
       if(isDelete.isEmpty){
@@ -824,11 +811,11 @@ class MyDb {
           '',
           titleText: const Text(
             'حذف مشتری',
-            style: TextStyle(fontSize: 18, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: Colors.white),
           ),
           messageText: const Text(
             'مشتری با موفقیت حذف شد',
-            style: TextStyle(fontSize: 16, color: Colors.white),
+            style: TextStyle(fontSize: 18, color: Colors.white),
           ),
           backgroundColor: kPurpleDark,
           colorText: Colors.white,
@@ -841,11 +828,11 @@ class MyDb {
           '',
           titleText: const Text(
             'عملیات ناموفق',
-            style: TextStyle(fontSize: 18, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: Colors.white),
           ),
           messageText: const Text(
             'حذف مشتری با خطا مواجه شد',
-            style: TextStyle(fontSize: 16, color: Colors.white),
+            style: TextStyle(fontSize: 18, color: Colors.white),
           ),
 
           icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
@@ -861,18 +848,21 @@ class MyDb {
 
   Future<int> deleteCustomers()async{
     final db =await MyDb().db();
-    var result =await db.delete('customers');
+    var result = await db.update(
+      'customers',
+      {'deleteStatus': 1},
+    );
     if(result != 0){
       Get.snackbar(
         '',
         '',
         titleText: const Text(
           'حذف مشتریان',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'تمام مشتریان با موفقیت حذف شدند',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         backgroundColor: kPurpleDark,
         colorText: Colors.white,
@@ -885,11 +875,11 @@ class MyDb {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'حذف مشتریان با خطا مواجه شد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
 
         icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
@@ -905,7 +895,7 @@ class MyDb {
 
   Future<List<Customer>> getCustomer() async {
     final Database db = await MyDb().db();
-    final List<Map<String, dynamic>> maps = await db.query('customers');
+    final List<Map<String, dynamic>> maps = await db.query('customers',where: "deleteStatus=?",whereArgs: [0]);
     if (maps.isEmpty) {
       print('empty');
       return customerList.value;
@@ -1060,11 +1050,11 @@ class MyDb {
         '',
         titleText: const Text(
           'حذف فاکتور',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'فاکتور با موفقیت حذف شد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         backgroundColor: kPurpleDark,
         colorText: Colors.white,

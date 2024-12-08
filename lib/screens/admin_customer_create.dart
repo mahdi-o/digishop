@@ -325,7 +325,7 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                         controller.phoneNumber.value.text,
                         controller.wallet.value.text,
                         controller.address.value.text,
-                        '');
+                        '',0);
                     if(result != 0){
                       Future.delayed(const Duration(milliseconds: 2500), () {
                         Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد

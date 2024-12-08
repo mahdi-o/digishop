@@ -210,6 +210,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                           isDelete: 0,
                           createdAt: customer.createdAt,
                           updatedAt: DateTime.now().toString().split(".")[0],
+                          deleteStatus: 0,
                         ),
                       );
                       if(result != 0){
