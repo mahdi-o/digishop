@@ -2,6 +2,7 @@ import 'package:digishop/controller/invoice_controller.dart';
 import 'package:digishop/models/Invoice.dart';
 import 'package:digishop/models/invoiceProducts.dart';
 import 'package:digishop/widgets/custom_button.dart';
+import 'package:digishop/widgets/tooltip_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constans.dart';
@@ -11,6 +12,8 @@ import '../services/routes.dart';
 import '../widgets/base_widget.dart';
 import '../widgets/navbar_custom.dart';
 import 'admin_home_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ShowAllInvoices extends GetView<InvoiceController> {
   ShowAllInvoices({super.key});
@@ -74,8 +77,9 @@ class ShowAllInvoices extends GetView<InvoiceController> {
 
   Widget _buildInvoiceInfo(Invoice invoice, context) {
     return GestureDetector(
-      onTap: (){
-        Get.toNamed(AppRoutes.invDet,arguments: {'invoice':invoice,'user':user});
+      onTap: () {
+        Get.toNamed(AppRoutes.invDet,
+            arguments: {'invoice': invoice, 'user': user});
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
@@ -120,7 +124,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                     Row(
                       children: [
                         Text(
-                          ' مقدار تخفیف : ${invoice.discount!.isEmpty?0:invoice.discount.toString()} ',
+                          ' مقدار تخفیف : ${invoice.discount!.isEmpty ? 0 : invoice.discount.toString()} ',
                           style: const TextStyle(
                               fontFamily: 'lalezar',
                               fontSize: 20,
@@ -151,12 +155,14 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                           fontSizeBtn: 22,
                           shadowColor: kPurpleDark,
                           onTapped: () async {
-                            var result = await myDb.changePayInvoice(invoice.id!);
-                            if(result != 0){
+                            var result =
+                                await myDb.changePayInvoice(invoice.id!);
+                            if (result != 0) {
                               FocusScope.of(context).unfocus();
-                              Future.delayed(const Duration(milliseconds: 2500), () {
+                              Future.delayed(const Duration(milliseconds: 2500),
+                                  () {
                                 Get.off(
-                                      () => AdminHomeScreen(), arguments: user,
+                                  () => AdminHomeScreen(), arguments: user,
                                   // صفحه مقصد
                                   transition: Transition.zoom,
                                   // نوع انیمیشن
@@ -182,7 +188,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                           fontSizeBtn: 22,
                           shadowColor: kPurpleDark,
                           onTapped: () async {
-                            Get.toNamed(AppRoutes.adminInvUpd,arguments: user);
+                            Get.toNamed(AppRoutes.adminInvUpd, arguments: user);
                           },
                           splashColor: kPinkLight,
                           borderColor: kPinkLight,
@@ -193,16 +199,20 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                           width: 10,
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             dialogCustom(
-                                'آیا از حذف این فاکتور اطمینان دارید؟', 20, ()async {
+                                'آیا از حذف این فاکتور اطمینان دارید؟', 20,
+                                () async {
                               Get.back();
-                              var result = await MyDb().deleteInvoice(invoice.id!);
+                              var result =
+                                  await MyDb().deleteInvoice(invoice.id!);
                               if (result == 1) {
                                 FocusScope.of(context).unfocus();
-                                Future.delayed(const Duration(milliseconds: 2500), () {
+                                Future.delayed(
+                                    const Duration(milliseconds: 2500), () {
                                   Get.off(
-                                        () => AdminHomeScreen(), arguments: user,
+                                    () => AdminHomeScreen(),
+                                    arguments: user,
                                     // صفحه مقصد
                                     transition: Transition.zoom,
                                     // نوع انیمیشن
@@ -256,36 +266,52 @@ class ShowAllInvoices extends GetView<InvoiceController> {
             children: [
               SizedBox(
                 height: 60,
-                child: NavbarCustom(
-                  text1: '  فاکتورها ',
-                  text2: '',
-                  size1: 28,
-                  size2: 26,
-                  fontFace1: 'lalezarPlus',
-                  fontFace2: 'lalezarPlus',
-                  icon1: Icons.delete_outline_rounded,
-                  onTapIcon2: () {
-                    dialogCustom(
-                        'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟', 20,
-                        () async {
-                      Get.back();
-                      var result = await MyDb().deleteInvoices();
-                      if (result != 0) {
-                        FocusScope.of(context).unfocus();
-                        Future.delayed(const Duration(milliseconds: 2500), () {
-                          Get.off(
-                            () => AdminHomeScreen(), arguments: user,
-                            // صفحه مقصد
-                            transition: Transition.zoom,
-                            // نوع انیمیشن
-                            duration: const Duration(
-                                milliseconds: 500), // مدت زمان انیمیشن
-                          );
-                        });
-                      }
-                    });
+                child: GestureDetector(
+                  onTap: () {
+                    // Tooltip(
+                    //   message: "اینجا می‌توانید فاکتورهای جدید اضافه کنید.",
+                    //   textStyle: TextStyle(fontSize: 50, color: Colors.red),
+                    //   child: IconButton(
+                    //     icon: Icon(Icons.add, color: Colors.blueAccent),
+                    //     onPressed: () {
+                    //       // انجام عملیات اضافه کردن فاکتور
+                    //
+                    //     },
+                    //   ),
+                    // );
                   },
-                  icon2: null,
+                  child: NavbarCustom(
+                    text1: '  فاکتورها ',
+                    text2: '',
+                    size1: 28,
+                    size2: 26,
+                    fontFace1: 'lalezarPlus',
+                    fontFace2: 'lalezarPlus',
+                    icon1: Icons.delete_outline_rounded,
+                    onTapIcon2: () {
+                      dialogCustom(
+                          'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',
+                          20, () async {
+                        Get.back();
+                        var result = await MyDb().deleteInvoices();
+                        if (result != 0) {
+                          FocusScope.of(context).unfocus();
+                          Future.delayed(const Duration(milliseconds: 2500),
+                              () {
+                            Get.off(
+                              () => AdminHomeScreen(), arguments: user,
+                              // صفحه مقصد
+                              transition: Transition.zoom,
+                              // نوع انیمیشن
+                              duration: const Duration(
+                                  milliseconds: 500), // مدت زمان انیمیشن
+                            );
+                          });
+                        }
+                      });
+                    },
+                    icon2: null,
+                  ),
                 ),
               ),
               Expanded(child: child)

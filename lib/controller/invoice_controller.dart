@@ -38,7 +38,7 @@ class InvoiceController extends GetxController {
 
   RxString? selectedValueCus = ''.obs;
   List<DropdownMenuItem<String>> addDividersAfterItemsCus(
-      List<String> listIdCustomers) {
+      RxList<String> listIdCustomers) {
     final List<DropdownMenuItem<String>> menuItems = [];
     for (final String item in listIdCustomers) {
       menuItems.addAll(
@@ -835,20 +835,46 @@ class InvoiceController extends GetxController {
     print('bolbol');
     return p;
   }
-
   Future<List<Customer>> getIdNameCustomerForInvoice() async {
+    // پاک کردن لیست‌های مربوطه
     listCustomersForInvoice.clear();
+    listIdCustomers.clear();
+
+    // دسترسی به کنترلر پایگاه داده
     MyDb xController = Get.find<MyDb>();
-    var c = await xController.getCustomer();
-    listCustomersForInvoice = xController.customerList;
-    for (int i = 0; i < listCustomersForInvoice.length; i++) {
-      listIdCustomers.add(listCustomersForInvoice[i].nameCustomer!);
-      print(listCustomersForInvoice[i].id);
+
+    // دریافت مشتریان از پایگاه داده
+    var customers = await xController.getCustomer();
+
+    // به‌روزرسانی لیست محلی
+    listCustomersForInvoice.addAll(customers);
+
+    // اضافه کردن نام‌ها به لیست `listIdCustomers`
+    for (var customer in listCustomersForInvoice) {
+      listIdCustomers.add(customer.nameCustomer ?? '');
+      print(customer.id);
     }
+
+    // چاپ اطلاعات برای اشکال‌زدایی
     print(listIdCustomers.length);
     print('bolbol');
-    return c;
+
+    // بازگشت لیست مشتریان
+    return customers;
   }
+  // Future<List<Customer>> getIdNameCustomerForInvoice() async {
+  //   listCustomersForInvoice.clear();
+  //   MyDb xController = Get.find<MyDb>();
+  //   var c = await xController.getCustomer();
+  //   listCustomersForInvoice = xController.customerList;
+  //   for (int i = 0; i < listCustomersForInvoice.length; i++) {
+  //     listIdCustomers.add(listCustomersForInvoice[i].nameCustomer!);
+  //     print(listCustomersForInvoice[i].id);
+  //   }
+  //   print(listIdCustomers.length);
+  //   print('bolbol');
+  //   return c;
+  // }
 
   clear()async{
     idProduct.value.clear();
