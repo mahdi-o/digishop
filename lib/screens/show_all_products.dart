@@ -96,6 +96,7 @@ class ShowAllProducts extends GetView<ProductController> {
                   itemCount: products.length,
                   itemBuilder: (context, index) {
                     final product = products[index];
+                    print(product.deleteStatus);
                     return Column(
                       children: [
                         Padding(

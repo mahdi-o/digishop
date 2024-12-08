@@ -12,6 +12,7 @@ class Product {
   int? star;
   String? createdAt;
   String? updatedAt;
+  int? deleteStatus;
 
   Product(
       {this.id,
@@ -26,7 +27,8 @@ class Product {
       this.hard,
       this.star,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.deleteStatus});
 
 
 
@@ -47,6 +49,7 @@ class Product {
     star = json['star'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    deleteStatus = json['deleteStatus'];
 print('object44444444444444');
   }
 
@@ -65,6 +68,7 @@ print('object44444444444444');
     data['star'] = star;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['deleteStatus']=deleteStatus;
     return data;
   }
 }
@@ -83,7 +87,9 @@ List<Product> proLaptopList = [
       hard: '512 گیگابایت',
       screen: '16 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,
+    deleteStatus: 0,
+  ),
   Product(
       id: 2,
       nameProduct:
@@ -96,7 +102,7 @@ List<Product> proLaptopList = [
       hard: '512 گیگابایت',
       screen: '16 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 3,
       nameProduct:
@@ -109,7 +115,7 @@ List<Product> proLaptopList = [
       hard: '512 گیگابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 4,
       nameProduct:
@@ -122,7 +128,7 @@ List<Product> proLaptopList = [
       hard: '512 گیگابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 5,
       nameProduct:
@@ -135,7 +141,7 @@ List<Product> proLaptopList = [
       hard: '1 ترابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 3,),
+      star: 3,deleteStatus: 0,),
   Product(
       id: 6,
       nameProduct:
@@ -148,7 +154,7 @@ List<Product> proLaptopList = [
       hard: '1 ترابایت',
       screen: '16 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 7,
       nameProduct:
@@ -161,7 +167,7 @@ List<Product> proLaptopList = [
       hard: '256 گیگابایت',
       screen: '13.3 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 8,
       nameProduct: 'لپ تاپ 15.3 اینچی اپل مدل MacBook Air MQKW3 M2 2023',
@@ -173,7 +179,7 @@ List<Product> proLaptopList = [
       hard: '256 گیگابایت',
       screen: '15.3 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 9,
       nameProduct:
@@ -186,7 +192,7 @@ List<Product> proLaptopList = [
       hard: '512 گیگابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 3,),
+      star: 3,deleteStatus: 0,),
   Product(
       id: 10,
       nameProduct:
@@ -199,7 +205,7 @@ List<Product> proLaptopList = [
       hard: '512 گیگابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 5,),
+      star: 5,deleteStatus: 0,),
   Product(
       id: 11,
       nameProduct:
@@ -212,7 +218,7 @@ List<Product> proLaptopList = [
       hard: '256 گیگابایت',
       screen: '13.5 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 12,
       nameProduct:
@@ -225,7 +231,7 @@ List<Product> proLaptopList = [
       hard: '512 گیگابایت',
       screen: '13.5 اینچ',
       count: 1,
-      star: 3,),
+      star: 3,deleteStatus: 0,),
 ];
 
 List<Product> proLaptopListCustom = [
@@ -240,7 +246,7 @@ List<Product> proLaptopListCustom = [
       hard: '512 گیگابایت',
       screen: '16 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 2,
       nameProduct: 'Vivobook 16 R1605ZA-MB118-i5 1235U 16GB 512SSD',
@@ -252,7 +258,7 @@ List<Product> proLaptopListCustom = [
       hard: '512 گیگابایت',
       screen: '16 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 3,
       nameProduct: 'LOQ 15IRH8-i7 13620H 16GB 512SSD RTX4050',
@@ -264,7 +270,7 @@ List<Product> proLaptopListCustom = [
       hard: '512 گیگابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 4,
       nameProduct: 'ThinkBook 15 G4 IAP-i5 1235U 8GB 512SSD MX550',
@@ -276,7 +282,7 @@ List<Product> proLaptopListCustom = [
       hard: '512 گیگابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 5,
       nameProduct: 'G8 255-R5 5500U 16GB 1SSD',
@@ -288,7 +294,7 @@ List<Product> proLaptopListCustom = [
       hard: '1 ترابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 3,),
+      star: 3,deleteStatus: 0,),
   Product(
       id: 6,
       nameProduct: 'OMEN 16-b0001-i7 11800H 32GB 1SSD RTX3070',
@@ -300,7 +306,7 @@ List<Product> proLaptopListCustom = [
       hard: '1 ترابایت',
       screen: '16 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 7,
       nameProduct: 'MacBook Air MGN63 2020-M1 8GB 256SSD',
@@ -312,7 +318,7 @@ List<Product> proLaptopListCustom = [
       hard: '256 گیگابایت',
       screen: '13.3 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 8,
       nameProduct: 'MacBook Air MQKW3 M2 2023',
@@ -324,7 +330,7 @@ List<Product> proLaptopListCustom = [
       hard: '256 گیگابایت',
       screen: '15.3 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 9,
       nameProduct: 'Inspiron G15 5530-i7 13650HX 16GB 512SSD RTX4050',
@@ -336,7 +342,7 @@ List<Product> proLaptopListCustom = [
       hard: '512 گیگابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 3,),
+      star: 3,deleteStatus: 0,),
   Product(
       id: 10,
       nameProduct: 'Vostro 3520-i7 16GB 512SSD MX550 Linux',
@@ -348,7 +354,7 @@ List<Product> proLaptopListCustom = [
       hard: '512 گیگابایت',
       screen: '15.6 اینچ',
       count: 1,
-      star: 5,),
+      star: 5,deleteStatus: 0,),
   Product(
       id: 11,
       nameProduct: 'Surface Laptop 4-i5 1135G7 16GB 256SSD',
@@ -360,7 +366,7 @@ List<Product> proLaptopListCustom = [
       hard: '256 گیگابایت',
       screen: '13.5 اینچ',
       count: 1,
-      star: 4,),
+      star: 4,deleteStatus: 0,),
   Product(
       id: 12,
       nameProduct: 'Surface Laptop 5-i7 32GB 512GB Iris Xe',
@@ -372,5 +378,5 @@ List<Product> proLaptopListCustom = [
       hard: '512 گیگابایت',
       screen: '13.5 اینچ',
       count: 1,
-      star: 3,),
+      star: 3,deleteStatus: 0,),
 ];

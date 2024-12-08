@@ -18,6 +18,7 @@ class InvoiceDetails extends GetView<InvoiceController> {
 
   final Invoice invoice = Get.arguments['invoice'];
   final User user = Get.arguments['user'];
+
   final xController = Get.find<MyDb>();
   final listInvoiceProduct = [].obs;
   final basket = BasketController();
@@ -148,10 +149,11 @@ class InvoiceDetails extends GetView<InvoiceController> {
                   () => ListView.builder(
                 itemCount: listInvoiceProduct.length,
                 itemBuilder: (context, index) {
+                  print(listInvoiceProduct.length);
+                  print('POW{PDPWPDPDDDDDD');
                   InvoiceProducts invoicePro = listInvoiceProduct[index];
                   Product product = xController.productList
-                      .where((p0) => p0.id == invoicePro.idProduct)
-                      .first;
+                      .where((p0) => p0.id == invoicePro.idProduct).first;
                   var sumPrice = invoicePro.count! * (int.parse(product.price!));
                   return Padding(
                     padding: const EdgeInsets.symmetric(

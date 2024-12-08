@@ -230,6 +230,7 @@ class AdminProductCreate extends GetView<ProductController> {
                       controller.cpuProduct.value.text,
                       controller.screenProduct.value.text,
                       4,
+                      0,
                     );
                    if(xController.status == true){
                      Future.delayed(const Duration(milliseconds: 2500), () {

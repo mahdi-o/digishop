@@ -33,7 +33,8 @@ class MyDb {
         count INTEGER,
         isPaying INTEGER,
         createdAt TEXT,
-        updatedAt TEXT
+        updatedAt TEXT,
+        deleteStatus INTEGER
         )""",
         );
         db.execute(
@@ -50,7 +51,8 @@ class MyDb {
         screen TEXT,
         star INTEGER,
         createdAt TEXT,
-        updatedAt TEXT
+        updatedAt TEXT,
+        deleteStatus INTEGER
         )""",
         );
         db.execute(
@@ -66,7 +68,8 @@ class MyDb {
            description TEXT,
            isDelete INTEGER,
            createdAt TEXT,
-           updatedAt TEXT
+           updatedAt TEXT,
+           deleteStatus INTEGER
             )""",
         );
 
@@ -80,6 +83,7 @@ class MyDb {
         isPaying INTEGER,
         createdAt TEXT,
         updatedAt TEXT,
+        deleteStatus INTEGER,
         FOREIGN KEY (idCustomer) REFERENCES customers(id)
         )""",
         );
@@ -89,6 +93,7 @@ class MyDb {
         idInvoice INTEGER,
         idProduct INTEGER,
         count INTEGER,
+        deleteStatus INTEGER,
         FOREIGN KEY (idInvoice) REFERENCES invoices(id),
         FOREIGN KEY (idProduct) REFERENCES products(id)
         )""",
@@ -241,10 +246,16 @@ class MyDb {
     return "successful checkOut";
   }
 
-  Future<String> deleteBasket() async {
+  Future<int> deleteBasket() async {
     final db = await MyDb().db();
-    await db.delete("baskets");
-    return "successful delete baskets";
+    // بروزرسانی وضعیت deleteStatus به 1 برای همه رکوردهای سبد خرید
+    await db.update(
+      "baskets",
+      {'deleteStatus': 1}, // تغییر وضعیت به حذف شده
+      where: 'deleteStatus = ?',
+      whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
+    );
+    return 1;
   }
 
   Future<String> deleteItemBaskets(int id) async {
@@ -281,7 +292,7 @@ class MyDb {
 //''''''''''''product''''''''''''''''''''
 
   Future<int> addProduct(nameProduct, price, brand, imageAddress, count, ram,
-      hard, cpu, screen, star) async {
+      hard, cpu, screen, star,deleteStatus) async {
     status.value = false;
     final db = await MyDb().db();
     var res = await db
@@ -299,6 +310,7 @@ class MyDb {
         "cpu": cpu,
         "screen": screen,
         "star": star,
+        "deleteStatus":deleteStatus,
         "createdAt": DateTime.now().toString().split(".")[0],
         "updatedAt": DateTime.now().toString().split(".")[0]
       });
@@ -347,7 +359,7 @@ class MyDb {
   Future<int> updateProduct(int id, Product pro) async {
     final db = await MyDb().db();
     Product product = Product();
-    var res = await db.query("products", where: "id = ?", whereArgs: [id]);
+    var res = await db.query("products", where: "id = ? AND deleteStatus=?", whereArgs: [id,0]);
     var jam = res.isNotEmpty ? product = Product.fromJson(res.first) : Null;
     if (jam == Null) {
       Get.snackbar(
@@ -411,7 +423,7 @@ class MyDb {
 
   Future<List<Map<String, dynamic>>> readAllProducts() async {
     final Database db = await MyDb().db();
-    final List<Map<String, dynamic>> maps = await db.query('products');
+    final List<Map<String, dynamic>> maps = await db.query('products',where: "deleteStatus=?",whereArgs: [0]);
     if (maps.isEmpty) {
       return maps;
     } else {
@@ -422,7 +434,8 @@ class MyDb {
   Future<String> readProduct(int id) async {
     final Database db = await MyDb().db();
     Product pro = Product();
-    var res = await db.query("products", where: "id = ?", whereArgs: [id]);
+
+    var res = await db.query("products", where: "id = ? AND deleteStatus=?", whereArgs: [id,0]);
     if (res.isEmpty) {
       return 'null res';
     } else {
@@ -481,14 +494,30 @@ class MyDb {
 
   }
 
+
   Future<int> deleteProduct(int id) async {
     final db = await MyDb().db();
-    var result = await db.rawDelete('DELETE FROM products WHERE id == $id');
-    var deleteProFromBas = await db.rawDelete('DELETE FROM baskets WHERE productId ==$id');
+
+    // تغییر وضعیت deleteStatus به 1
+    var result = await db.update(
+      'products',
+      {'deleteStatus': 1}, // تغییر وضعیت به حذف شده
+      where: 'id = ?',
+      whereArgs: [id], // پیدا کردن محصول با id مشخص
+    );
+
+    // تغییر وضعیت محصولات در سبد خرید (در صورتی که لازم باشد)
+    var deleteProFromBas = await db.rawUpdate(
+      'UPDATE baskets SET productId = NULL WHERE productId = ?',
+      [id], // تغییر وضعیت سبد خرید با شناسه محصول مشخص
+    );
+
+    // چاپ نتیجه‌ها برای بررسی
     print(result);
-    print('delete pro and pro az bas');
+    print('update pro status to deleted in products');
     print(deleteProFromBas);
-    if(result != 0){
+
+    if (result != 0) {
       Get.snackbar(
         '',
         '',
@@ -505,7 +534,7 @@ class MyDb {
         duration: const Duration(milliseconds: 1500),
       );
       return 1;
-    }else{
+    } else {
       Get.snackbar(
         '',
         '',
@@ -517,9 +546,8 @@ class MyDb {
           'حذف محصول با خطا مواجه شد',
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
-
-        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
-        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        icon: const Icon(Icons.highlight_remove_outlined, color: Colors.white, size: 35),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         shouldIconPulse: false,
         backgroundColor: kRedLight,
         colorText: Colors.white,
@@ -527,12 +555,59 @@ class MyDb {
       );
       return 0;
     }
-
   }
+  // Future<int> deleteProduct(int id) async {
+  //   final db = await MyDb().db();
+  //   var result = await db.rawDelete('DELETE FROM products WHERE id == $id');
+  //   var deleteProFromBas = await db.rawDelete('DELETE FROM baskets WHERE productId ==$id');
+  //   print(result);
+  //   print('delete pro and pro az bas');
+  //   print(deleteProFromBas);
+  //   if(result != 0){
+  //     Get.snackbar(
+  //       '',
+  //       '',
+  //       titleText: const Text(
+  //         'حذف محصول',
+  //         style: TextStyle(fontSize: 18, color: Colors.white),
+  //       ),
+  //       messageText: const Text(
+  //         'محصول با موفقیت حذف شد',
+  //         style: TextStyle(fontSize: 16, color: Colors.white),
+  //       ),
+  //       backgroundColor: kPurpleDark,
+  //       colorText: Colors.white,
+  //       duration: const Duration(milliseconds: 1500),
+  //     );
+  //     return 1;
+  //   }else{
+  //     Get.snackbar(
+  //       '',
+  //       '',
+  //       titleText: const Text(
+  //         'عملیات ناموفق',
+  //         style: TextStyle(fontSize: 18, color: Colors.white),
+  //       ),
+  //       messageText: const Text(
+  //         'حذف محصول با خطا مواجه شد',
+  //         style: TextStyle(fontSize: 16, color: Colors.white),
+  //       ),
+  //
+  //       icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+  //       padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+  //       shouldIconPulse: false,
+  //       backgroundColor: kRedLight,
+  //       colorText: Colors.white,
+  //       duration: const Duration(milliseconds: 1500),
+  //     );
+  //     return 0;
+  //   }
+  //
+  // }
 
   Future<List<Product>> getProduct() async {
     final Database db = await MyDb().db();
-    final List<Map<String, dynamic>> maps = await db.query('products');
+    final List<Map<String, dynamic>> maps = await db.query('products',where: "deleteStatus=?",whereArgs: [0]);
     if (maps.isEmpty) {
       return productList.value;
     } else {
@@ -548,7 +623,7 @@ class MyDb {
 
   Future<List<Product>> getProductFromBas() async {
     final Database db = await MyDb().db();
-    final List<Map<String, dynamic>> maps = await db.query('products');
+    final List<Map<String, dynamic>> maps = await db.query('products',where: "deleteStatus=?",whereArgs: [0]);
     if (maps.isEmpty) {
       print('empty');
       return listProForPageBasket.value;
