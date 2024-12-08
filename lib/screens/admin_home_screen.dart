@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controller/invoice_controller.dart';
 import '../models/User.dart';
 
 class AdminHomeScreen extends StatelessWidget {
@@ -219,6 +220,7 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor: kPurpleDark,
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
+
                             Get.toNamed(AppRoutes.adminCusCre,arguments: user);
                           }),
                       ContainerCustomAdmin(
@@ -246,7 +248,8 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor: Colors.black,
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
-                            Get.toNamed(AppRoutes.adminInvCre,arguments: user);
+                            Get.delete<InvoiceController>();
+                            Get.offAllNamed(AppRoutes.adminInvCre,arguments: user);
                           }),
                       ContainerCustomAdmin(
                           text: 'فاکتورها',

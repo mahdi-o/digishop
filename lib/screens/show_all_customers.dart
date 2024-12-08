@@ -159,6 +159,8 @@ class ShowAllCustomers extends StatelessWidget {
                   var result = await myDb.deleteCustomer(customer.id ?? -1);
                   if (result == 1) {
                     FocusScope.of(context).unfocus();
+                    controller.clear();
+
                     Future.delayed(const Duration(milliseconds: 2500), () {
                       Get.off(
                         () => AdminHomeScreen(), arguments: user,

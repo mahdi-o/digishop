@@ -202,6 +202,7 @@ class ShowAllProducts extends GetView<ProductController> {
                     print(result);
                     if(result != 0){
                       FocusScope.of(context).unfocus();
+                      controller.clear();
                       Future.delayed(const Duration(milliseconds: 2500), () {
                         Get.off(
                               () => AdminHomeScreen(), arguments: user,

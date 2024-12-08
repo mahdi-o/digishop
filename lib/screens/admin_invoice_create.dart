@@ -14,11 +14,11 @@ import '../widgets/navbar_custom.dart';
 class AdminInvoiceCreate extends GetView<InvoiceController> {
    AdminInvoiceCreate({super.key});
   final User user = Get.arguments;
+   final xController = Get.find<MyDb>();
 
   @override
   Widget build(BuildContext context) {
-    MyDb xController = Get.find<MyDb>();
-
+    controller.clear();
     return Obx(
       () => BaseWidget(
         appBar: null,
@@ -48,7 +48,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                   const SizedBox(height: 50),
                   Column(
                     children: [
-                      const Padding(
+                       Padding(
                         padding:
                         EdgeInsets.only(right: 135, left: 10),
                         child: Column(
@@ -56,30 +56,35 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                             // ویجت NavbarCustom ثابت
                             SizedBox(
                               height: 50, // ارتفاع ثابت برای هدر
-                              child: NavbarCustom(
-                                text1: '',
-                                text2: 'ثبت فاکتور جدید',
-                                colorText2: Colors.white,
-                                size1: 28,
-                                size2: 26,
-                                fontFace1: 'lalezarPlus',
-                                fontFace2: 'lalezarPlus',
-                                icon1: null,
-                                icon2: null,
+                              child: GestureDetector(
+                                onTap: (){
+                                  Get.toNamed(AppRoutes.showAllPro,arguments: user);
+                                },
+                                child: NavbarCustom(
+                                  text1: '',
+                                  text2: 'ثبت فاکتور جدید',
+                                  colorText2: Colors.white,
+                                  size1: 28,
+                                  size2: 26,
+                                  fontFace1: 'lalezarPlus',
+                                  fontFace2: 'lalezarPlus',
+                                  icon1: null,
+                                  icon2: null,
+                                ),
                               ),
                             ),
                             // محتوای اسکرول‌شونده
                           ],
                         ),
                       ),
-
                               Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 100.0, vertical: 15),
                           child:
                           DropdownButtonHideUnderline(
                             child: Obx(
-                              ()=> DropdownButton2<String>(
+                              ()=>
+                                  DropdownButton2<String>(
                                 isExpanded: true,
                                 alignment: Alignment.center,
                                 hint: const Text(
@@ -108,8 +113,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                                       ),
                                     ),
                                   ),
-                                )
-                                    .toList(),
+                                ).toList(),
                                 value: controller.listIdCustomers.contains(controller.selectedValueCus?.value)
                                     ? controller.selectedValueCus?.value
                                     : null,
@@ -194,12 +198,10 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                                   ),
                                 ),
                               ),
-                            ),)
-                                .toList(),
-                            value: controller.listIdProducts.contains(controller.selectedValue?.value)
+                            ),).toList(),
+                            value:controller.listIdProducts.contains(controller.selectedValue?.value)
                                 ? controller.selectedValue?.value
-                                :null ,
-
+                                :null,
                             onChanged: (value) {
                               if (controller.listIdProducts.contains(value)) {
                                 controller.selectedValue?.value = value ?? '';

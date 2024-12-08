@@ -131,5 +131,6 @@ class AppRoutes {
       name: adminInvUpd,
       page: () => AdminInvoiceUpdate(),
     ),
+
   ];
 }
