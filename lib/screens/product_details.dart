@@ -22,6 +22,8 @@ class ProductDetails extends GetView<ProductController> {
   BasketController basket = BasketController();
   @override
   Widget build(BuildContext context) {
+    print(brandHomeScreen);
+    print('{}{}{}{}{}{}{}}{}{}{}{}}}');
     double height = Get.height;
     int? lengthStar = product.star;
     return BaseWidget(color: Colors.white,
@@ -147,7 +149,7 @@ class ProductDetails extends GetView<ProductController> {
                         shadowColor: kPurpleDark,
                         onTapped: () {
                           basket.addBasketToDb(
-                              "${user.username},${product.id}", user.username, product.id, 1.toInt(), 0);
+                              "${user.username},${product.id}", user.username, product.id, 1.toInt(), 0,0);
                           Get.snackbar(
                             'افزودن به سبد خرید',
                             'کالا با موفقیت در سبد خرید اضافه شد',

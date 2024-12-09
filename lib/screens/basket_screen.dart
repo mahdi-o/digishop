@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/basket_controller.dart';
 import 'package:digishop/database/my_db.dart';
@@ -8,7 +7,6 @@ import 'package:digishop/models/Product.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/custom_button.dart';
-import 'package:digishop/widgets/floatingCustomButtons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/User.dart';
@@ -540,9 +538,12 @@ class BasketScreen extends GetView<BasketController> {
                                                         .unfocus();
                                                     Get.toNamed(
                                                         AppRoutes.proDet,
-                                                        arguments: product,
+                                                        arguments: {
+                                                          'product':product,
+                                                          'user':user
+                                                        },
                                                         parameters: {
-                                                          'username': username
+                                                          'all': 'all'
                                                         });
                                                   },
                                                   child: const Text(

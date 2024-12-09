@@ -7,6 +7,7 @@ class Basket {
   int? isPaying;
   String? createdAt;
   String? updatedAt;
+  int? deleteStatus;
 
 
   Basket(
@@ -17,7 +18,8 @@ class Basket {
       this.count,
       this.isPaying,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.deleteStatus});
 
   Basket.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -28,6 +30,7 @@ class Basket {
     isPaying = json['isPaying'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    deleteStatus = json['deleteStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,6 +43,7 @@ class Basket {
     data['isPaying'] = isPaying;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['deleteStatus']=deleteStatus;
     return data;
   }
 }

@@ -105,7 +105,7 @@ class MyDb {
   //''''''''''''basket''''''''''''''''''''
 
   Future<void> addBasket(
-      nameBasket, usernameId, productId, count, isPaying) async {
+      nameBasket, usernameId, productId, count, isPaying,deleteStatus) async {
     final db = await MyDb().db();
     await db.insert('baskets', {
       "nameBasket": nameBasket,
@@ -114,20 +114,21 @@ class MyDb {
       "count": count,
       "isPaying": isPaying,
       "createdAt": DateTime.now().toString().split(".")[0],
-      "updatedAt": DateTime.now().toString().split(".")[0]
+      "updatedAt": DateTime.now().toString().split(".")[0],
+      "deleteStatus":deleteStatus,
     });
   }
 
   Future<void> addOrUpdateBasket(String nameBasket, String usernameId,
-      int productId, int count, int isPaying) async {
+      int productId, int count, int isPaying,deleteStatus) async {
     final db = await MyDb().db();
     Basket bas = Basket();
     var res = await db.query("baskets",
-        where: "nameBasket = ? AND isPaying=?", whereArgs: [nameBasket, 0]);
+        where: "nameBasket = ? AND isPaying=? AND deleteStatus=?", whereArgs: [nameBasket, 0,0]);
     var jam = res.isNotEmpty ? bas = Basket.fromJson(res.first) : Null;
     if (jam == Null) {
       print("nameBasket is null");
-      await addBasket(nameBasket, usernameId, productId, count, isPaying);
+      await addBasket(nameBasket, usernameId, productId, count, isPaying,deleteStatus);
     } else {
       await db.update(
           "baskets",
@@ -139,7 +140,9 @@ class MyDb {
                   isPaying: bas.isPaying,
                   count: bas.count! + 1,
                   createdAt: bas.createdAt,
-                  updatedAt: DateTime.now().toString().split(".")[0])
+                  updatedAt: DateTime.now().toString().split(".")[0],
+                  deleteStatus:bas.deleteStatus
+          )
               .toJson(),
           where: "id=?",
           whereArgs: [bas.id]);
@@ -149,7 +152,7 @@ class MyDb {
   checkDbForBaskets(String name) async {
     final db = await MyDb().db();
     var res =
-        await db.query("baskets", where: "nameBasket = ?", whereArgs: [name]);
+        await db.query("baskets", where: "nameBasket = ? AND deleteStatus=?", whereArgs: [name,0]);
     var jam = res.isNotEmpty ? Basket.fromJson(res.first) : Null;
     return jam;
   }
@@ -157,7 +160,7 @@ class MyDb {
   Future<List<Basket>> getBaskets() async {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
-        await db.query('baskets WHERE isPaying == 0');
+        await db.query('baskets',where: "isPaying=? AND deleteStatus=?",whereArgs: [0,0]);
     if (maps.isEmpty) {
       print('basketList is khali');
       return basketList;
@@ -176,7 +179,7 @@ class MyDb {
   getDataFullBasket() async {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
-        await db.query('baskets WHERE isPaying == 0');
+        await db.query('baskets',where: "isPaying=? AND deleteStatus=?",whereArgs: [0,0]);
     if (maps.isEmpty) {
       print('return emptyyyyyyyyyyyyyyyyyy');
       return 'empty';
@@ -192,7 +195,7 @@ class MyDb {
     List idBasket = [];
     for (int i = 0; i < listId.length; i++) {
       idBasket =
-          await db.rawQuery('SELECT * FROM baskets WHERE id == ${listId[i]}');
+          await db.rawQuery('SELECT * FROM baskets WHERE id == ${listId[i]} AND deleteStatus == 0');
       var nameBasketForDb = idBasket[i - i]['nameBasket'];
       var usernameIdBasketForDb = idBasket[i - i]['usernameId'];
       var productIdBasketForDb = idBasket[i - i]['productId'];
@@ -209,7 +212,9 @@ class MyDb {
                   isPaying: 1,
                   count: countBasketForDb,
                   createdAt: isCreatedBasketForDb,
-                  updatedAt: DateTime.now().toString().split(".")[0])
+                  updatedAt: DateTime.now().toString().split(".")[0],
+                   deleteStatus: 0,
+          )
               .toJson(),
           where: "id=?",
           whereArgs: [myId]);
@@ -231,7 +236,7 @@ class MyDb {
 
   Future<String> deleteItemBaskets(int id) async {
     final db = await MyDb().db();
-    List idBasket = await db.rawQuery('SELECT * FROM baskets WHERE id == $id');
+    List idBasket = await db.rawQuery('SELECT * FROM baskets WHERE id == $id AND deleteStatus == 0');
     var nameBasketForDb = idBasket.first['nameBasket'];
     var usernameIdBasketForDb = idBasket.first['usernameId'];
     var productIdBasketForDb = idBasket.first['productId'];
@@ -240,10 +245,14 @@ class MyDb {
     var isCreatedBasketForDb = idBasket.first['createdAt'];
 
     if (countBasketForDb == 1) {
-      await db.rawDelete('DELETE FROM baskets WHERE id == $id');
+      await db.update(
+          'baskets',
+          {'deleteStatus': 1},
+          where: "id=?",
+          whereArgs: [id]);
     } else {
       await db.update(
-          "baskets",
+          'baskets',
           Basket(
                   id: id,
                   nameBasket: nameBasketForDb,
@@ -252,7 +261,8 @@ class MyDb {
                   isPaying: isPayingBasketForDb,
                   count: countBasketForDb! - 1,
                   createdAt: isCreatedBasketForDb,
-                  updatedAt: DateTime.now().toString().split(".")[0])
+                  updatedAt: DateTime.now().toString().split(".")[0],
+          deleteStatus: 0)
               .toJson(),
           where: "id=?",
           whereArgs: [id]);
@@ -426,6 +436,8 @@ class MyDb {
     var result = await db.update(
       'products',
       {'deleteStatus': 1}, // تغییر وضعیت به حذف شده
+      where: 'deleteStatus = ?',
+      whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
     );
 
     // تغییر وضعیت محصولات در سبد خرید (در صورتی که لازم باشد)
@@ -851,6 +863,8 @@ class MyDb {
     var result = await db.update(
       'customers',
       {'deleteStatus': 1},
+      where: 'deleteStatus = ?',
+      whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
     );
     if(result != 0){
       Get.snackbar(
@@ -999,8 +1013,10 @@ class MyDb {
   Future<int> deleteInvoices() async {
     final db = await MyDb().db();
     var result = await db.update('invoices',{
-      'deleteStatus': 1
-    });
+      'deleteStatus': 1,},
+      where: 'deleteStatus = ?',
+      whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
+    );
     if(result != 0){
       Get.snackbar(
         '',

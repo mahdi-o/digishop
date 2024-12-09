@@ -21,8 +21,8 @@ class BasketController extends GetxController {
   ProductController productController = ProductController();
   RxInt countSum = 0.obs;
   RxInt priceSum = 0.obs;
-  addBasketToDb(nameBasket, usernameId, productId, count, isPaying) async {
-    await MyDb().addOrUpdateBasket(nameBasket, usernameId, productId, count, isPaying);
+  addBasketToDb(nameBasket, usernameId, productId, count, isPaying,deleteStatus) async {
+    await MyDb().addOrUpdateBasket(nameBasket, usernameId, productId, count, isPaying,deleteStatus);
   }
 
   deleteBaskets() async {
@@ -113,10 +113,10 @@ class BasketController extends GetxController {
       countSum = 0.obs;
       priceSum = 0.obs;
     // Query for baskets that are not yet paid
-    final List<Map<String, dynamic>> basketMaps = await db.query('baskets', where: "isPaying=?", whereArgs: [0]);
+    final List<Map<String, dynamic>> basketMaps = await db.query('baskets', where: "isPaying=? AND deleteStatus=?", whereArgs: [0,0]);
 
     // Query for all products
-    final List<Map<String, dynamic>> productMaps = await db.query('products');
+    final List<Map<String, dynamic>> productMaps = await db.query('products',where: "deleteStatus=?",whereArgs: [0]);
 
     print(basketMaps.length);
     print('Fetching baskets...');

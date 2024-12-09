@@ -179,8 +179,8 @@ class HomeScreen extends GetView<HomeController> {
                                 FocusScope.of(context).unfocus();
                                 Get.toNamed(
                                   AppRoutes.proDet,
-                                  arguments: controller.listProductsBestDb[index],
-                                  parameters: {'username': username},
+                                  arguments: {'product':controller.listProductsBestDb[index], 'user':user},
+                                parameters: {'all':'all'}
                                 );
                               },
                               child: BoxRowProduct(
