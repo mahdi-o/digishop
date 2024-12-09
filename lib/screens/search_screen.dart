@@ -215,7 +215,8 @@ class SearchScreen extends GetView<MySearchController> {
                                                     arguments: {
                                                         'product':product,
                                                         'user':user
-                                                      });
+                                                      },
+                                                  parameters: {'all':'all'});
                                                 },
                                                 child: const Text(
                                                   'جزئیات',

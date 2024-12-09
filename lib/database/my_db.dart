@@ -619,6 +619,23 @@ class MyDb {
     }
   }
 
+  Future<List<Product>> getProductForInvoice() async {
+    final Database db = await MyDb().db();
+    final List<Map<String, dynamic>> maps = await db.query('products');
+    if (maps.isEmpty) {
+      return productList.value;
+    } else {
+      return List.generate(
+        maps.length,
+            (i) {
+          productList.value.add(Product.fromJson(maps[i]));
+          return (productList.value[i]);
+        },
+      );
+    }
+  }
+
+
   Future<List<Product>> getProductFromBas() async {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps = await db.query('products',where: "deleteStatus=?",whereArgs: [0]);

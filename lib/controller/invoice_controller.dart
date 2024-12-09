@@ -155,8 +155,8 @@ class InvoiceController extends GetxController {
 
     // بررسی مقداردهی مشتری و محصول
     try {
-      final proOrder = await db.query('products', where: 'nameProduct = ? AND deleteStatus=?', whereArgs: [nameProOrder,0]);
-      final idGetCus = await db.query('customers', where: 'nameCustomer = ? AND deleteStatus=?', whereArgs: [nameCusOrder,0]);
+      final proOrder = await db.query('products', where: 'nameProduct = ?', whereArgs: [nameProOrder]);
+      final idGetCus = await db.query('customers', where: 'nameCustomer = ?', whereArgs: [nameCusOrder]);
 
       if (proOrder.isEmpty || idGetCus.isEmpty) {
         print("محصول یا مشتری پیدا نشد");
@@ -220,7 +220,6 @@ class InvoiceController extends GetxController {
   }
 
   Future<void> addInvoice() async {
-
     final db = await MyDb().db();
     Invoice invoice = Invoice();
     Customer customer = Customer();
@@ -230,8 +229,8 @@ class InvoiceController extends GetxController {
     // بازیابی اطلاعات مشتری از دیتابیس
     var customerResult = await db.query(
       'customers',
-      where: 'nameCustomer = ? AND deleteStatus=?',
-      whereArgs: [listOrder.first.nameCustomer,0],
+      where: 'nameCustomer = ?',
+      whereArgs: [listOrder.first.nameCustomer],
     );
 
     if (customerResult.isEmpty) {
@@ -285,8 +284,8 @@ class InvoiceController extends GetxController {
       // چک کردن آیا محصول قبلا به فاکتور اضافه شده است یا خیر
       var existingProductResult = await db.query(
         'invoice_products',
-        where: 'idInvoice = ? AND idProduct = ?',
-        whereArgs: [invoice.id, product.id],
+        where: 'idInvoice = ? AND idProduct = ? AND deleteStatus=?',
+        whereArgs: [invoice.id, product.id,0],
       );
 
       if (existingProductResult.isNotEmpty) {
@@ -323,6 +322,7 @@ class InvoiceController extends GetxController {
           "idInvoice": invoice.id,
           "idProduct": product.id,
           "count": order.countOrder ?? 0,  // استفاده از ?? 0 برای جلوگیری از null
+          "deleteStatus":0,
         });
         Get.snackbar(
           '',
@@ -371,7 +371,7 @@ class InvoiceController extends GetxController {
   Future<List<Product>> getIdNameProductForInvoice() async {
     listProductsForInvoice.clear();
     MyDb xController = Get.find<MyDb>();
-    var p = await xController.getProduct();
+    var p = await xController.getProductForInvoice();
     listProductsForInvoice = xController.productList;
     for (int i = 0; i < listProductsForInvoice.length; i++) {
       listIdProducts.add(listProductsForInvoice[i].nameProduct!);

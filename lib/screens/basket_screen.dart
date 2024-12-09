@@ -362,14 +362,17 @@ class BasketScreen extends GetView<BasketController> {
                     ),
                     CustomButton(
                       colorBtn: Colors.white,
-                      textBtn: 'برگشت به صفحه اصلی',
+                      textBtn: 'نمایش محصولات',
                       textColor: kPurpleDark,
                       fontBtn: 'lalezarPlus',
-                      fontSizeBtn: 22,
+                      fontSizeBtn: 25,
                       shadowColor: kPurpleDark,
                       onTapped: () {
                         FocusScope.of(context).unfocus();
-                        Get.back();
+                        Get.toNamed(AppRoutes.showAllPro,
+                            arguments: user,
+                            parameters: {'all': 'all'});
+
                       },
                       splashColor: kPurpleDark,
                       borderColor: kPurpleDark,
@@ -531,9 +534,6 @@ class BasketScreen extends GetView<BasketController> {
                                                 },
                                                 child: GestureDetector(
                                                   onTap: () {
-                                                    String username = basket
-                                                        .usernameId
-                                                        .toString();
                                                     FocusScope.of(context)
                                                         .unfocus();
                                                     Get.toNamed(

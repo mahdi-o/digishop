@@ -237,6 +237,8 @@ class InvoiceDetails extends GetView<InvoiceController> {
     var res = await xController.readInvoiceProduct(invoice.id);
     for (var item in res) {
       listInvoiceProduct.add(item);
+      print(item.deleteStatus);
+      print('____________________WWWWWWWW______________');
     }
   }
 }

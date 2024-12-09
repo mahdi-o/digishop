@@ -175,7 +175,6 @@ class HomeScreen extends GetView<HomeController> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                String username = user.username.toString();
                                 FocusScope.of(context).unfocus();
                                 Get.toNamed(
                                   AppRoutes.proDet,
@@ -243,9 +242,9 @@ class HomeScreen extends GetView<HomeController> {
                                   String username = user.username.toString();
                                   FocusScope.of(context).unfocus();
                                   Get.toNamed(
-                                    AppRoutes.proDet,
-                                    arguments: controller.listProductsBestDb[index],
-                                    parameters: {'username': username},
+                                      AppRoutes.proDet,
+                                      arguments: {'product':controller.listProductsBestDb[index], 'user':user},
+                                      parameters: {'all':'all'}
                                   );
                                 },
                                 child: BoxRowProduct(
