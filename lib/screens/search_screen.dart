@@ -214,7 +214,7 @@ class SearchScreen extends GetView<MySearchController> {
                                                     AppRoutes.proDet,
                                                     arguments: {
                                                         'product':product,
-                                                        'user':user
+                                                        'user':user,'roll':'home'
                                                       },
                                                   parameters: {'all':'all'});
                                                 },

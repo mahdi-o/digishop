@@ -58,30 +58,36 @@ class BoxRowProduct extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 40.0, top: 10),
-                    child: Row(
-                      children: [
-                        Text(
-                          separateDigits(int.parse(price)),
-                          style: TextStyle(
-                              fontFamily: 'Titr',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: kPinkDark.withOpacity(0.7)),
+                    padding: const EdgeInsets.only(right: 30.0, top: 0),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SizedBox(
+                        height: 30,
+                        child: Row(
+                          children: [
+                            Text(
+                              separateDigits(int.parse(price)),
+                              style: TextStyle(
+                                  fontFamily: 'Titr',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: kPinkDark.withOpacity(0.7)),
+                            ),
+                            Text(
+                              ' تومان',
+                              style: TextStyle(
+                                  fontFamily: 'Titr',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: kPinkDark.withOpacity(0.7)),
+                            ),
+                          ],
                         ),
-                        Text(
-                          ' تومان',
-                          style: TextStyle(
-                              fontFamily: 'Titr',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: kPinkDark.withOpacity(0.7)),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -96,7 +102,7 @@ class BoxRowProduct extends StatelessWidget {
                         child: const Center(
                             child: Text(
                           'جزئیات',
-                          style: TextStyle(fontFamily: 'Titr', fontSize: 15),
+                          style: TextStyle(fontFamily: 'lalezarPlus', fontSize: 18),
                         )),
                       ),
                       Obx(

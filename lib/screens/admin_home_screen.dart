@@ -284,7 +284,7 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor
                               :Colors.black,
                           voidCallback: () {FocusScope.of(context).unfocus(); Get.toNamed(AppRoutes.showAllPro,
-                              arguments: user,
+                              arguments: {'user':user,'roll':'admin'},
                               parameters: {'all': 'all'});}),
                     ],
                   ),

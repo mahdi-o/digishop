@@ -303,7 +303,7 @@ class MyDb {
         '',
         titleText: const Text(
           'ثبت محصول',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
+          style: TextStyle(fontSize: 20, color: kPurpleDark),
         ),
         messageText: const Text(
           'محصول با موفقیت ثبت شد',
@@ -320,11 +320,11 @@ class MyDb {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'محصولی با این نام قبلا در سیستم ثبت شده است',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
         padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
@@ -348,11 +348,11 @@ class MyDb {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'این محصول در سیستم موجود نمی باشد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
         padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
@@ -389,7 +389,7 @@ class MyDb {
         '',
         titleText: const Text(
           'ویرایش اطلاعات',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
+          style: TextStyle(fontSize: 20, color: kPurpleDark),
         ),
         messageText: const Text(
           'اطلاعات محصول با موفقیت ویرایش شد',
@@ -455,11 +455,11 @@ class MyDb {
         '',
         titleText: const Text(
           'حذف محصولات',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'تمامی محصولات با موفقیت حذف شدند',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         backgroundColor: kPurpleDark,
         colorText: Colors.white,
@@ -473,11 +473,11 @@ class MyDb {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'حذف محصولات با خطا مواجه شد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
 
         icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
@@ -522,11 +522,11 @@ class MyDb {
         '',
         titleText: const Text(
           'حذف محصول',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'محصول با موفقیت حذف شد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         backgroundColor: kPurpleDark,
         colorText: Colors.white,
@@ -539,11 +539,11 @@ class MyDb {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'حذف محصول با خطا مواجه شد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         icon: const Icon(Icons.highlight_remove_outlined, color: Colors.white, size: 35),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -687,7 +687,7 @@ class MyDb {
         '',
         titleText: const Text(
           'ثبت مشتری',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
+          style: TextStyle(fontSize: 20, color: kPurpleDark),
         ),
         messageText: const Text(
           'اطلاعات مشتری با موفقیت ثبت شد',
@@ -704,11 +704,11 @@ class MyDb {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'مشتری با این نام کاربری قبلا در سیستم ثبت شده است',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
 
         icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
@@ -732,11 +732,11 @@ class MyDb {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'این مشتری در سیستم موجود نمی باشد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
         padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
@@ -768,7 +768,7 @@ class MyDb {
         '',
         titleText: const Text(
           'ویرایش اطلاعات',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
+          style: TextStyle(fontSize: 20, color: kPurpleDark),
         ),
         messageText: const Text(
           'اطلاعات مشتری با موفقیت ویرایش شد',
@@ -1042,11 +1042,11 @@ class MyDb {
         '',
         titleText: const Text(
           'حذف فاکتورها',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'تمام فاکتورها با موفقیت حذف شدند',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         backgroundColor: kPurpleDark,
         colorText: Colors.white,
@@ -1059,11 +1059,11 @@ class MyDb {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'حذف فاکتورها با خطا مواجه شد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
 
         icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
@@ -1107,11 +1107,11 @@ class MyDb {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'حذف فاکتور با خطا مواجه شد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
 
         icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
@@ -1155,7 +1155,7 @@ class MyDb {
           '',
           titleText: const Text(
             'پرداخت فاکتور',
-            style: TextStyle(fontSize: 18, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: Colors.white),
           ),
           messageText: const Text(
             'وضعیت فاکتور با موفقیت به پرداخت شده تغییر کرد',
@@ -1173,7 +1173,7 @@ class MyDb {
           '',
           titleText: const Text(
             'اخطار',
-            style: TextStyle(fontSize: 18, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: Colors.white),
           ),
           messageText: const Text(
             'وضعیت فاکتور پرداخت شده می باشد',
@@ -1193,7 +1193,7 @@ class MyDb {
         '',
         titleText: const Text(
           'پرداخت ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'فاکتور برای تغییر به حالت پرداخت شده یافت نشد!',

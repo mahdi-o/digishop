@@ -57,7 +57,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                               height: 50, // ارتفاع ثابت برای هدر
                               child: GestureDetector(
                                 onTap: (){
-                                  Get.toNamed(AppRoutes.showAllPro,arguments: user);
+                                  Get.toNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},);
                                 },
                                 child: NavbarCustom(
                                   text1: '',

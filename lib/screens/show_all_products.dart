@@ -17,7 +17,8 @@ import 'admin_home_screen.dart';
 class ShowAllProducts extends GetView<ProductController> {
   ShowAllProducts({super.key});
 
-  final User user = Get.arguments;
+  final User user = Get.arguments['user'];
+  final String roll = Get.arguments['roll'];
   final String brandHomeScreen = Get.parameters['all']!;
   final MyDb myDb = Get.find<MyDb>();
   @override
@@ -71,7 +72,8 @@ class ShowAllProducts extends GetView<ProductController> {
               print(item.nameProduct);
 
               // چک کردن وجود محصول در لیست قبل از اضافه کردن آن
-              if (!products.any((existingItem) => existingItem.nameProduct == item.nameProduct)) {
+              if (!products.any((existingItem) =>
+              existingItem.nameProduct == item.nameProduct)) {
                 products.add(item);
               }
             }
@@ -81,47 +83,47 @@ class ShowAllProducts extends GetView<ProductController> {
           context,
           products.isEmpty
               ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 120.0),
-                    child: Text(
-                      'محصولی یافت نشد!',
-                      style:
-                          TextStyle(color: Colors.grey.shade600, fontSize: 30),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 120.0),
+              child: Text(
+                'محصولی یافت نشد!',
+                style:
+                TextStyle(color: Colors.grey.shade600, fontSize: 30),
+              ),
+            ),
+          )
+              : ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: 80),
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final product = products[index];
+              print(product.deleteStatus);
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          _buildProductImage(product),
+                          const SizedBox(width: 5),
+                          _buildProductInfo(product, context),
+                        ],
+                      ),
                     ),
                   ),
-                )
-              : ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.only(bottom: 80),
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    final product = products[index];
-                    print(product.deleteStatus);
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 140,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              children: [
-                                _buildProductImage(product),
-                                const SizedBox(width: 5),
-                                _buildProductInfo(product, context),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Divider(color: Colors.grey),
-                      ],
-                    );
-                  },
-                ),
+                  const Divider(color: Colors.grey),
+                ],
+              );
+            },
+          ),
         );
       },
     );
@@ -129,8 +131,8 @@ class ShowAllProducts extends GetView<ProductController> {
 
   Widget _buildProductImage(Product product) {
     return Padding(
-      padding: const EdgeInsets.only(
-        right: 10.0,
+      padding:  EdgeInsets.only(
+        right: roll=='admin'?10.0:0.0,
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -140,9 +142,9 @@ class ShowAllProducts extends GetView<ProductController> {
         child: product.imageAddress != null && product.imageAddress!.isNotEmpty
             ? Image.asset(product.imageAddress!, width: 140)
             : const CircleAvatar(
-                backgroundImage: AssetImage('assets/images/slider5.jpg'),
-                radius: 70,
-              ),
+          backgroundImage: AssetImage('assets/images/slider5.jpg'),
+          radius: 70,
+        ),
       ),
     );
   }
@@ -185,23 +187,26 @@ class ShowAllProducts extends GetView<ProductController> {
               IconButton(
                 onPressed: () {
                   Get.toNamed(
-                    AppRoutes.adminProUpd,
-                    arguments: {'product':product,'user':user},
-                    parameters: {'all':brandHomeScreen}
+                      AppRoutes.adminProUpd,
+                      arguments: {'product': product, 'user': user},
+                      parameters: {'all': brandHomeScreen}
                   );
                 },
-                icon: const Icon(Icons.edit_rounded, color: kPurpleDark),
+                icon: roll == 'admin' ? Icon(
+                    Icons.edit_rounded, color: kPurpleDark) : Icon(null),
               ),
               const SizedBox(width: 5),
               _buildDetailsButton(product),
               const SizedBox(width: 20),
+
               GestureDetector(
-                onTap: () async {
-                  dialogCustom('آیا از حذف این محصول اطمینان دارید؟', 20, () async{
+                onTap:roll=='admin'? () async {
+                  dialogCustom(
+                      'آیا از حذف این محصول اطمینان دارید؟', 20, () async {
                     Get.back();
                     var result = await myDb.deleteProduct(product.id ?? -1);
                     print(result);
-                    if(result != 0){
+                    if (result != 0) {
                       FocusScope.of(context).unfocus();
                       controller.clear();
                       Future.delayed(const Duration(milliseconds: 2500), () {
@@ -214,15 +219,14 @@ class ShowAllProducts extends GetView<ProductController> {
                               milliseconds: 500), // مدت زمان انیمیشن
                         );
                       });
-
                     }
                   });
-                },
-                child: const Icon(
+                }:(){},
+                child: roll == 'admin' ? Icon(
                   Icons.delete_outline_rounded,
                   size: 35,
                   color: kPurpleDark,
-                ),
+                ) : Icon(null),
               ),
             ],
           ),
@@ -238,7 +242,7 @@ class ShowAllProducts extends GetView<ProductController> {
         floating:
         FloatingActionButton(
           onPressed: () {
-            Get.toNamed(AppRoutes.adminHome,arguments: user);
+            Get.toNamed(roll=='admin'?AppRoutes.adminHome:AppRoutes.home, arguments: user);
           },
           elevation: 20,
           foregroundColor: Colors.black,
@@ -253,7 +257,7 @@ class ShowAllProducts extends GetView<ProductController> {
         child:
         Padding(
           padding:
-              const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
+          const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
           child: Column(
             children: [
               // ویجت NavbarCustom ثابت
@@ -266,13 +270,15 @@ class ShowAllProducts extends GetView<ProductController> {
                   size2: 26,
                   fontFace1: 'lalezarPlus',
                   fontFace2: 'lalezarPlus',
-                  icon1: Icons.delete_outline_rounded,
+                  icon1: roll == 'admin' ? Icons.delete_outline_rounded : null,
                   onTapIcon2: () async {
-                    dialogCustom('آیا از حذف تمامی محصولات اطمینان دارید؟', 20, () async{
+                    roll == 'admin' ? dialogCustom(
+                        'آیا از حذف تمامی محصولات اطمینان دارید؟',
+                        20, () async {
                       Get.back();
-                      var result =await MyDb().deleteProducts();
+                      var result = await MyDb().deleteProducts();
                       print(result);
-                      if(result != 0){
+                      if (result != 0) {
                         FocusScope.of(context).unfocus();
                         Future.delayed(const Duration(milliseconds: 2500), () {
                           Get.off(
@@ -284,16 +290,15 @@ class ShowAllProducts extends GetView<ProductController> {
                                 milliseconds: 500), // مدت زمان انیمیشن
                           );
                         });
-
                       }
-                    });
+                    }):(){};
                   },
                   icon2: null,
                 ),
               ),
               // محتوای اسکرول‌شونده
               Expanded(
-                child:child
+                  child: child
               ),
             ],
           ),
@@ -307,19 +312,20 @@ class ShowAllProducts extends GetView<ProductController> {
         borderRadius: BorderRadius.circular(50),
         color: kPurpleLight,
       ),
-      width: 110,
-      height: 35,
+      width: roll == 'admin' ? 110 : 130,
+      height: roll == 'admin' ? 35 : 45,
       child: Center(
         child: GestureDetector(
           onTap: () {
             Get.toNamed(
-              AppRoutes.proDet,
-              arguments: {'product':product, 'user':user},
-                parameters: {'all':brandHomeScreen});
+                AppRoutes.proDet,
+                arguments: {'product': product, 'user': user,'roll':roll},
+                parameters: {'all': brandHomeScreen});
           }, // Add your navigation action here.
-          child: const Text(
+          child: Text(
             'جزئیات',
-            style: TextStyle(fontFamily: 'lalezarPlus', fontSize: 18),
+            style: TextStyle(
+                fontFamily: 'lalezarPlus', fontSize: roll == 'admin' ? 18 : 20),
           ),
         ),
       ),

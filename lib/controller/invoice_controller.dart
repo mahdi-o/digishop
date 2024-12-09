@@ -306,7 +306,7 @@ class InvoiceController extends GetxController {
           '',
           titleText: const Text(
             'بروزرسانی تعداد محصول',
-            style: TextStyle(fontSize: 18, color: kPurpleDark),
+            style: TextStyle(fontSize: 20, color: kPurpleDark),
           ),
           messageText: const Text(
             'بروزرسانی تعداد محصول با موفقیت ثبت شد',
@@ -329,7 +329,7 @@ class InvoiceController extends GetxController {
           '',
           titleText: const Text(
             'ثبت فاکتور',
-            style: TextStyle(fontSize: 18, color: kPurpleDark),
+            style: TextStyle(fontSize: 20, color: kPurpleDark),
           ),
           messageText: const Text(
             'محصول با موفقیت در فاکتور ثبت شد',
@@ -400,11 +400,11 @@ class InvoiceController extends GetxController {
         '',
         titleText: const Text(
           'عملیات ناموفق',
-          style: TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         messageText: const Text(
           'حذف سفارش با خطا مواجه شد',
-          style: TextStyle(fontSize: 16, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
 
         icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),

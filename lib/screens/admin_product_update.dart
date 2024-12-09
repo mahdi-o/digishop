@@ -28,7 +28,7 @@ class AdminProductUpdate extends GetView<ProductController> {
       floating: FloatingActionButton(
         onPressed: () {
           controller.clear();
-          Get.toNamed(AppRoutes.showAllPro,arguments: user,parameters: {'all':brandHomeScreen});
+          Get.toNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},parameters: {'all':brandHomeScreen});
         },
         elevation: 20,
         foregroundColor: Colors.black,
@@ -245,7 +245,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                     if(result != 0){
                       FocusScope.of(context).unfocus();
                       Future.delayed(const Duration(milliseconds: 2500),() {
-                        Get.toNamed(AppRoutes.showAllPro,arguments: user,parameters: {'all':brandHomeScreen});
+                        Get.toNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},parameters: {'all':brandHomeScreen});
                       },);
                     }
                   },

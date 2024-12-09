@@ -115,7 +115,7 @@ class HomeScreen extends GetView<HomeController> {
                                 FocusScope.of(context).unfocus();
                                 Get.toNamed(
                                   AppRoutes.showAllPro,
-                                  arguments: user,
+                                  arguments: {'user':user,'roll':'home'},
                                   parameters: {'all': '${categoryList[i].name}'},
                                 );
                               },
@@ -149,7 +149,7 @@ class HomeScreen extends GetView<HomeController> {
                             onTap: () {
                               FocusScope.of(context).unfocus();
                               Get.toNamed(AppRoutes.showAllPro,
-                                  arguments: user,
+                                  arguments: {'user':user,'roll':'home'},
                                   parameters: {'all': 'all'});
                             },
                             child: Text(
@@ -178,7 +178,7 @@ class HomeScreen extends GetView<HomeController> {
                                 FocusScope.of(context).unfocus();
                                 Get.toNamed(
                                   AppRoutes.proDet,
-                                  arguments: {'product':controller.listProductsBestDb[index], 'user':user},
+                                  arguments: {'product':controller.listProductsBestDb[index], 'user':user,'roll':'home'},
                                 parameters: {'all':'all'}
                                 );
                               },
@@ -211,7 +211,7 @@ class HomeScreen extends GetView<HomeController> {
                             onTap: () {
                               FocusScope.of(context).unfocus();
                               Get.toNamed(AppRoutes.showAllPro,
-                                  arguments: user,
+                                  arguments: {'user':user,'roll':'home'},
                                   parameters: {'all': 'all'});
                             },
                             child: Text(
@@ -243,7 +243,7 @@ class HomeScreen extends GetView<HomeController> {
                                   FocusScope.of(context).unfocus();
                                   Get.toNamed(
                                       AppRoutes.proDet,
-                                      arguments: {'product':controller.listProductsBestDb[index], 'user':user},
+                                      arguments: {'product':controller.listProductsBestDb[index], 'user':user,'roll':'home'},
                                       parameters: {'all':'all'}
                                   );
                                 },

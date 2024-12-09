@@ -370,7 +370,7 @@ class BasketScreen extends GetView<BasketController> {
                       onTapped: ()async {
                         FocusScope.of(context).unfocus();
                         Get.toNamed(AppRoutes.showAllPro,
-                            arguments: user,
+                            arguments: {'user':user,'roll':'home'},
                             parameters: {'all': 'all'});
                       },
                       splashColor: kPurpleDark,
@@ -542,34 +542,26 @@ class BasketScreen extends GetView<BasketController> {
                                               height: 35,
                                               child: Center(
                                                   child: GestureDetector(
-                                                onTap: () {
-                                                  FocusScope.of(context)
-                                                      .unfocus();
-                                                  Get.toNamed(
-                                                      'AppRoutes.proDet,arguments: product');
-                                                },
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    FocusScope.of(context)
-                                                        .unfocus();
-                                                    Get.toNamed(
-                                                        AppRoutes.proDet,
-                                                        arguments: {
-                                                          'product':product,
-                                                          'user':user
-                                                        },
-                                                        parameters: {
-                                                          'all': 'all'
-                                                        });
-                                                  },
-                                                  child: const Text(
-                                                    'جزئیات',
-                                                    style: TextStyle(
-                                                        fontFamily: 'Titr',
-                                                        fontSize: 16),
-                                                  ),
-                                                ),
-                                              )),
+                                                    onTap: () {
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+                                                      Get.toNamed(
+                                                          AppRoutes.proDet,
+                                                          arguments: {
+                                                            'product':product,
+                                                            'user':user,'roll':'home'
+                                                          },
+                                                          parameters: {
+                                                            'all': 'all'
+                                                          });
+                                                    },
+                                                    child: const Text(
+                                                      'جزئیات',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Titr',
+                                                          fontSize: 16),
+                                                    ),
+                                                  )),
                                             ),
                                             const SizedBox(
                                               width: 20,
