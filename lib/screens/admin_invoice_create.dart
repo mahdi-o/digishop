@@ -18,7 +18,6 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.clear();
     return Obx(
       () => BaseWidget(
         appBar: null,

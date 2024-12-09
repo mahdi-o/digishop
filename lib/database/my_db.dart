@@ -918,7 +918,7 @@ class MyDb {
     final db = await MyDb().db();
     Invoice invoice = Invoice();
     var res = await db.query('invoices',
-        where: "idCustomer=? AND isPaying=?", whereArgs: [idCustomer, 0]);
+        where: "idCustomer=? AND isPaying=? AND deleteStatus=?", whereArgs: [idCustomer, 0,0]);
     if (res.isEmpty) {
       return 'null res';
     } else {
@@ -938,7 +938,7 @@ class MyDb {
     final db = await MyDb().db();
     InvoiceProducts invoicePro = InvoiceProducts();
     List<Map<String, dynamic>> maps = await db
-        .query('invoice_products', where: "idInvoice=?", whereArgs: [idInvoice]);
+        .query('invoice_products', where: "idInvoice=? AND deleteStatus=?", whereArgs: [idInvoice,0]);
     if (maps.isEmpty) {
       print('null');
       return invoiceProductsList.value;
@@ -958,7 +958,7 @@ class MyDb {
   Future<List<Map<String, dynamic>>> readInvoices() async {
     final db = await MyDb().db();
     List<Map<String, dynamic>> maps =
-        await db.query('invoices', where: "isPaying=?", whereArgs: [0]);
+        await db.query('invoices', where: "isPaying=? AND deleteStatus=?", whereArgs: [0,0]);
     if (maps.isEmpty) {
       print(maps.length);
       return maps;
@@ -970,7 +970,7 @@ class MyDb {
 
   Future<List<Map<String, dynamic>>> readInvoiceProducts() async {
     final db = await MyDb().db();
-    List<Map<String, dynamic>> maps = await db.query('invoice_products');
+    List<Map<String, dynamic>> maps = await db.query('invoice_products', where: "deleteStatus=?", whereArgs: [0]);
     if (maps.isEmpty) {
       print(maps.length);
       return maps;
@@ -982,7 +982,7 @@ class MyDb {
 
   Future<List<Invoice>> getInvoice() async {
     final Database db = await MyDb().db();
-    final List<Map<String, dynamic>> maps = await db.query('invoices');
+    final List<Map<String, dynamic>> maps = await db.query('invoices', where: "deleteStatus=?", whereArgs: [0]);
     if (maps.isEmpty) {
       return invoiceList.value;
     } else {
@@ -998,7 +998,9 @@ class MyDb {
 
   Future<int> deleteInvoices() async {
     final db = await MyDb().db();
-    var result = await db.delete('invoices');
+    var result = await db.update('invoices',{
+      'deleteStatus': 1
+    });
     if(result != 0){
       Get.snackbar(
         '',
@@ -1043,7 +1045,9 @@ class MyDb {
 
   Future<int> deleteInvoice(int id) async {
     final db = await MyDb().db();
-     var result = await db.delete('invoices',where: "id=?",whereArgs:[id]);
+     var result = await db.update('invoices',{
+       'deleteStatus': 1
+     },where: "id=?",whereArgs:[id]);
     if(result!=0){
       Get.snackbar(
         '',
@@ -1095,7 +1099,7 @@ class MyDb {
   Future<int> changePayInvoice(int id)async{
     final Database db = await MyDb().db();
     Invoice invoice = Invoice();
-    var res = await db.query("invoices",where: "id=?",whereArgs: [id]);
+    var res = await db.query("invoices",where: "id=? AND deleteStatus=?",whereArgs: [id,0]);
     var jam = res.isNotEmpty?invoice=Invoice.fromJson(res.first):Null;
     if(jam != Null){
      // factor vojod dard baraye update
@@ -1109,6 +1113,7 @@ class MyDb {
           createdAt: invoice.createdAt,
           isPaying: 1,
           updatedAt: DateTime.now().toString().split(".")[0],
+          deleteStatus: invoice.deleteStatus,
         ).toJson(), where: "id=?", whereArgs: [id]);
         Get.snackbar(
           '',
@@ -1166,4 +1171,16 @@ class MyDb {
       return 0;}
   }
 
+  Future<List<Map<String, dynamic>>> getListByCheck()async{
+    final db = await MyDb().db();
+    List<Map<String, dynamic>> maps =
+    await db.query('invoices');
+    if (maps.isEmpty) {
+      print(maps.length);
+      return maps;
+    } else {
+      print(maps.length);
+      return maps;
+    }
+  }
 }

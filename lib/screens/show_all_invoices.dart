@@ -267,7 +267,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
               SizedBox(
                 height: 60,
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async{
                     // Tooltip(
                     //   message: "اینجا می‌توانید فاکتورهای جدید اضافه کنید.",
                     //   textStyle: TextStyle(fontSize: 50, color: Colors.red),
@@ -279,6 +279,8 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                     //     },
                     //   ),
                     // );
+                    var res =await myDb.getListByCheck();
+                    print(res.toList());
                   },
                   child: NavbarCustom(
                     text1: '  فاکتورها ',

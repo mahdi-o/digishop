@@ -155,8 +155,8 @@ class InvoiceController extends GetxController {
 
     // بررسی مقداردهی مشتری و محصول
     try {
-      final proOrder = await db.query('products', where: 'nameProduct = ?', whereArgs: [nameProOrder]);
-      final idGetCus = await db.query('customers', where: 'nameCustomer = ?', whereArgs: [nameCusOrder]);
+      final proOrder = await db.query('products', where: 'nameProduct = ? AND deleteStatus=?', whereArgs: [nameProOrder,0]);
+      final idGetCus = await db.query('customers', where: 'nameCustomer = ? AND deleteStatus=?', whereArgs: [nameCusOrder,0]);
 
       if (proOrder.isEmpty || idGetCus.isEmpty) {
         print("محصول یا مشتری پیدا نشد");
@@ -207,6 +207,7 @@ class InvoiceController extends GetxController {
           status: 'false',
           createdAt: DateTime.now().toString().split(".")[0],
           updatedAt: DateTime.now().toString().split(".")[0],
+          deleteStatus: 0,
         ));
       }
 
@@ -229,8 +230,8 @@ class InvoiceController extends GetxController {
     // بازیابی اطلاعات مشتری از دیتابیس
     var customerResult = await db.query(
       'customers',
-      where: 'nameCustomer = ?',
-      whereArgs: [listOrder.first.nameCustomer],
+      where: 'nameCustomer = ? AND deleteStatus=?',
+      whereArgs: [listOrder.first.nameCustomer,0],
     );
 
     if (customerResult.isEmpty) {
@@ -244,8 +245,8 @@ class InvoiceController extends GetxController {
     // چک کردن وجود فاکتور باز برای مشتری
     var invoiceResult = await db.query(
       'invoices',
-      where: 'idCustomer = ? AND isPaying = ?',
-      whereArgs: [idCustomer, 0],
+      where: 'idCustomer = ? AND isPaying = ? AND deleteStatus=?',
+      whereArgs: [idCustomer, 0,0],
     );
 
     // اگر فاکتور باز وجود ندارد، فاکتور جدید ایجاد می‌شود
@@ -257,7 +258,8 @@ class InvoiceController extends GetxController {
         "discount": discount.value.text,
         "isPaying": isPay.value,
         "createdAt": DateTime.now().toString().split(".")[0],
-        "updatedAt": DateTime.now().toString().split(".")[0]
+        "updatedAt": DateTime.now().toString().split(".")[0],
+        "deleteStatus":0,
       });
       invoice.id = invoiceId;
     } else {
@@ -326,7 +328,7 @@ class InvoiceController extends GetxController {
           '',
           '',
           titleText: const Text(
-            'افزودن محصول',
+            'ثبت فاکتور',
             style: TextStyle(fontSize: 18, color: kPurpleDark),
           ),
           messageText: const Text(
