@@ -1,6 +1,7 @@
 import 'package:digishop/constans.dart';
 import 'package:digishop/models/Invoice.dart';
 import 'package:digishop/models/invoiceProducts.dart';
+import 'package:digishop/screens/show_all_invoices.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/row_details_models.dart';
 import 'package:flutter/material.dart';
@@ -215,7 +216,40 @@ class InvoiceDetails extends GetView<InvoiceController> {
                                     style:
                                     const TextStyle(color: Colors.white),
                                   ),
+
                                 ],
+                              ),
+                              const SizedBox(width: 20),
+
+                              GestureDetector(
+                                onTap: () async{
+                                    var result = await controller.deleteOrder();
+                                    if(result != 0){
+                                      FocusScope.of(context).unfocus();
+                                      controller.clear();
+                                      Future.delayed(const Duration(milliseconds: 2500), () {
+                                        Get.off(
+                                              () => ShowAllInvoices(), arguments: user,
+                                          // صفحه مقصد
+                                          transition: Transition.zoom,
+                                          // نوع انیمیشن
+                                          duration: const Duration(
+                                              milliseconds: 500), // مدت زمان انیمیشن
+                                        );
+                                      });
+
+                                    }
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 5.0),
+                                  child: Icon(
+                                    Icons
+                                        .delete_forever_outlined,
+                                    color: Colors.black,
+                                    size: 30,
+                                  ),
+                                ),
                               ),
                             ],
                           ),

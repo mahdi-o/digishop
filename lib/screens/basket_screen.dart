@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/basket_controller.dart';
 import 'package:digishop/database/my_db.dart';
@@ -322,6 +321,7 @@ class BasketScreen extends GetView<BasketController> {
 
   @override
   Widget build(BuildContext context) {
+    print('{{}{++++++}}');
     return Obx(
       () => BaseWidget(
         color: Colors.white,
@@ -367,12 +367,11 @@ class BasketScreen extends GetView<BasketController> {
                       fontBtn: 'lalezarPlus',
                       fontSizeBtn: 25,
                       shadowColor: kPurpleDark,
-                      onTapped: () {
+                      onTapped: ()async {
                         FocusScope.of(context).unfocus();
                         Get.toNamed(AppRoutes.showAllPro,
                             arguments: user,
                             parameters: {'all': 'all'});
-
                       },
                       splashColor: kPurpleDark,
                       borderColor: kPurpleDark,
@@ -432,10 +431,27 @@ class BasketScreen extends GetView<BasketController> {
                               orElse: () =>
                                   Product(), // اگر محصول یافت نشد، یک محصول خالی برمی‌گرداند
                             );
+                            print(basket.productId);
+                            print('++++++++++++');
+                            print(product.id);
+                            print('---------');
+                            print(product.deleteStatus);
+                            print('===========');
+                            print(basket.deleteStatus);
+                            print('//////////////');
+
                           } else {
                             print('bug freoooooooooooo');
                             product =
                                 Product(); // اگر لیست خالی بود، محصول پیش‌فرض تخصیص داده می‌شود
+                            print(basket.productId);
+                            print(')))))))))))))))');
+                            print(product.id);
+                            print('(((((((((((((((---------)))))))))))))))');
+                            print(product.deleteStatus);
+                            print('***************');
+                            print(basket.deleteStatus);
+                            print('&&&&&&&&&&&&&&');
                           }
 
                           return Container(
@@ -455,15 +471,15 @@ class BasketScreen extends GetView<BasketController> {
                                           color: kPurpleLight,
                                           borderRadius:
                                               BorderRadius.circular(150)),
-                                      child: Image.asset(
-                                        product.imageAddress!.isEmpty
-                                            ? proLaptopListCustom[
-                                                    Random().nextInt(10)]
-                                                .imageAddress
-                                                .toString()
-                                            : product.imageAddress.toString(),
-                                        width: 90,
-                                      ),
+                                      // child: Image.asset(
+                                      //   product.imageAddress!.isEmpty
+                                      //       ? proLaptopListCustom[
+                                      //               Random().nextInt(10)]
+                                      //           .imageAddress
+                                      //           .toString()
+                                      //       : product.imageAddress.toString(),
+                                      //   width: 90,
+                                      // ),
                                     ),
                                     const SizedBox(
                                       width: 15,

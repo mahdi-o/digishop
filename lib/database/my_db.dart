@@ -416,7 +416,6 @@ class MyDb {
   Future<String> readProduct(int id) async {
     final Database db = await MyDb().db();
     Product pro = Product();
-
     var res = await db.query("products", where: "id = ? AND deleteStatus=?", whereArgs: [id,0]);
     if (res.isEmpty) {
       return 'null res';
@@ -505,10 +504,12 @@ class MyDb {
     );
 
     // تغییر وضعیت محصولات در سبد خرید (در صورتی که لازم باشد)
-    var deleteProFromBas = await db.rawUpdate(
-      'UPDATE baskets SET productId = NULL WHERE productId = ?',
-      [id], // تغییر وضعیت سبد خرید با شناسه محصول مشخص
-    );
+    var deleteProFromBas = await db.update('baskets', {
+      'productId':-1,
+      'deleteStatus':1
+    },where: "productId=? AND deleteStatus=?",whereArgs: [id,0]);
+    // تغییر وضعیت سبد خرید با شناسه محصول مشخص
+
 
     // چاپ نتیجه‌ها برای بررسی
     print(result);
@@ -618,6 +619,7 @@ class MyDb {
       );
     }
   }
+
 
   Future<List<Product>> getProductForInvoice() async {
     final Database db = await MyDb().db();

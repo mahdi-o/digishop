@@ -229,8 +229,8 @@ class InvoiceController extends GetxController {
     // بازیابی اطلاعات مشتری از دیتابیس
     var customerResult = await db.query(
       'customers',
-      where: 'nameCustomer = ?',
-      whereArgs: [listOrder.first.nameCustomer],
+      where: 'nameCustomer = ? AND deleteStatus=?',
+      whereArgs: [listOrder.first.nameCustomer,0],
     );
 
     if (customerResult.isEmpty) {
@@ -270,8 +270,8 @@ class InvoiceController extends GetxController {
       // بازیابی محصول از دیتابیس
       var productResult = await db.query(
         'products',
-        where: 'nameProduct = ?',
-        whereArgs: [order.nameProduct],
+        where: 'nameProduct = ? AND deleteStatus=?',
+        whereArgs: [order.nameProduct,0],
       );
 
       if (productResult.isEmpty) {
@@ -366,6 +366,56 @@ class InvoiceController extends GetxController {
     listOrders.clear();
     listOrder.clear();
     listInvoicesDb.clear();
+  }
+
+  Future<int> deleteOrder()async{
+    final db = await MyDb().db();
+      var result = await  db.update(
+      'invoice_products',
+      {'deleteStatus': 1}, // تغییر وضعیت به حذف شده
+      where: 'deleteStatus = ?',
+      whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
+    );
+    if(result!=0){
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف سفارش',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'سفارش با موفقیت حذف شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    }
+    else{
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف سفارش با خطا مواجه شد',
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+
+        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
+        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
   }
 
   Future<List<Product>> getIdNameProductForInvoice() async {
