@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../database/my_db.dart';
 
 class CustomerController extends GetxController{
+
   Rx<TextEditingController> nameCustomer =TextEditingController().obs;
   Rx<TextEditingController> username =TextEditingController().obs;
   Rx<TextEditingController> password =TextEditingController().obs;
@@ -12,16 +13,16 @@ class CustomerController extends GetxController{
   Rx<TextEditingController> email =TextEditingController().obs;
   Rx<TextEditingController> wallet =TextEditingController().obs;
   Rx<TextEditingController> address =TextEditingController().obs;
-  RxList<Customer> listCustomersDb = <Customer>[].obs;
   Rx<TextEditingController> changePassword = TextEditingController().obs;
 
+  RxList<Customer> listCustomersDb = <Customer>[].obs;
+
   Future<List<Customer>>getListCustomer()async{
-    listCustomersDb.value.clear();
+    listCustomersDb.clear();
     listCustomersDb.value = await MyDb().getCustomer();
-    print(listCustomersDb.value.toList().length);
-    print('babo babo babooooooooooooooo');
-    return listCustomersDb.value;
+    return listCustomersDb;
   }
+
   clear()async{
     nameCustomer.value.clear();
      username.value.clear();
@@ -31,6 +32,7 @@ class CustomerController extends GetxController{
      wallet.value.clear();
      address.value.clear();
   }
+
   @override
   void onInit() async{
     // TODO: implement onInit

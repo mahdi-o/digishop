@@ -11,7 +11,7 @@ import '../models/User.dart';
 
 class IntroScreen extends GetView<RegisterLoginController> {
    IntroScreen({super.key});
-  User user = Get.arguments;
+  final User user = Get.arguments;
   @override
   Widget build(BuildContext context) {
     return BaseWidget(color: Colors.white,

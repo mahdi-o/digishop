@@ -5,21 +5,21 @@ import 'package:digishop/models/Customer.dart';
 import 'package:digishop/models/Invoice.dart';
 import 'package:digishop/models/invoiceProducts.dart';
 import 'package:digishop/models/Product.dart';
-import 'package:digishop/services/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MyDb {
+
   RxList<Basket> basketList = <Basket>[].obs;
   RxList<Product> productList = <Product>[].obs;
   RxList<Product> productListForShowOrder = <Product>[].obs;
-
   RxList<Customer> customerList = <Customer>[].obs;
   RxList<Invoice> invoiceList = <Invoice>[].obs;
   RxList<Product> listProForPageBasket = <Product>[].obs;
   RxList<InvoiceProducts> invoiceProductsList = <InvoiceProducts>[].obs;
+
   RxBool status = false.obs;
 
   Future<Database> db() async {
@@ -131,7 +131,6 @@ class MyDb {
         whereArgs: [nameBasket, 0, 0]);
     var jam = res.isNotEmpty ? bas = Basket.fromJson(res.first) : Null;
     if (jam == Null) {
-      print("nameBasket is null");
       await addBasket(
           nameBasket, usernameId, productId, count, isPaying, deleteStatus);
     } else {
@@ -166,10 +165,8 @@ class MyDb {
     final List<Map<String, dynamic>> maps = await db.query('baskets',
         where: "isPaying=? AND deleteStatus=?", whereArgs: [0, 0]);
     if (maps.isEmpty) {
-      print('basketList is khali');
       return basketList;
     } else {
-      print('basket list is por');
       return List.generate(
         maps.length,
         (i) {
@@ -185,11 +182,8 @@ class MyDb {
     final List<Map<String, dynamic>> maps = await db.query('baskets',
         where: "isPaying=? AND deleteStatus=?", whereArgs: [0, 0]);
     if (maps.isEmpty) {
-      print('return emptyyyyyyyyyyyyyyyyyy');
       return 'empty';
     } else {
-      print('return mappppppppppppppppppppppppp');
-      print(maps.length);
       return maps;
     }
   }
@@ -298,7 +292,6 @@ class MyDb {
         "updatedAt": DateTime.now().toString().split(".")[0]
       });
       status.value = true;
-      print('readAllProducts  // readAllProducts bad az create product');
       await readAllProducts();
       Get.snackbar(
         '',
@@ -459,10 +452,6 @@ class MyDb {
         where: "deleteStatus=?", whereArgs: [0]);
 
     // چاپ نتیجه‌ها برای بررسی
-    print(result);
-    print('update pro status to deleted in products');
-    print(deleteProFromBas);
-
     if (result != 0) {
       Get.snackbar(
         '',
@@ -525,10 +514,6 @@ class MyDb {
     // تغییر وضعیت سبد خرید با شناسه محصول مشخص
 
     // چاپ نتیجه‌ها برای بررسی
-    print(result);
-    print('update pro status to deleted in products');
-    print(deleteProFromBas);
-
     if (result != 0) {
       Get.snackbar(
         '',
@@ -570,54 +555,6 @@ class MyDb {
     }
   }
 
-  // Future<int> deleteProduct(int id) async {
-  //   final db = await MyDb().db();
-  //   var result = await db.rawDelete('DELETE FROM products WHERE id == $id');
-  //   var deleteProFromBas = await db.rawDelete('DELETE FROM baskets WHERE productId ==$id');
-  //   print(result);
-  //   print('delete pro and pro az bas');
-  //   print(deleteProFromBas);
-  //   if(result != 0){
-  //     Get.snackbar(
-  //       '',
-  //       '',
-  //       titleText: const Text(
-  //         'حذف محصول',
-  //         style: TextStyle(fontSize: 18, color: Colors.white),
-  //       ),
-  //       messageText: const Text(
-  //         'محصول با موفقیت حذف شد',
-  //         style: TextStyle(fontSize: 16, color: Colors.white),
-  //       ),
-  //       backgroundColor: kPurpleDark,
-  //       colorText: Colors.white,
-  //       duration: const Duration(milliseconds: 1500),
-  //     );
-  //     return 1;
-  //   }else{
-  //     Get.snackbar(
-  //       '',
-  //       '',
-  //       titleText: const Text(
-  //         'عملیات ناموفق',
-  //         style: TextStyle(fontSize: 18, color: Colors.white),
-  //       ),
-  //       messageText: const Text(
-  //         'حذف محصول با خطا مواجه شد',
-  //         style: TextStyle(fontSize: 16, color: Colors.white),
-  //       ),
-  //
-  //       icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
-  //       padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-  //       shouldIconPulse: false,
-  //       backgroundColor: kRedLight,
-  //       colorText: Colors.white,
-  //       duration: const Duration(milliseconds: 1500),
-  //     );
-  //     return 0;
-  //   }
-  //
-  // }
 
   Future<List<Product>> getProduct() async {
     final Database db = await MyDb().db();
@@ -625,13 +562,13 @@ class MyDb {
         await db.query('products', where: "deleteStatus=?", whereArgs: [0]);
 
     if (maps.isEmpty) {
-      return productList.value;
+      return productList;
     } else {
       return List.generate(
         maps.length,
         (i) {
-          productList.value.add(Product.fromJson(maps[i]));
-          return (productList.value[i]);
+          productList.add(Product.fromJson(maps[i]));
+          return (productList[i]);
         },
       );
     }
@@ -641,13 +578,13 @@ class MyDb {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps = await db.query('products');
     if (maps.isEmpty) {
-      return productListForShowOrder.value;
+      return productListForShowOrder;
     } else {
       return List.generate(
         maps.length,
         (i) {
-          productListForShowOrder.value.add(Product.fromJson(maps[i]));
-          return (productListForShowOrder.value[i]);
+          productListForShowOrder.add(Product.fromJson(maps[i]));
+          return (productListForShowOrder[i]);
         },
       );
     }
@@ -658,19 +595,13 @@ class MyDb {
     final List<Map<String, dynamic>> maps =
         await db.query('products', where: "deleteStatus=?", whereArgs: [0]);
     if (maps.isEmpty) {
-      print('empty');
-      return listProForPageBasket.value;
+      return listProForPageBasket;
     } else {
-      print('no empty');
-
       return List.generate(
         maps.length,
         (i) {
-          print('no empty 2');
-          listProForPageBasket.value.add(Product.fromJson(maps[i]));
-          print(listProForPageBasket.value[i].nameProduct);
-          print(listProForPageBasket.value[i].count);
-          return listProForPageBasket.value[i];
+          listProForPageBasket.add(Product.fromJson(maps[i]));
+          return listProForPageBasket[i];
         },
       );
     }
@@ -791,7 +722,6 @@ class MyDb {
               .toJson(),
           where: "id=?",
           whereArgs: [newCustomer.id]);
-      print('update shod');
       Get.snackbar(
         '',
         '',
@@ -859,7 +789,7 @@ class MyDb {
   Future<int> deleteCustomer(int id) async {
     final db = await MyDb().db();
     // حذف مشتری از دیتابیس
-    var result = await db.update(
+    await db.update(
       'customers',
       {'deleteStatus': 1},
       where: 'id = ?',
@@ -867,8 +797,6 @@ class MyDb {
     );
     var isDelete = await db.query('customers',
         where: 'id = ? AND deleteStatus=?', whereArgs: [id, 0]);
-    print(isDelete);
-    print('isDelete isDelete isDelete isDeleteisDelete');
     if (isDelete.isEmpty) {
       Get.snackbar(
         '',
@@ -970,17 +898,14 @@ class MyDb {
     final List<Map<String, dynamic>> maps =
         await db.query('customers', where: "deleteStatus=?", whereArgs: [0]);
     if (maps.isEmpty) {
-      print('empty');
-      return customerList.value;
+      return customerList;
     } else {
-      print('no empty');
 
       return List.generate(
         maps.length,
         (i) {
-          print('no empty 2');
-          customerList.value.add(Customer.fromJson(maps[i]));
-          return (customerList.value[i]);
+          customerList.add(Customer.fromJson(maps[i]));
+          return (customerList[i]);
         },
       );
     }
@@ -998,10 +923,8 @@ class MyDb {
     } else {
       var jam = res.isNotEmpty ? invoice = Invoice.fromJson(res.first) : Null;
       if (jam != Null) {
-        print({'${invoice.idCustomer}${invoice.createdAt}'}.toString());
         return {'${invoice.idCustomer}${invoice.createdAt}'}.toString();
       } else {
-        print({'${invoice.idCustomer}${invoice.createdAt}'}.toString());
         return {'${invoice.idCustomer}${invoice.createdAt}'}.toString();
       }
     }
@@ -1011,19 +934,16 @@ class MyDb {
       idInvoice) async {
     invoiceProductsList.clear();
     final db = await MyDb().db();
-    InvoiceProducts invoicePro = InvoiceProducts();
     List<Map<String, dynamic>> maps = await db.query('invoice_products',
         where: "idInvoice=? AND deleteStatus=?", whereArgs: [idInvoice, 0]);
     if (maps.isEmpty) {
-      print('null');
-      return invoiceProductsList.value;
+      return invoiceProductsList;
     } else {
-      print('no null');
       return List.generate(
         maps.length,
         (i) {
-          invoiceProductsList.value.add(InvoiceProducts.fromJson(maps[i]));
-          return (invoiceProductsList.value[i]);
+          invoiceProductsList.add(InvoiceProducts.fromJson(maps[i]));
+          return (invoiceProductsList[i]);
         },
       );
     }
@@ -1033,19 +953,16 @@ class MyDb {
   Future<List<InvoiceProducts>> readInvoiceProduct(idInvoice) async {
     invoiceProductsList.clear();
     final db = await MyDb().db();
-    InvoiceProducts invoicePro = InvoiceProducts();
     List<Map<String, dynamic>> maps = await db.query('invoice_products',
         where: "idInvoice=? AND deleteStatus=?", whereArgs: [idInvoice, 0]);
     if (maps.isEmpty) {
-      print('null');
-      return invoiceProductsList.value;
+      return invoiceProductsList;
     } else {
-      print('no null');
       return List.generate(
         maps.length,
         (i) {
-          invoiceProductsList.value.add(InvoiceProducts.fromJson(maps[i]));
-          return (invoiceProductsList.value[i]);
+          invoiceProductsList.add(InvoiceProducts.fromJson(maps[i]));
+          return (invoiceProductsList[i]);
         },
       );
     }
@@ -1056,38 +973,24 @@ class MyDb {
     List<Map<String, dynamic>> maps = await db.query('invoices',
         where: "isPaying=? AND deleteStatus=?", whereArgs: [0, 0]);
     if (maps.isEmpty) {
-      print(maps.length);
       return maps;
     } else {
-      print(maps.length);
       return maps;
     }
   }
-
-  // Future<List<Map<String, dynamic>>> readInvoiceProducts() async {
-  //   final db = await MyDb().db();
-  //   List<Map<String, dynamic>> maps = await db.query('invoice_products', where: "deleteStatus=?", whereArgs: [0]);
-  //   if (maps.isEmpty) {
-  //     print(maps.length);
-  //     return maps;
-  //   } else {
-  //     print(maps.length);
-  //     return maps;
-  //   }
-  // }
 
   Future<List<Invoice>> getInvoice() async {
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
         await db.query('invoices', where: "deleteStatus=?", whereArgs: [0]);
     if (maps.isEmpty) {
-      return invoiceList.value;
+      return invoiceList;
     } else {
       return List.generate(
         maps.length,
         (i) {
-          invoiceList.value.add(Invoice.fromJson(maps[i]));
-          return (invoiceList.value[i]);
+          invoiceList.add(Invoice.fromJson(maps[i]));
+          return (invoiceList[i]);
         },
       );
     }
@@ -1285,31 +1188,9 @@ class MyDb {
     final db = await MyDb().db();
     List<Map<String, dynamic>> maps = await db.query('invoices');
     if (maps.isEmpty) {
-      print(maps.length);
       return maps;
     } else {
-      print(maps.length);
       return maps;
     }
-  }
-
-  // این متد به طور مثال برای دریافت اتصال به دیتابیس استفاده می‌شود
-  Future<Database> get _database async {
-    // اتصال به دیتابیس و باز کردن آن
-    var path = await getDatabasesPath();
-    return openDatabase(
-      path + 'my_database.db',
-      version: 1,
-      onCreate: (db, version) async {
-        // ایجاد جداول (اگر لازم است)
-        await db.execute('''
-          CREATE TABLE products(
-            id INTEGER PRIMARY KEY,
-            name TEXT,
-            deleteStatus INTEGER
-          )
-        ''');
-      },
-    );
   }
 }

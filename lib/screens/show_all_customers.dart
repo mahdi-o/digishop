@@ -16,7 +16,7 @@ class ShowAllCustomers extends StatelessWidget {
   final User user = Get.arguments;
   final MyDb myDb = Get.find<MyDb>();
   final CustomerController controller = Get.find<CustomerController>();
-  MyDb xController = Get.find<MyDb>();
+  final MyDb xController = Get.find<MyDb>();
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +224,6 @@ class ShowAllCustomers extends StatelessWidget {
                         () async{
                         Get.back();
                       var result =await MyDb().deleteCustomers();
-                      print(result);
                       if(result != 0){
                         FocusScope.of(context).unfocus();
                         Future.delayed(const Duration(milliseconds: 2500), () {

@@ -16,8 +16,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
   AdminCustomerUpdate({super.key});
 
   final User user = Get.arguments['user'];
-
-  MyDb xController = Get.find<MyDb>();
+  final MyDb xController = Get.find<MyDb>();
   final Customer customer = Get.arguments['customer'];
 
   @override
@@ -88,7 +87,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                       0,
                       TextAlign.right,
                       20),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   textFieldCustom(

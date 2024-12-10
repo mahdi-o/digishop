@@ -18,14 +18,11 @@ class ProductDetails extends GetView<ProductController> {
   final Product product = Get.arguments['product'];
   final User user = Get.arguments['user'];
   final String roll = Get.arguments['roll'];
-
   final String brandHomeScreen = Get.parameters['all']!;
+  final BasketController basket = BasketController();
 
-  BasketController basket = BasketController();
   @override
   Widget build(BuildContext context) {
-    print(brandHomeScreen);
-    print('{}{}{}{}{}{}{}}{}{}{}{}}}');
     double height = Get.height;
     int? lengthStar = product.star;
     return BaseWidget(color: Colors.white,

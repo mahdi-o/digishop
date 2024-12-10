@@ -1,7 +1,5 @@
 import 'package:digishop/constans.dart';
-import 'package:digishop/services/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class NavbarCustom extends StatelessWidget {
   const NavbarCustom({super.key,

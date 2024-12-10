@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
+
+  Rx<CarouselController> controllerCarouser = CarouselController().obs;
   RxInt currentIndex = 0.obs;
   RxList<Product> listProductsBestDb = <Product>[].obs;
 
@@ -18,7 +20,6 @@ class HomeController extends GetxController {
     ProfileUser(),
   ];
 
-  Rx<CarouselController> controllerCarouser = CarouselController().obs;
 
   RxList<Widget> listSliderImage = <Widget>[
     ClipRRect(
@@ -75,8 +76,6 @@ class HomeController extends GetxController {
   getProductDbForHomeScreen()async{
     listProductsBestDb.clear();
     listProductsBestDb.value = await MyDb().getProduct();
-    print('listProductsBestDb por shod');
-    print(listProductsBestDb.length);
   }
 
 
@@ -86,6 +85,7 @@ class HomeController extends GetxController {
     super.onInit();
      getProductDbForHomeScreen();
   }
+
   @override
   void onReady() {
     // TODO: implement onReady

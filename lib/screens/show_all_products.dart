@@ -4,13 +4,9 @@ import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/base_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart';
-
 import '../models/User.dart';
-import '../widgets/custom_button.dart';
 import '../widgets/navbar_custom.dart';
 import 'admin_home_screen.dart';
 
@@ -23,14 +19,11 @@ class ShowAllProducts extends GetView<ProductController> {
   final MyDb myDb = Get.find<MyDb>();
   @override
   final ProductController controller = Get.find<ProductController>();
-  RxList<Product> listProducts = <Product>[].obs;
-  RxList<Product> products = <Product>[].obs;
+  final RxList<Product> listProducts = <Product>[].obs;
+  final RxList<Product> products = <Product>[].obs;
 
   @override
   Widget build(BuildContext context) {
-    print(brandHomeScreen);
-    print('brandHomeScreen brandHomeScreen brandHomeScreen brandHomeScreen');
-
     return FutureBuilder<List<Product>>(
       future: controller.getListProduct(), // متد بارگذاری محصولات از دیتابیس
       builder: (context, snapshot) {
@@ -69,8 +62,6 @@ class ShowAllProducts extends GetView<ProductController> {
         } else {
           for (var item in snapshot.data!) {
             if (item.brand == brandHomeScreen) {
-              print(item.nameProduct);
-
               // چک کردن وجود محصول در لیست قبل از اضافه کردن آن
               if (!products.any((existingItem) =>
               existingItem.nameProduct == item.nameProduct)) {
@@ -98,7 +89,6 @@ class ShowAllProducts extends GetView<ProductController> {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              print(product.deleteStatus);
               return Column(
                 children: [
                   Padding(
@@ -192,8 +182,8 @@ class ShowAllProducts extends GetView<ProductController> {
                       parameters: {'all': brandHomeScreen}
                   );
                 },
-                icon: roll == 'admin' ? Icon(
-                    Icons.edit_rounded, color: kPurpleDark) : Icon(null),
+                icon: roll == 'admin' ? const Icon(
+                    Icons.edit_rounded, color: kPurpleDark) : const Icon(null),
               ),
               const SizedBox(width: 5),
               _buildDetailsButton(product),
@@ -205,7 +195,6 @@ class ShowAllProducts extends GetView<ProductController> {
                       'آیا از حذف این محصول اطمینان دارید؟', 20, () async {
                     Get.back();
                     var result = await myDb.deleteProduct(product.id ?? -1);
-                    print(result);
                     if (result != 0) {
                       FocusScope.of(context).unfocus();
                       controller.clear();
@@ -222,11 +211,11 @@ class ShowAllProducts extends GetView<ProductController> {
                     }
                   });
                 }:(){},
-                child: roll == 'admin' ? Icon(
+                child: roll == 'admin' ? const Icon(
                   Icons.delete_outline_rounded,
                   size: 35,
                   color: kPurpleDark,
-                ) : Icon(null),
+                ) : const Icon(null),
               ),
             ],
           ),
@@ -277,7 +266,6 @@ class ShowAllProducts extends GetView<ProductController> {
                         20, () async {
                       Get.back();
                       var result = await MyDb().deleteProducts();
-                      print(result);
                       if (result != 0) {
                         FocusScope.of(context).unfocus();
                         Future.delayed(const Duration(milliseconds: 2500), () {

@@ -11,7 +11,7 @@ class LoginPage extends GetView<RegisterLoginController> {
   LoginPage({super.key});
 
   final String registerOne = Get.parameters['registerOne']!;
-  User user = Get.arguments;
+  final User user = Get.arguments;
 
   @override
   Widget build(BuildContext context) {

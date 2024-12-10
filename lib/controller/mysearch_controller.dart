@@ -1,12 +1,11 @@
 import 'package:digishop/constans.dart';
-import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../database/my_db.dart';
 
 class MySearchController extends GetxController{
+
   TextEditingController text = TextEditingController();
   RxList<Product> listSearch = <Product>[].obs;
   RxList<Product> listProductsDbForSearch = <Product>[].obs;
@@ -36,14 +35,8 @@ class MySearchController extends GetxController{
           ));
     }
     else {
-      print('before por listProductDb');
-      print(listProductsDbForSearch.length);
-      listProductsDbForSearch.value.clear();
+      listProductsDbForSearch.clear();
       listProductsDbForSearch.value = await MyDb().getProduct();
-      print('list product por shod dar product controller');
-      print('after por listProductDb');
-      print(listProductsDbForSearch.length);
-      print('gam one');
       listSearch.clear();
       for(var item in listProductsDbForSearch){
         String textSearch = text.text.removeAllWhitespace.trim();
@@ -52,8 +45,5 @@ class MySearchController extends GetxController{
         }
       }
     }
-
-
   }
-
 }

@@ -7,8 +7,6 @@ import 'package:digishop/widgets/floatingCustomButtons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../controller/invoice_controller.dart';
 import '../models/User.dart';
 
 class AdminHomeScreen extends StatelessWidget {
@@ -40,12 +38,12 @@ class AdminHomeScreen extends StatelessWidget {
           const EdgeInsets.only(left: 20, right: 20, bottom: 0, top: 65),
           child: Column(
             children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(bottom: 5.0),
                         child: Text(
                           'مدیریت فروشگاه',
@@ -55,31 +53,22 @@ class AdminHomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 0,
                       ),
                       Row(
                         children: [
-                          Container(
-                            child: const Center(
-                                child: Text(
-                                  'دیجی‌شاپ',
-                                  style: TextStyle(color: Colors.white, fontSize: 28),
-                                )),
-                          ),
+                          Center(
+                              child: Text(
+                                'دیجی‌شاپ',
+                                style: TextStyle(color: Colors.white, fontSize: 28),
+                              )),
                           SizedBox(width: 15,),
                           Icon(Icons.webhook_rounded,color: Colors.white,size: 35,)
                         ],
-                          // CupertinoIcons.wrench_fill
-                          // Icons.webhook_rounded
-                          // CupertinoIcons.bolt_horizontal_circle
                       ),
                     ],
                   ),
-                  // Image.asset(
-                  //   'assets/images/administrator-b.png',
-                  //   width: 80,
-                  // ),
                 ],
               ),
               const SizedBox(

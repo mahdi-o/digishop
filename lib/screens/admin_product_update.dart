@@ -16,9 +16,7 @@ class AdminProductUpdate extends GetView<ProductController> {
   final Product product = Get.arguments['product'];
   final User user = Get.arguments['user'];
   final String brandHomeScreen = Get.parameters['all']!;
-
-  MyDb xController = Get.find<MyDb>();
-
+  final MyDb xController = Get.find<MyDb>();
 
   @override
   Widget build(BuildContext context) {
@@ -197,17 +195,11 @@ class AdminProductUpdate extends GetView<ProductController> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 5),
-                child: GestureDetector(
-                  onTap: () async {
-                    var res = await MyDb().readAllProducts();
-                    print(res);
-                  },
-                  child: const Text(
-                    'تغییر عکس',
-                    style: TextStyle(color: kPurpleDark, fontSize: 20),
-                  ),
+              const Padding(
+                padding: EdgeInsets.only(top: 30, bottom: 5),
+                child: Text(
+                  'تغییر عکس',
+                  style: TextStyle(color: kPurpleDark, fontSize: 20),
                 ),
               ),
               Image.asset(

@@ -1,6 +1,5 @@
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/home_controller.dart';
-import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Category.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:digishop/services/routes.dart';
@@ -10,7 +9,6 @@ import 'package:digishop/widgets/category_container.dart';
 import 'package:digishop/widgets/custom_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../database/my_db.dart';
 import '../models/User.dart';
 import '../widgets/navbar_custom.dart';
 
@@ -20,7 +18,6 @@ class HomeScreen extends GetView<HomeController> {
   final User user = Get.arguments;
   @override
   Widget build(BuildContext context) {
-    String username = user.username.toString();
     size = MediaQuery.of(context).size;
     return Obx(
       ()=> BaseWidget(
@@ -239,7 +236,6 @@ class HomeScreen extends GetView<HomeController> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
-                                  String username = user.username.toString();
                                   FocusScope.of(context).unfocus();
                                   Get.toNamed(
                                       AppRoutes.proDet,

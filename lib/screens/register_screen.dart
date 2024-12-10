@@ -5,7 +5,6 @@ import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../widgets/custom_button.dart';
 
 class SignupPage extends GetView<RegisterLoginController> {
@@ -154,7 +153,7 @@ class SignupPage extends GetView<RegisterLoginController> {
                   widthBtn: 330,
                   heightBtn: 65,
                 ),
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

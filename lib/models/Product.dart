@@ -33,16 +33,13 @@ class Product {
 
 
   Product.fromJson(Map<String, dynamic> json) {
-      print('object1111111111111111111111');
     id = json['id'];
     nameProduct = json['nameProduct'];
     brand = json['brand'];
     imageAddress = json['imageAddress'];
     price = json['price'];
     ram = json['ram'];
-    print('object2222222222222');
     count = json['count'];
-    print('object33333333333333333');
     screen = json['screen'];
     cpu = json['cpu'];
     hard = json['hard'];
@@ -50,7 +47,6 @@ class Product {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     deleteStatus = json['deleteStatus'];
-print('object44444444444444');
   }
 
   Map<String, dynamic> toJson() {

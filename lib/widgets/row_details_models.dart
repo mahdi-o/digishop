@@ -17,7 +17,7 @@ class RowDetailsModels extends StatelessWidget {
         children: [
            Text(
            title,
-            style: TextStyle(fontSize: 22,color: Colors.black),
+            style: const TextStyle(fontSize: 22,color: Colors.black),
           ),
           Text(
             body,

@@ -1,5 +1,3 @@
-import 'package:digishop/models/Product.dart';
-
 class Invoice {
   int? id;
   int? idCustomer;

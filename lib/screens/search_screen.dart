@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/mysearch_controller.dart';
 import 'package:digishop/services/routes.dart';
@@ -14,8 +13,8 @@ import '../widgets/navbar_custom.dart';
 class SearchScreen extends GetView<MySearchController> {
   SearchScreen({super.key});
 
-  RxBool heartStatus = false.obs;
-  Random random = Random();
+  final RxBool heartStatus = false.obs;
+  final Random random = Random();
   final User user = Get.arguments;
 
   @override

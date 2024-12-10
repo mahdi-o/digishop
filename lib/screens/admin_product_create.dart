@@ -8,14 +8,13 @@ import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../models/User.dart';
 import '../widgets/navbar_custom.dart';
 
 class AdminProductCreate extends GetView<ProductController> {
   AdminProductCreate({super.key});
 
-  MyDb xController = Get.find<MyDb>();
+  final MyDb xController = Get.find<MyDb>();
   final User user = Get.arguments;
   @override
   Widget build(BuildContext context) {
@@ -196,17 +195,9 @@ class AdminProductCreate extends GetView<ProductController> {
                   style: TextStyle(color: kPurpleDark, fontSize: 20),
                 ),
               ),
-              GestureDetector(
-                onTap: ()async{
-                  var result =  await xController.readAllProducts();
-                  print(result);
-                  // await xController.readProduct(2);
-                  // await xController.deleteProducts();
-                },
-                child: Image.asset(
-                  'assets/images/image.png',
-                  width: 110,
-                ),
+              Image.asset(
+                'assets/images/image.png',
+                width: 110,
               ),
               const Spacer(),
               Padding(
@@ -232,7 +223,7 @@ class AdminProductCreate extends GetView<ProductController> {
                       4,
                       0,
                     );
-                   if(xController.status == true){
+                   if(xController.status.value == true){
                      Future.delayed(const Duration(milliseconds: 2500), () {
                        Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد
                          transition: Transition.zoom,  // نوع انیمیشن

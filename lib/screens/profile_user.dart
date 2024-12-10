@@ -5,8 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../database/my_db.dart';
 import '../models/User.dart';
 import '../services/routes.dart';
 import '../widgets/navbar_custom.dart';

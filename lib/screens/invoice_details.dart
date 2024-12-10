@@ -19,7 +19,6 @@ class InvoiceDetails extends GetView<InvoiceController> {
 
   final Invoice invoice = Get.arguments['invoice'];
   final User user = Get.arguments['user'];
-
   final xController = Get.find<MyDb>();
   final listInvoiceProduct = [].obs;
   final basket = BasketController();
@@ -151,15 +150,10 @@ class InvoiceDetails extends GetView<InvoiceController> {
                   () => ListView.builder(
                 itemCount: listInvoiceProduct.length,
                 itemBuilder: (context, index) {
-                  print(listInvoiceProduct.length);
-                  print('POW{PDPWPDPDDDDDD');
                   InvoiceProducts invoicePro = listInvoiceProduct[index];
                   Product product = xController.productList
                       .where((p0) => p0.id == invoicePro.idProduct).first;
                   var sumPrice = invoicePro.count! * (int.parse(product.price!));
-                  print(invoicePro.id);
-                  print(product.deleteStatus);
-                  print(')((*&^%@#%^&*()OIUHGFXCVBNM');
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15.0, vertical: 5),
@@ -273,17 +267,8 @@ class InvoiceDetails extends GetView<InvoiceController> {
   onInit() async {
     listInvoiceProduct.clear();
     var res = await xController.readInvoiceProductForInvoiceDetails(invoice.id);
-    print(res.length);
-    print('MMMMMMMMMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     for (var item in res) {
       listInvoiceProduct.add(item);
-      print(item.deleteStatus);
-
-      print(item.toJson());
-      print(listInvoiceProduct.length);
-
-      print('+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
-      print('____________________WWWWWWWW______________');
     }
   }
 }

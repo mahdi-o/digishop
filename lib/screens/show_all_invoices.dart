@@ -1,8 +1,6 @@
 import 'package:digishop/controller/invoice_controller.dart';
 import 'package:digishop/models/Invoice.dart';
-import 'package:digishop/models/invoiceProducts.dart';
 import 'package:digishop/widgets/custom_button.dart';
-import 'package:digishop/widgets/tooltip_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constans.dart';
@@ -12,8 +10,6 @@ import '../services/routes.dart';
 import '../widgets/base_widget.dart';
 import '../widgets/navbar_custom.dart';
 import 'admin_home_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ShowAllInvoices extends GetView<InvoiceController> {
   ShowAllInvoices({super.key});
@@ -261,54 +257,37 @@ class ShowAllInvoices extends GetView<InvoiceController> {
             children: [
               SizedBox(
                 height: 60,
-                child: GestureDetector(
-                  onTap: () async{
-                    // Tooltip(
-                    //   message: "اینجا می‌توانید فاکتورهای جدید اضافه کنید.",
-                    //   textStyle: TextStyle(fontSize: 50, color: Colors.red),
-                    //   child: IconButton(
-                    //     icon: Icon(Icons.add, color: Colors.blueAccent),
-                    //     onPressed: () {
-                    //       // انجام عملیات اضافه کردن فاکتور
-                    //
-                    //     },
-                    //   ),
-                    // );
-                    var res =await myDb.getListByCheck();
-                    print(res.toList());
+                child: NavbarCustom(
+                  text1: '  فاکتورها ',
+                  text2: '',
+                  size1: 28,
+                  size2: 26,
+                  fontFace1: 'lalezarPlus',
+                  fontFace2: 'lalezarPlus',
+                  icon1: Icons.delete_outline_rounded,
+                  onTapIcon2: () {
+                    dialogCustom(
+                        'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',
+                        20, () async {
+                      Get.back();
+                      var result = await MyDb().deleteInvoices();
+                      if (result != 0) {
+                        FocusScope.of(context).unfocus();
+                        Future.delayed(const Duration(milliseconds: 2500),
+                            () {
+                          Get.off(
+                            () => AdminHomeScreen(), arguments: user,
+                            // صفحه مقصد
+                            transition: Transition.zoom,
+                            // نوع انیمیشن
+                            duration: const Duration(
+                                milliseconds: 500), // مدت زمان انیمیشن
+                          );
+                        });
+                      }
+                    });
                   },
-                  child: NavbarCustom(
-                    text1: '  فاکتورها ',
-                    text2: '',
-                    size1: 28,
-                    size2: 26,
-                    fontFace1: 'lalezarPlus',
-                    fontFace2: 'lalezarPlus',
-                    icon1: Icons.delete_outline_rounded,
-                    onTapIcon2: () {
-                      dialogCustom(
-                          'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',
-                          20, () async {
-                        Get.back();
-                        var result = await MyDb().deleteInvoices();
-                        if (result != 0) {
-                          FocusScope.of(context).unfocus();
-                          Future.delayed(const Duration(milliseconds: 2500),
-                              () {
-                            Get.off(
-                              () => AdminHomeScreen(), arguments: user,
-                              // صفحه مقصد
-                              transition: Transition.zoom,
-                              // نوع انیمیشن
-                              duration: const Duration(
-                                  milliseconds: 500), // مدت زمان انیمیشن
-                            );
-                          });
-                        }
-                      });
-                    },
-                    icon2: null,
-                  ),
+                  icon2: null,
                 ),
               ),
               Expanded(child: child)

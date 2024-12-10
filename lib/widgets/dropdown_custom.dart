@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
   class DropDownCustom extends StatefulWidget {
     DropDownCustom({super.key});
- GetxController xController = Get.find<InvoiceController>();
+ final GetxController xController = Get.find<InvoiceController>();
 
   @override
   State<DropDownCustom> createState() => _DropDownCustomState();
@@ -33,9 +33,7 @@ class _DropDownCustomState extends State<DropDownCustom> {
               color: Theme.of(context).hintColor,
             ),
           ),
-          items: [
-
-          ],
+          items: null,
           value: 'selectedValue',
           // onChanged: (String? value) {
           //   setState(() {
@@ -50,9 +48,8 @@ class _DropDownCustomState extends State<DropDownCustom> {
           dropdownStyleData: const DropdownStyleData(
             maxHeight: 200,
           ),
-          menuItemStyleData: MenuItemStyleData(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          ),
+          menuItemStyleData: const MenuItemStyleData(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),),
           iconStyleData: const IconStyleData(
             openMenuIcon: Icon(Icons.arrow_drop_up),
           ),

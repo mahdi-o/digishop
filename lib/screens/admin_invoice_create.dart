@@ -1,7 +1,6 @@
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/invoice_controller.dart';
 import 'package:digishop/database/my_db.dart';
-import 'package:digishop/models/Product.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -11,7 +10,7 @@ import '../models/User.dart';
 import '../services/routes.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/navbar_custom.dart';
-///////////////////
+
 class AdminInvoiceCreate extends GetView<InvoiceController> {
    AdminInvoiceCreate({super.key});
   final User user = Get.arguments;
@@ -48,7 +47,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                   const SizedBox(height: 50),
                   Column(
                     children: [
-                       Padding(
+                       const Padding(
                         padding:
                         EdgeInsets.only(right: 135, left: 10),
                         child: Column(
@@ -56,28 +55,16 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                             // ویجت NavbarCustom ثابت
                             SizedBox(
                               height: 50, // ارتفاع ثابت برای هدر
-                              child: GestureDetector(
-                                onTap: ()async{
-                                  final db = await MyDb();
-                                  Product p = Product();
-                                  var res =await db.getProduct();
-
-                                  print(res.first.deleteStatus);
-                                  print(res.first.nameProduct);
-
-                                  print('res res res res res res res ');
-                                },
-                                child: NavbarCustom(
-                                  text1: '',
-                                  text2: 'ثبت فاکتور جدید',
-                                  colorText2: Colors.white,
-                                  size1: 28,
-                                  size2: 26,
-                                  fontFace1: 'lalezarPlus',
-                                  fontFace2: 'lalezarPlus',
-                                  icon1: null,
-                                  icon2: null,
-                                ),
+                              child: NavbarCustom(
+                                text1: '',
+                                text2: 'ثبت فاکتور جدید',
+                                colorText2: Colors.white,
+                                size1: 28,
+                                size2: 26,
+                                fontFace1: 'lalezarPlus',
+                                fontFace2: 'lalezarPlus',
+                                icon1: null,
+                                icon2: null,
                               ),
                             ),
                             // محتوای اسکرول‌شونده
@@ -437,7 +424,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                       onTapped: () async {
                         if (controller.idCustomer.value.text != "" &&
                             controller.listOrder.isNotEmpty) {
-                         var result = await controller.addInvoice();
+                          await controller.addInvoice();
                         } else {
                           Get.snackbar(
                             'خطا',

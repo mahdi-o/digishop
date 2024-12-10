@@ -11,7 +11,7 @@ class BoxRowProduct extends StatelessWidget {
       required this.image});
 
   final String name, price, image;
-  RxBool heartStatus = false.obs;
+  final RxBool heartStatus = false.obs;
 
   @override
   Widget build(BuildContext context) {

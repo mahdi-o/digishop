@@ -1,7 +1,6 @@
 import 'package:digishop/constans.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../controller/splash_controller.dart';
 
 class SplashScreen extends StatelessWidget {

@@ -13,8 +13,7 @@ class CustomerDetails extends StatelessWidget {
    CustomerDetails ({super.key});
   final Customer customer = Get.arguments['customer'];
   final User user = Get.arguments['user'];
-
-  BasketController basket = BasketController();
+  final BasketController basket = BasketController();
   @override
   Widget build(BuildContext context) {
     double height = Get.height;

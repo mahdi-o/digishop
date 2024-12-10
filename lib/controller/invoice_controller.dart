@@ -6,8 +6,6 @@ import 'package:digishop/models/Order.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sqflite/sqflite.dart';
-
 import '../models/invoiceProducts.dart';
 
 class InvoiceController extends GetxController {
@@ -127,25 +125,10 @@ class InvoiceController extends GetxController {
     return itemsHeights;
   }
 
-
-  ///////
   Future<List<Invoice>>getListInvoice() async {
-    listInvoicesDb.value.clear();
+    listInvoicesDb.clear();
     listInvoicesDb.value = await MyDb().getInvoice();
-    print(listInvoicesDb.value.toList().length);
-    print('babo babo babooooooooooooooo');
-    return listInvoicesDb.value;
-  }
-
-  Future<void> readListOrder() async {
-    print('print(listOrder.length);');
-    print(listOrder.length);
-    print('print(listOrder.first.toJson());');
-    for(var item in listOrder){
-      print(item.toJson());
-    }
-    print('print(listOrder.toList());');
-    print(listOrder.toList());
+    return listInvoicesDb;
   }
 
   Future<void> addOrder() async {
@@ -163,7 +146,7 @@ class InvoiceController extends GetxController {
       final idGetCus = await db.query('customers', where: 'nameCustomer = ?', whereArgs: [nameCusOrder]);
 
       if (proOrder.isEmpty || idGetCus.isEmpty) {
-        print("محصول یا مشتری پیدا نشد");
+        //محصول یا مشتری پیدا نشد
         return;
       }
 
@@ -174,7 +157,7 @@ class InvoiceController extends GetxController {
       final countProOrder = int.tryParse(countProOrderStr);
       final unitPrice = int.tryParse(productOrder.price ?? '0') ?? 0; // مقدار پیش‌فرض 0 برای قیمت
       if (countProOrder == null || unitPrice == 0) {
-        print("خطا در تبدیل تعداد یا قیمت محصول");
+        //خطا در تبدیل تعداد یا قیمت محصول
         return;
       }
 
@@ -204,7 +187,7 @@ class InvoiceController extends GetxController {
           nameProduct: productOrder.nameProduct,
           idCustomer: customerOrder.id,
           nameCustomer: customerOrder.nameCustomer,
-          countOrder: countProOrder ?? 0, // جلوگیری از مقدار null
+          countOrder: countProOrder, // جلوگیری از مقدار null
           unitPrice: unitPrice,
           totalPrice: sumProOrder,
           typePay: typePayOrder,
@@ -238,7 +221,7 @@ class InvoiceController extends GetxController {
     );
 
     if (customerResult.isEmpty) {
-      print('Customer not found');
+      //Customer not found
       return;
     }
 
@@ -279,7 +262,7 @@ class InvoiceController extends GetxController {
       );
 
       if (productResult.isEmpty) {
-        print('Product not found');
+        //Product not found
         continue;
       }
 
@@ -360,7 +343,7 @@ class InvoiceController extends GetxController {
       );
 
     }
-    print('Invoice with multiple orders added/updated successfully.');
+    //Invoice with multiple orders added/updated successfully
     idProduct.value.clear();
     count.value.clear();
     typePay.value.clear();
@@ -432,43 +415,24 @@ class InvoiceController extends GetxController {
 
     for (int i = 0; i < listProductsForInvoice.length; i++) {
       listIdProducts.add(listProductsForInvoice[i].nameProduct!);
-      print(listProductsForInvoice[i].id);
     }
-    print(listIdProducts.length);
-    print('bolbol');
     return p;
   }
   Future<List<Customer>> getIdNameCustomerForInvoice() async {
-    print('::::::::::::::::::::::::::::::::::');
-
     listCustomersForInvoice.clear();
     MyDb xController = Get.find<MyDb>();
     var c = await xController.getCustomer();
     listCustomersForInvoice.value = xController.customerList;
     for (int i = 0; i < listCustomersForInvoice.length; i++) {
       listIdCustomers.add(listCustomersForInvoice[i].nameCustomer!);
-      print(listCustomersForInvoice[i].id);
     }
-    print(listIdCustomers.length);
-    print('bolbol');
     return c;
   }
-
-
-
-
-
-
 
   Future<void> getProductForInvoice() async {
     final db = await MyDb();
     await db.getProductForInvoice();
   }
-
-
-
-
-
 
   clear()async{
     idProduct.value.clear();
