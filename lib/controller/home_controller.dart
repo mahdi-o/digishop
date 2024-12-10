@@ -75,7 +75,7 @@ class HomeController extends GetxController {
 
   getProductDbForHomeScreen()async{
     listProductsBestDb.clear();
-    listProductsBestDb.value = await MyDb().getProduct();
+    listProductsBestDb.value = await MyDb().getProducts();
   }
 
 

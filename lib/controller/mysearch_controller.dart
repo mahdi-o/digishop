@@ -36,7 +36,7 @@ class MySearchController extends GetxController{
     }
     else {
       listProductsDbForSearch.clear();
-      listProductsDbForSearch.value = await MyDb().getProduct();
+      listProductsDbForSearch.value = await MyDb().getProducts();
       listSearch.clear();
       for(var item in listProductsDbForSearch){
         String textSearch = text.text.removeAllWhitespace.trim();

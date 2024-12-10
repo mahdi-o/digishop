@@ -12,15 +12,29 @@ import 'package:sqflite/sqflite.dart';
 
 class MyDb {
 
-  RxList<Basket> basketList = <Basket>[].obs;
-  RxList<Product> productList = <Product>[].obs;
-  RxList<Product> productListForShowOrder = <Product>[].obs;
+  // use controller 'invoiceController'
+  // use file 'my_db' to function 'get customer'
   RxList<Customer> customerList = <Customer>[].obs;
-  RxList<Invoice> invoiceList = <Invoice>[].obs;
-  RxList<Product> listProForPageBasket = <Product>[].obs;
-  RxList<InvoiceProducts> invoiceProductsList = <InvoiceProducts>[].obs;
 
-  RxBool status = false.obs;
+  // use file 'my_db' to function 'get baskets'
+  RxList<Basket> basketList = <Basket>[].obs;
+
+  // use controller 'invoiceController'
+  // use screen 'invoice details'
+  // use file 'my_db' to function 'get product'
+  RxList<Product> productList = <Product>[].obs;
+
+  // use file 'my_db' to function 'get invoice'
+  RxList<Invoice> invoiceList = <Invoice>[].obs;
+
+  // use file 'my_db' to function 'getProductForInvoice'
+  RxList<Product> productListForShowOrder = <Product>[].obs;
+
+  // use file 'my_db' to function 'getProductFromBas'
+  RxList<Product> listProForPageBasket = <Product>[].obs;
+
+  // use file 'my_db' to function '  readInvoiceProductForInvoiceDetails  &  readInvoiceProduct'
+  RxList<InvoiceProducts> invoiceProductsList = <InvoiceProducts>[].obs;
 
   Future<Database> db() async {
     return await openDatabase(
@@ -105,10 +119,14 @@ class MyDb {
     );
   }
 
-  //''''''''''''basket''''''''''''''''''''
+  // ************Basket*****************
+  // ************Basket*****************
 
+  // use database 'my_db'
+  // use function 'addOrUpdateBasket'
   Future<void> addBasket(
       nameBasket, usernameId, productId, count, isPaying, deleteStatus) async {
+    // this function use for create table baskets to database
     final db = await MyDb().db();
     await db.insert('baskets', {
       "nameBasket": nameBasket,
@@ -122,8 +140,11 @@ class MyDb {
     });
   }
 
+  // use to controllers 'basketController'
   Future<void> addOrUpdateBasket(String nameBasket, String usernameId,
       int productId, int count, int isPaying, deleteStatus) async {
+    // this function use for create or update table baskets to database
+    // check if not exist basket => create else update increase count basket
     final db = await MyDb().db();
     Basket bas = Basket();
     var res = await db.query("baskets",
@@ -152,32 +173,9 @@ class MyDb {
     }
   }
 
-  checkDbForBaskets(String name) async {
-    final db = await MyDb().db();
-    var res = await db.query("baskets",
-        where: "nameBasket = ? AND deleteStatus=?", whereArgs: [name, 0]);
-    var jam = res.isNotEmpty ? Basket.fromJson(res.first) : Null;
-    return jam;
-  }
-
-  Future<List<Basket>> getBaskets() async {
-    final Database db = await MyDb().db();
-    final List<Map<String, dynamic>> maps = await db.query('baskets',
-        where: "isPaying=? AND deleteStatus=?", whereArgs: [0, 0]);
-    if (maps.isEmpty) {
-      return basketList;
-    } else {
-      return List.generate(
-        maps.length,
-        (i) {
-          basketList.add(Basket.fromJson(maps[i]));
-          return (basketList[i]);
-        },
-      );
-    }
-  }
-
+  // use to controllers 'basketController'
   getDataFullBasket() async {
+    // this function use for read baskets where don't paying and don't delete
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps = await db.query('baskets',
         where: "isPaying=? AND deleteStatus=?", whereArgs: [0, 0]);
@@ -188,7 +186,10 @@ class MyDb {
     }
   }
 
+  // use to controllers 'basketController'
   Future<String> checkOut(List<int> listId) async {
+    // this function use for pay baskets where don't paying and don't delete
+    // update List basket by Id isPaying is 0 to 1
     final db = await MyDb().db();
     List idBasket = [];
     for (int i = 0; i < listId.length; i++) {
@@ -219,22 +220,29 @@ class MyDb {
     return "successful checkOut";
   }
 
-  Future<int> deleteBasket() async {
+  // use to controllers 'basketController'
+  Future<int> deleteBaskets() async {
+    // this function use for delete baskets where don't delete
+    // update deleteStatus from 0 to 1
+
     final db = await MyDb().db();
-    // بروزرسانی وضعیت deleteStatus به 1 برای همه رکوردهای سبد خرید
     await db.update(
       "baskets",
-      {'deleteStatus': 1}, // تغییر وضعیت به حذف شده
+      {'deleteStatus': 1},
       where: 'deleteStatus = ?',
-      whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
+      whereArgs: [0],
     );
     return 1;
   }
 
+  // use to controllers 'basketController'
   Future<String> deleteItemBaskets(int id) async {
+    // this function use for delete basket by id where don't delete
+    // update deleteStatus from 0 to 1
+    // get Basket by Id from db and get data this basket and check count basket for delete
+    // if count == 1 => delete basket else => update decrease count basket
     final db = await MyDb().db();
-    List idBasket = await db.rawQuery(
-        'SELECT * FROM baskets WHERE id == $id AND deleteStatus == 0');
+    List idBasket = await db.rawQuery('SELECT * FROM baskets WHERE id == $id AND deleteStatus == 0');
     var nameBasketForDb = idBasket.first['nameBasket'];
     var usernameIdBasketForDb = idBasket.first['usernameId'];
     var productIdBasketForDb = idBasket.first['productId'];
@@ -265,11 +273,43 @@ class MyDb {
     return "successful delete item in baskets";
   }
 
-//''''''''''''product''''''''''''''''''''
+  // don't use
+  checkDbForBaskets(String name) async {
+    // use function for isExist basket in db by name
+    final db = await MyDb().db();
+    var res = await db.query("baskets",
+        where: "nameBasket = ? AND deleteStatus=?", whereArgs: [name, 0]);
+    var jam = res.isNotEmpty ? Basket.fromJson(res.first) : Null;
+    return jam;
+  }
 
+  // don't use
+  Future<List<Basket>> getBaskets() async {
+    // use function for get baskets in db where don't delete and don't paying
+
+    final Database db = await MyDb().db();
+    final List<Map<String, dynamic>> maps = await db.query('baskets',
+        where: "isPaying=? AND deleteStatus=?", whereArgs: [0, 0]);
+    if (maps.isEmpty) {
+      return basketList;
+    } else {
+      return List.generate(
+        maps.length,
+            (i) {
+          basketList.add(Basket.fromJson(maps[i]));
+          return (basketList[i]);
+        },
+      );
+    }
+  }
+
+  // ************Product*****************
+  // ************Product*****************
+
+  // use to screen 'admin product create'
   Future<int> addProduct(nameProduct, price, brand, imageAddress, count, ram,
       hard, cpu, screen, star, deleteStatus) async {
-    status.value = false;
+    // this function use for create table product to database
     final db = await MyDb().db();
     var res = await db.query("products",
         where: "nameProduct = ? AND deleteStatus=?",
@@ -291,7 +331,6 @@ class MyDb {
         "createdAt": DateTime.now().toString().split(".")[0],
         "updatedAt": DateTime.now().toString().split(".")[0]
       });
-      status.value = true;
       await readAllProducts();
       Get.snackbar(
         '',
@@ -336,7 +375,9 @@ class MyDb {
     }
   }
 
+  // use to screen 'admin product update'
   Future<int> updateProduct(int id, Product pro) async {
+    // this function use for update table product to database
     final db = await MyDb().db();
     Product product = Product();
     var res = await db.query("products",
@@ -407,7 +448,10 @@ class MyDb {
     }
   }
 
+  // use database 'my_db'
+  // use function 'addProduct'
   Future<List<Map<String, dynamic>>> readAllProducts() async {
+    // use function read products from db
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
         await db.query('products', where: "deleteStatus=?", whereArgs: [0]);
@@ -418,31 +462,16 @@ class MyDb {
     }
   }
 
-  Future<String> readProduct(int id) async {
-    final Database db = await MyDb().db();
-    Product pro = Product();
-    var res = await db.query("products",
-        where: "id = ? AND deleteStatus=?", whereArgs: [id, 0]);
-    if (res.isEmpty) {
-      return 'null res';
-    } else {
-      var jam = res.isNotEmpty ? pro = Product.fromJson(res.first) : Null;
-      if (jam != Null) {
-        return pro.nameProduct ?? '';
-      } else {
-        return pro.nameProduct ?? '';
-      }
-    }
-  }
-
+  // use to screen 'show all product'
   Future<int> deleteProducts() async {
+    // use function delete products from db where don't delete
+    // update deleteStatus from 0 to 1
     final db = await MyDb().db();
-    // تغییر وضعیت deleteStatus به 1
     var result = await db.update(
       'products',
-      {'deleteStatus': 1}, // تغییر وضعیت به حذف شده
+      {'deleteStatus': 1},
       where: 'deleteStatus = ?',
-      whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
+      whereArgs: [0],
     );
 
     // تغییر وضعیت محصولات در سبد خرید (در صورتی که لازم باشد)
@@ -496,15 +525,16 @@ class MyDb {
     }
   }
 
+  // use to screen 'show all product'
   Future<int> deleteProduct(int id) async {
+    // use function delete product from db by id where don't delete
+    // update deleteStatus from 0 to 1
     final db = await MyDb().db();
-
-    // تغییر وضعیت deleteStatus به 1
     var result = await db.update(
       'products',
-      {'deleteStatus': 1}, // تغییر وضعیت به حذف شده
+      {'deleteStatus': 1},
       where: 'id = ?',
-      whereArgs: [id], // پیدا کردن محصول با id مشخص
+      whereArgs: [id],
     );
 
     // تغییر وضعیت محصولات در سبد خرید (در صورتی که لازم باشد)
@@ -555,8 +585,10 @@ class MyDb {
     }
   }
 
-
-  Future<List<Product>> getProduct() async {
+  // use to controller 'invoice,home,mySearch,product'
+  // use to screen 'BasketScreen'
+  Future<List<Product>> getProducts() async {
+    // use function read products from db where don't delete
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
         await db.query('products', where: "deleteStatus=?", whereArgs: [0]);
@@ -574,7 +606,10 @@ class MyDb {
     }
   }
 
+  // use to controller 'invoiceController'
   Future<List<Product>> getProductForInvoice() async {
+    // use function for read products for Invoice don't where
+    // and push to list 'productListForShowOrder'
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps = await db.query('products');
     if (maps.isEmpty) {
@@ -590,7 +625,30 @@ class MyDb {
     }
   }
 
+  // don't use
+  Future<String> readProduct(int id) async {
+    // use function read product by id from db where don't delete
+
+    final Database db = await MyDb().db();
+    Product pro = Product();
+    var res = await db.query("products",
+        where: "id = ? AND deleteStatus=?", whereArgs: [id, 0]);
+    if (res.isEmpty) {
+      return 'null res';
+    } else {
+      var jam = res.isNotEmpty ? pro = Product.fromJson(res.first) : Null;
+      if (jam != Null) {
+        return pro.nameProduct ?? '';
+      } else {
+        return pro.nameProduct ?? '';
+      }
+    }
+  }
+
+  // don't use
   Future<List<Product>> getProductFromBas() async {
+    // use function for read products for basket where don't delete
+    // and push to list 'listProForPageBasket'
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
         await db.query('products', where: "deleteStatus=?", whereArgs: [0]);
@@ -607,9 +665,13 @@ class MyDb {
     }
   }
 
-//''''''''''''customer''''''''''''''''''''
+  // ************Customer*****************
+  // ************Customer*****************
+
+  // use to screen 'admin customer create'
   Future<int> addCustomer(nameCustomer, username, password, email, phoneNumber,
       wallet, address, description, deleteStatus) async {
+    // this function use for create table customer to database
     final db = await MyDb().db();
     var res = await db.query("customers",
         where: "username = ? AND deleteStatus=?", whereArgs: [username, 0]);
@@ -672,7 +734,10 @@ class MyDb {
     }
   }
 
+  // use to screen 'admin customer update'
   Future<int> updateCustomer(int id, Customer newCustomer) async {
+    // this function use for update table customer to database
+
     var db = await MyDb().db();
     Customer customer = Customer();
     var res = await db.query("customers",
@@ -741,24 +806,9 @@ class MyDb {
     }
   }
 
-  Future<String> readCustomer(int id) async {
-    final db = await MyDb().db();
-    Customer cus = Customer();
-    var res = await db.query("customers",
-        where: "id = ? AND deleteStatus=?", whereArgs: [id, 0]);
-    if (res.isEmpty) {
-      return 'null res';
-    } else {
-      var jam = res.isNotEmpty ? cus = Customer.fromJson(res.first) : Null;
-      if (jam != Null) {
-        return cus.nameCustomer ?? '';
-      } else {
-        return cus.nameCustomer ?? '';
-      }
-    }
-  }
-
+  // use to screen 'admin customer update'
   Future<int> getIdCustomer(int id) async {
+    // use function for read customer by id where don't delete
     final db = await MyDb().db();
     Customer cus = Customer();
     var res = await db.query("customers",
@@ -775,18 +825,11 @@ class MyDb {
     }
   }
 
-  Future<List<Map<String, dynamic>>> readCustomers() async {
-    final db = await MyDb().db();
-    List<Map<String, dynamic>> maps =
-        await db.query('customers', where: "deleteStatus=?", whereArgs: [0]);
-    if (maps.isEmpty) {
-      return maps;
-    } else {
-      return maps;
-    }
-  }
-
+  // use to screen 'show all customer'
   Future<int> deleteCustomer(int id) async {
+    // use function delete customer from db by id
+    // update deleteStatus from 0 to 1
+
     final db = await MyDb().db();
     // حذف مشتری از دیتابیس
     await db.update(
@@ -841,7 +884,11 @@ class MyDb {
     }
   }
 
+  // use to screen 'show all customer'
   Future<int> deleteCustomers() async {
+    // use function delete customers from db
+    // update deleteStatus from 0 to 1
+
     final db = await MyDb().db();
     var result = await db.update(
       'customers',
@@ -893,7 +940,10 @@ class MyDb {
     }
   }
 
-  Future<List<Customer>> getCustomer() async {
+  // use to controllers 'invoiceController & customerController'
+  Future<List<Customer>> getCustomers() async {
+    // use function read customers from db
+
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
         await db.query('customers', where: "deleteStatus=?", whereArgs: [0]);
@@ -911,27 +961,14 @@ class MyDb {
     }
   }
 
-  //''''''''''''Invoice''''''''''''''''''''
-  Future<String> readInvoice(idCustomer) async {
-    final db = await MyDb().db();
-    Invoice invoice = Invoice();
-    var res = await db.query('invoices',
-        where: "idCustomer=? AND isPaying=? AND deleteStatus=?",
-        whereArgs: [idCustomer, 0, 0]);
-    if (res.isEmpty) {
-      return 'null res';
-    } else {
-      var jam = res.isNotEmpty ? invoice = Invoice.fromJson(res.first) : Null;
-      if (jam != Null) {
-        return {'${invoice.idCustomer}${invoice.createdAt}'}.toString();
-      } else {
-        return {'${invoice.idCustomer}${invoice.createdAt}'}.toString();
-      }
-    }
-  }
+  // ************Invoice*****************
+  // ************Invoice*****************
 
+  // use to screen 'invoice details'
   Future<List<InvoiceProducts>> readInvoiceProductForInvoiceDetails(
       idInvoice) async {
+    // use function read invoice_products ha where don't delete by idInvoice
+    // push to list 'invoiceProductsList'
     invoiceProductsList.clear();
     final db = await MyDb().db();
     List<Map<String, dynamic>> maps = await db.query('invoice_products',
@@ -949,37 +986,9 @@ class MyDb {
     }
   }
 
-  // function for show order to screen invoiceDetails
-  Future<List<InvoiceProducts>> readInvoiceProduct(idInvoice) async {
-    invoiceProductsList.clear();
-    final db = await MyDb().db();
-    List<Map<String, dynamic>> maps = await db.query('invoice_products',
-        where: "idInvoice=? AND deleteStatus=?", whereArgs: [idInvoice, 0]);
-    if (maps.isEmpty) {
-      return invoiceProductsList;
-    } else {
-      return List.generate(
-        maps.length,
-        (i) {
-          invoiceProductsList.add(InvoiceProducts.fromJson(maps[i]));
-          return (invoiceProductsList[i]);
-        },
-      );
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> readInvoices() async {
-    final db = await MyDb().db();
-    List<Map<String, dynamic>> maps = await db.query('invoices',
-        where: "isPaying=? AND deleteStatus=?", whereArgs: [0, 0]);
-    if (maps.isEmpty) {
-      return maps;
-    } else {
-      return maps;
-    }
-  }
-
-  Future<List<Invoice>> getInvoice() async {
+  // use to controller 'invoiceController'
+  Future<List<Invoice>> getInvoices() async {
+    // use function for read invoices from db
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
         await db.query('invoices', where: "deleteStatus=?", whereArgs: [0]);
@@ -996,7 +1005,10 @@ class MyDb {
     }
   }
 
+  // use to screen 'show all invoice'
   Future<int> deleteInvoices() async {
+    // use function delete invoices from db where don't delete
+    // update deleteStatus from 0 to 1
     final db = await MyDb().db();
     var result = await db.update(
       'invoices',
@@ -1004,7 +1016,7 @@ class MyDb {
         'deleteStatus': 1,
       },
       where: 'deleteStatus = ?',
-      whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
+      whereArgs: [0],
     );
     if (result != 0) {
       Get.snackbar(
@@ -1051,7 +1063,10 @@ class MyDb {
     }
   }
 
+  // use to screen 'show all invoice'
   Future<int> deleteInvoice(int id) async {
+    // use function delete invoice from db where don't delete
+    // update deleteStatus from 0 to 1
     final db = await MyDb().db();
     var result = await db.update('invoices', {'deleteStatus': 1},
         where: "id=?", whereArgs: [id]);
@@ -1099,13 +1114,9 @@ class MyDb {
     }
   }
 
-  Future<String> deleteInvoiceProducts() async {
-    final db = await MyDb().db();
-    await db.delete('invoice_products');
-    return "successful delete invoice_products";
-  }
-
+  // use to screen 'show all invoice'
   Future<int> changePayInvoice(int id) async {
+    // use function for update isPaying from 0 to 1 where don't delete
     final Database db = await MyDb().db();
     Invoice invoice = Invoice();
     var res = await db.query("invoices",
@@ -1184,13 +1195,61 @@ class MyDb {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getListByCheck() async {
+  // don't use
+  Future<String> readInvoice(idCustomer) async {
+    // use function for read invoice by id from db
+
     final db = await MyDb().db();
-    List<Map<String, dynamic>> maps = await db.query('invoices');
-    if (maps.isEmpty) {
-      return maps;
+    Invoice invoice = Invoice();
+    var res = await db.query('invoices',
+        where: "idCustomer=? AND deleteStatus=?",
+        whereArgs: [idCustomer,0]);
+    if (res.isEmpty) {
+      return 'null res';
     } else {
-      return maps;
+      var jam = res.isNotEmpty ? invoice = Invoice.fromJson(res.first) : Null;
+      if (jam != Null) {
+        return {'${invoice.idCustomer}${invoice.createdAt}'}.toString();
+      } else {
+        return {'${invoice.idCustomer}${invoice.createdAt}'}.toString();
+      }
     }
   }
+
+  // don't use
+  // function for show order to screen invoiceDetails
+  // readInvoiceProductForInvoiceDetails == readInvoiceProduct
+  Future<List<InvoiceProducts>> readInvoiceProduct(idInvoice) async {
+    // use function for read invoice_products ha where don't delete by idInvoice
+    // push to list 'invoiceProductsList'
+    invoiceProductsList.clear();
+    final db = await MyDb().db();
+    List<Map<String, dynamic>> maps = await db.query('invoice_products',
+        where: "idInvoice=? AND deleteStatus=?", whereArgs: [idInvoice, 0]);
+    if (maps.isEmpty) {
+      return invoiceProductsList;
+    } else {
+      return List.generate(
+        maps.length,
+            (i) {
+          invoiceProductsList.add(InvoiceProducts.fromJson(maps[i]));
+          return (invoiceProductsList[i]);
+        },
+      );
+    }
+  }
+
+  // don't use
+  Future<String> deleteInvoiceProducts() async {
+    // use function for delete invoice_products ha from db where don't delete
+    // update deleteStatus from 0 to 1
+    final db = await MyDb().db();
+    await db.update('invoice_products',{
+    'deleteStatus': 1,
+    },
+      where: 'deleteStatus = ?',
+      whereArgs: [0],);
+    return "successful delete invoice_products";
+  }
+
 }

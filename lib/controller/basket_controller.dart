@@ -22,7 +22,7 @@ class BasketController extends GetxController {
   }
 
   deleteBaskets() async {
-    await MyDb().deleteBasket();
+    await MyDb().deleteBaskets();
     basketList.clear();
   }
 

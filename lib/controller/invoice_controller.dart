@@ -127,7 +127,7 @@ class InvoiceController extends GetxController {
 
   Future<List<Invoice>>getListInvoice() async {
     listInvoicesDb.clear();
-    listInvoicesDb.value = await MyDb().getInvoice();
+    listInvoicesDb.value = await MyDb().getInvoices();
     return listInvoicesDb;
   }
 
@@ -409,7 +409,7 @@ class InvoiceController extends GetxController {
 
     listProductsForInvoice.clear();
     MyDb xController = Get.find<MyDb>();
-    var p = await xController.getProduct();
+    var p = await xController.getProducts();
 
     listProductsForInvoice.value = xController.productList;
 
@@ -421,7 +421,7 @@ class InvoiceController extends GetxController {
   Future<List<Customer>> getIdNameCustomerForInvoice() async {
     listCustomersForInvoice.clear();
     MyDb xController = Get.find<MyDb>();
-    var c = await xController.getCustomer();
+    var c = await xController.getCustomers();
     listCustomersForInvoice.value = xController.customerList;
     for (int i = 0; i < listCustomersForInvoice.length; i++) {
       listIdCustomers.add(listCustomersForInvoice[i].nameCustomer!);

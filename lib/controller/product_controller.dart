@@ -20,7 +20,7 @@ class ProductController extends GetxController {
 
   Future<List<Product>>getListProduct()async{
     listProductsDb.clear();
-    listProductsDb.value = await MyDb().getProduct();
+    listProductsDb.value = await MyDb().getProducts();
     return listProductsDb;
   }
 

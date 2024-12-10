@@ -15,7 +15,7 @@ import '../widgets/navbar_custom.dart';
 class BasketScreen extends GetView<BasketController> {
   BasketScreen({super.key});
 
-  final Future<List<Product>> proListDb = MyDb().getProduct();
+  final Future<List<Product>> proListDb = MyDb().getProducts();
   final List<int> basketId = [];
   final User user = Get.arguments;
 

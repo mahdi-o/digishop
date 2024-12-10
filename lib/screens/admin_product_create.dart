@@ -210,7 +210,7 @@ class AdminProductCreate extends GetView<ProductController> {
                   fontSizeBtn: 26,
                   shadowColor: kPurpleDark,
                   onTapped: ()async {
-                    await xController.addProduct(
+                    var status = await xController.addProduct(
                       controller.nameProduct.value.text,
                       controller.priceProduct.value.text,
                       controller.brandProduct.value.text,
@@ -223,7 +223,7 @@ class AdminProductCreate extends GetView<ProductController> {
                       4,
                       0,
                     );
-                   if(xController.status.value == true){
+                   if(status != 0){
                      Future.delayed(const Duration(milliseconds: 2500), () {
                        Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد
                          transition: Transition.zoom,  // نوع انیمیشن
