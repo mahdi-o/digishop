@@ -18,7 +18,6 @@ class AdminHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String username = user.username.toString();
     return BaseWidget(
       color: Colors.grey.shade300.withOpacity(0.1),
       appBar: null,
@@ -248,7 +247,6 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor: Colors.black,
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
-                            Get.delete<InvoiceController>();
                             Get.offAllNamed(AppRoutes.adminInvCre,arguments: user);
                           }),
                       ContainerCustomAdmin(

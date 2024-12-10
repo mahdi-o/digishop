@@ -20,14 +20,11 @@ import 'package:digishop/screens/show_all_products.dart';
 import 'package:digishop/screens/splash_screen.dart';
 import 'package:get/get.dart';
 
-import '../screens/admin_invoice_update.dart';
-
 class AppRoutes {
   static const String home = '/home_screen';
   static const String proDet = '/product_details';
   static const String cusDet = '/customer_details';
   static const String invDet = '/invoice_details';
-
   static const String profile = '/profile_user';
   static const String splash = '/splash_screen';
   static const String login = '/login_screen';
@@ -44,7 +41,6 @@ class AppRoutes {
   static const String adminInvCre = '/admin_invoice_create';
   static const String showAllCus = '/show_all_customers';
   static const String showAllInv = '/show_all_invoices';
-  static const String adminInvUpd = '/admin_invoice_update';
 
   static final List<GetPage> listGetPage = [
     GetPage(
@@ -126,10 +122,6 @@ class AppRoutes {
     GetPage(
       name: showAllInv,
       page: () => ShowAllInvoices(),
-    ),
-    GetPage(
-      name: adminInvUpd,
-      page: () => AdminInvoiceUpdate(),
     ),
 
   ];

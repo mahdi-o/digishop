@@ -6,6 +6,7 @@ import 'package:digishop/models/Order.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../models/invoiceProducts.dart';
 
@@ -30,12 +31,12 @@ class InvoiceController extends GetxController {
   RxList<Product> productListOrder = <Product>[].obs;
   RxList<Product> listProductsForInvoice = <Product>[].obs;
   RxList<Customer> listCustomersForInvoice = <Customer>[].obs;
-  RxList<String> listIdProducts = <String>[].obs;
-  RxList<String> listIdCustomers = <String>[].obs;
   RxList<Invoice> listInvoicesDb = <Invoice>[].obs;
   RxList listOrders = [].obs;
   RxList<Order> listOrder = <Order>[].obs;
 
+  ///// customer dropDown //////
+  RxList<String> listIdCustomers = <String>[].obs;
   RxString? selectedValueCus = ''.obs;
   List<DropdownMenuItem<String>> addDividersAfterItemsCus(
       RxList<String> listIdCustomers) {
@@ -79,9 +80,11 @@ class InvoiceController extends GetxController {
     }
     return itemsHeights;
   }
-  RxString? selectedValue = ''.obs;
 
-  List<DropdownMenuItem<String>> addDividersAfterItems(
+  ///// product dropDown //////
+  RxList<String> listIdProducts = <String>[].obs;
+  RxString? selectedValuePro = ''.obs;
+  List<DropdownMenuItem<String>> addDividersAfterItemsPro(
       List<String> listIdProducts) {
     final List<DropdownMenuItem<String>> menuItems = [];
     for (final String item in listIdProducts) {
@@ -110,8 +113,7 @@ class InvoiceController extends GetxController {
     }
     return menuItems;
   }
-
-  List<double> getCustomItemsHeights() {
+  List<double> getCustomItemsHeightsPro() {
     final List<double> itemsHeights = [];
     for (int i = 0; i < (listIdProducts.length * 2) - 1; i++) {
       if (i.isEven) {
@@ -125,6 +127,8 @@ class InvoiceController extends GetxController {
     return itemsHeights;
   }
 
+
+  ///////
   Future<List<Invoice>>getListInvoice() async {
     listInvoicesDb.value.clear();
     listInvoicesDb.value = await MyDb().getInvoice();
@@ -419,10 +423,13 @@ class InvoiceController extends GetxController {
   }
 
   Future<List<Product>> getIdNameProductForInvoice() async {
+
     listProductsForInvoice.clear();
     MyDb xController = Get.find<MyDb>();
-    var p = await xController.getProductForInvoice();
-    listProductsForInvoice = xController.productList;
+    var p = await xController.getProduct();
+
+    listProductsForInvoice.value = xController.productList;
+
     for (int i = 0; i < listProductsForInvoice.length; i++) {
       listIdProducts.add(listProductsForInvoice[i].nameProduct!);
       print(listProductsForInvoice[i].id);
@@ -432,10 +439,12 @@ class InvoiceController extends GetxController {
     return p;
   }
   Future<List<Customer>> getIdNameCustomerForInvoice() async {
+    print('::::::::::::::::::::::::::::::::::');
+
     listCustomersForInvoice.clear();
     MyDb xController = Get.find<MyDb>();
     var c = await xController.getCustomer();
-    listCustomersForInvoice = xController.customerList;
+    listCustomersForInvoice.value = xController.customerList;
     for (int i = 0; i < listCustomersForInvoice.length; i++) {
       listIdCustomers.add(listCustomersForInvoice[i].nameCustomer!);
       print(listCustomersForInvoice[i].id);
@@ -444,6 +453,22 @@ class InvoiceController extends GetxController {
     print('bolbol');
     return c;
   }
+
+
+
+
+
+
+
+  Future<void> getProductForInvoice() async {
+    final db = await MyDb();
+    await db.getProductForInvoice();
+  }
+
+
+
+
+
 
   clear()async{
     idProduct.value.clear();
@@ -471,5 +496,7 @@ class InvoiceController extends GetxController {
     getIdNameCustomerForInvoice();
     getIdNameProductForInvoice();
     getListInvoice();
+    getProductForInvoice();
+
   }
 }

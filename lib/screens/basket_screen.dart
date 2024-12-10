@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/basket_controller.dart';
 import 'package:digishop/database/my_db.dart';
@@ -471,15 +473,15 @@ class BasketScreen extends GetView<BasketController> {
                                           color: kPurpleLight,
                                           borderRadius:
                                               BorderRadius.circular(150)),
-                                      // child: Image.asset(
-                                      //   product.imageAddress!.isEmpty
-                                      //       ? proLaptopListCustom[
-                                      //               Random().nextInt(10)]
-                                      //           .imageAddress
-                                      //           .toString()
-                                      //       : product.imageAddress.toString(),
-                                      //   width: 90,
-                                      // ),
+                                      child: Image.asset(
+                                        product.imageAddress!.isEmpty
+                                            ? proLaptopListCustom[
+                                                    Random().nextInt(10)]
+                                                .imageAddress
+                                                .toString()
+                                            : product.imageAddress.toString(),
+                                        width: 90,
+                                      ),
                                     ),
                                     const SizedBox(
                                       width: 15,

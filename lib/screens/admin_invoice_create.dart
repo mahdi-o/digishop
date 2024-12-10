@@ -1,6 +1,7 @@
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/invoice_controller.dart';
 import 'package:digishop/database/my_db.dart';
+import 'package:digishop/models/Product.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -10,7 +11,7 @@ import '../models/User.dart';
 import '../services/routes.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/navbar_custom.dart';
-
+///////////////////
 class AdminInvoiceCreate extends GetView<InvoiceController> {
    AdminInvoiceCreate({super.key});
   final User user = Get.arguments;
@@ -56,8 +57,15 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                             SizedBox(
                               height: 50, // ارتفاع ثابت برای هدر
                               child: GestureDetector(
-                                onTap: (){
-                                  Get.toNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},);
+                                onTap: ()async{
+                                  final db = await MyDb();
+                                  Product p = Product();
+                                  var res =await db.getProduct();
+
+                                  print(res.first.deleteStatus);
+                                  print(res.first.nameProduct);
+
+                                  print('res res res res res res res ');
                                 },
                                 child: NavbarCustom(
                                   text1: '',
@@ -76,14 +84,11 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                           ],
                         ),
                       ),
-                              Padding(
+                      Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 100.0, vertical: 15),
-                          child:
-                          DropdownButtonHideUnderline(
-                            child: Obx(
-                              ()=>
-                                  DropdownButton2<String>(
+                          child: DropdownButtonHideUnderline(
+                            child: Obx(()=> DropdownButton2<String>(
                                 isExpanded: true,
                                 alignment: Alignment.center,
                                 hint: const Text(
@@ -113,7 +118,8 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                                     ),
                                   ),
                                 ).toList(),
-                                value: controller.listIdCustomers.contains(controller.selectedValueCus?.value)
+                                value: controller.listIdCustomers.contains(
+                                    controller.selectedValueCus?.value)
                                     ? controller.selectedValueCus?.value
                                     : null,
                                 onChanged: (value) {
@@ -161,15 +167,10 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                             ),
                           ),
                         ),
-
-
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: Row(
-                          children: [
-                        DropdownButtonHideUnderline(
-                        child: Obx(
-                            ()=> DropdownButton2<String>(
+                        child: DropdownButtonHideUnderline(
+                        child: Obx(()=> DropdownButton2<String>(
                             isExpanded: true,
                             hint: const Text(
                               'نام محصول',
@@ -179,8 +180,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                                 color: Colors.white70,
                               ),
                             ),
-                            items: controller.listIdProducts
-                                .toSet()
+                            items: controller.listIdProducts.toSet()
                                 .map((product) => DropdownMenuItem<String>(
                               value: product,
                               child: Padding(
@@ -198,12 +198,13 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                                 ),
                               ),
                             ),).toList(),
-                            value:controller.listIdProducts.contains(controller.selectedValue?.value)
-                                ? controller.selectedValue?.value
+                            value:controller.listIdProducts.contains(
+                                controller.selectedValuePro?.value)
+                                ? controller.selectedValuePro?.value
                                 :null,
                             onChanged: (value) {
                               if (controller.listIdProducts.contains(value)) {
-                                controller.selectedValue?.value = value ?? '';
+                                controller.selectedValuePro?.value = value ?? '';
                                 controller.idProduct.value.text = value ?? '';
                               }
                             },
@@ -248,69 +249,6 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                           ),
                         ),
                       ),
-                            // DropdownButtonHideUnderline(
-                            //   child: DropdownButton2<String>(
-                            //     isExpanded: true,
-                            //     hint: const Text(
-                            //       'نام محصول',
-                            //       style: TextStyle(
-                            //         fontFamily: 'lalezarPlus',
-                            //         fontSize: 20,
-                            //         color: Colors.white70,
-                            //       ),
-                            //     ),
-                            //     items: controller.addDividersAfterItems(
-                            //         controller.listIdProducts),
-                            //     value: controller.selectedValue!.value.isEmpty
-                            //         ? null
-                            //         : controller.selectedValue!.value,
-                            //     style: const TextStyle(
-                            //       fontFamily: 'yekanBakh',
-                            //       fontWeight: FontWeight.bold,
-                            //       color: Colors.white,
-                            //       fontSize: 18
-                            //     ),
-                            //     onChanged: (value) {
-                            //       controller.selectedValue?.value =
-                            //           value ?? '';
-                            //       controller.idProduct.value.text =
-                            //           value ?? '';
-                            //     },
-                            //     buttonStyleData: const ButtonStyleData(
-                            //       decoration: BoxDecoration(
-                            //           border: Border(
-                            //               bottom: BorderSide(
-                            //                   width: 1,
-                            //                   color: Colors.white24))),
-                            //       padding:
-                            //           EdgeInsets.symmetric(horizontal: 50),
-                            //       height: 60,
-                            //       width: 360,
-                            //     ),
-                            //     dropdownStyleData: DropdownStyleData(
-                            //       decoration: BoxDecoration(
-                            //         gradient: const LinearGradient(
-                            //             colors: [kBlueLight, kPurpleDark],
-                            //             begin: Alignment.bottomLeft,
-                            //             end: Alignment.topRight),
-                            //         borderRadius: BorderRadius.circular(10),
-                            //       ),
-                            //       maxHeight: 250,
-                            //     ),
-                            //     iconStyleData: const IconStyleData(
-                            //       icon: Icon(
-                            //         Icons.arrow_drop_down_rounded,
-                            //         color: Colors.white38,
-                            //       ),
-                            //       openMenuIcon: Icon(
-                            //         Icons.arrow_drop_up_rounded,
-                            //         color: Colors.white,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
-                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -366,17 +304,9 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                     ],
                   ),
                   const SizedBox(height: 43),
-                  GestureDetector(
-                    onTap: () async {
-                      var res = await MyDb().readInvoiceProducts();
-                      var s = await MyDb().readInvoices();
-                      print(res);
-                      print(s);
-                    },
-                    child: const Text(
-                      'سفارشات موجود در فاکتور',
-                      style: TextStyle(fontSize: 20, color: kPurpleDark),
-                    ),
+                  const Text(
+                    'سفارشات موجود در فاکتور',
+                    style: TextStyle(fontSize: 20, color: kPurpleDark),
                   ),
                   SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -392,7 +322,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                                     child: Text(
                                       'در حال حاضر سفارشی برای ثبت موجود نیست!',
                                       style: TextStyle(
-                                          fontSize: 20, color: Colors.pink),
+                                          fontSize: 20, color: kRedLight),
                                     ),
                                   ),
                                 ),
@@ -512,7 +442,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                           Get.snackbar(
                             'خطا',
                             'اطلاعات وارد شده صحیح نمی‌باشد!',
-                            backgroundColor: Colors.pink,
+                            backgroundColor: kRedLight,
                             colorText: Colors.white,
                           );
                         }
@@ -533,3 +463,5 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
     );
   }
 }
+
+

@@ -151,13 +151,23 @@ class ProductDetails extends GetView<ProductController> {
                             onTapped: () {
                               basket.addBasketToDb(
                                   "${user.username},${product.id}", user.username, product.id, 1.toInt(), 0,0);
+
                               Get.snackbar(
-                                'افزودن به سبد خرید',
-                                'کالا با موفقیت در سبد خرید اضافه شد',
+                                '',
+                                '',
+                                titleText: const Text(
+                                  'افزودن به سبد خرید',
+                                  style: TextStyle(fontSize: 20, color: Colors.white),
+                                ),
+                                messageText: const Text(
+                                  'محصول با موفقیت در سبد خرید اضافه شد',
+                                  style: TextStyle(fontSize: 18, color: Colors.white),
+                                ),
                                 backgroundColor: kPurpleDark,
                                 colorText: Colors.white,
                                 icon: const Icon(Icons.add_shopping_cart_rounded,size: 35,color: Colors.white,),
                                 shouldIconPulse: false,
+                                duration: const Duration(milliseconds: 1500),
                               );
                             },
                             splashColor: kPurpleDark,
