@@ -1,4 +1,5 @@
 import 'package:digishop/constans.dart';
+import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Invoice.dart';
 import 'package:digishop/models/invoiceProducts.dart';
 import 'package:digishop/screens/show_all_invoices.dart';
@@ -16,7 +17,7 @@ import '../widgets/navbar_custom.dart';
 
 class InvoiceDetails extends GetView<InvoiceController> {
   InvoiceDetails({super.key});
-
+  final ProductController proController = Get.find<ProductController>();
   final Invoice invoice = Get.arguments['invoice'];
   final User user = Get.arguments['user'];
   final xController = Get.find<MyDb>();
@@ -151,7 +152,7 @@ class InvoiceDetails extends GetView<InvoiceController> {
                 itemCount: listInvoiceProduct.length,
                 itemBuilder: (context, index) {
                   InvoiceProducts invoicePro = listInvoiceProduct[index];
-                  Product product = xController.productList
+                  Product product = proController.productList
                       .where((p0) => p0.id == invoicePro.idProduct).first;
                   var sumPrice = invoicePro.count! * (int.parse(product.price!));
                   return Padding(
@@ -266,7 +267,7 @@ class InvoiceDetails extends GetView<InvoiceController> {
 
   onInit() async {
     listInvoiceProduct.clear();
-    var res = await xController.readInvoiceProductForInvoiceDetails(invoice.id);
+    var res = await controller.readInvoiceProductForInvoiceDetails(invoice.id);
     for (var item in res) {
       listInvoiceProduct.add(item);
     }

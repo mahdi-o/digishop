@@ -77,21 +77,16 @@ class ProductDetails extends GetView<ProductController> {
                     const Divider(endIndent: 0.9,indent: 0.2,thickness: 0.4,color: Colors.grey,height: 1.5),
 
                     Center(
-                        child: GestureDetector(
-                      onTap: () async {
-                        await basket.getDataBaskets();
-                      },
-                      child: product.imageAddress!.isEmpty ?  Image.asset(
-                        proLaptopList[Random().nextInt(10)].imageAddress.toString(),
-                        fit: BoxFit.cover,
-                        width: 270,
-                      ) : Image.asset(
-                        product.imageAddress.toString(),
-                        fit: BoxFit.cover,
-                        width: 250,
-                        height: 200,
-                      ),
-                    )),
+                        child: product.imageAddress!.isEmpty ?  Image.asset(
+                          proLaptopList[Random().nextInt(10)].imageAddress.toString(),
+                          fit: BoxFit.cover,
+                          width: 270,
+                        ) : Image.asset(
+                          product.imageAddress.toString(),
+                          fit: BoxFit.cover,
+                          width: 250,
+                          height: 200,
+                        )),
                     Column(
                       children: [
                         Row(
@@ -146,7 +141,7 @@ class ProductDetails extends GetView<ProductController> {
                             fontSizeBtn: 28,
                             shadowColor: kPurpleDark,
                             onTapped: () {
-                              basket.addBasketToDb(
+                              basket.addOrUpdateBasket(
                                   "${user.username},${product.id}", user.username, product.id, 1.toInt(), 0,0);
 
                               Get.snackbar(

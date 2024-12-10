@@ -217,7 +217,7 @@ class AdminProductUpdate extends GetView<ProductController> {
                   fontSizeBtn: 28,
                   shadowColor: kPurpleDark,
                   onTapped: () async {
-                   var result = await MyDb().updateProduct(product.id!,
+                   var result = await controller.updateProduct(product.id!,
                         Product(
                           id: product.id,
                           nameProduct: controller.nameProduct.value.text,

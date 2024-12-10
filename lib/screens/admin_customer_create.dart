@@ -122,7 +122,7 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                   fontSizeBtn: 26,
                   shadowColor: kPurpleDark,
                   onTapped: () async {
-                   var result = await xController.addCustomer(
+                   var result = await controller.addCustomer(
                         controller.nameCustomer.value.text,
                         controller.username.value.text,
                         controller.password.value.text,

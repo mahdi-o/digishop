@@ -21,7 +21,7 @@ class ShowAllCustomers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Customer>>(
-      future: controller.getListCustomer(), // متد بارگذاری مشتریان از دیتابیس
+      future: controller.getCustomers(), // متد بارگذاری مشتریان از دیتابیس
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return mainWidget(
@@ -156,7 +156,7 @@ class ShowAllCustomers extends StatelessWidget {
               onTap: () {
                 dialogCustom('آیا از حذف این مشتری اطمینان دارید؟', 20, ()async{
                   Get.back();
-                  var result = await myDb.deleteCustomer(customer.id ?? -1);
+                  var result = await controller.deleteCustomer(customer.id ?? -1);
                   if (result == 1) {
                     FocusScope.of(context).unfocus();
                     controller.clear();
@@ -223,7 +223,7 @@ class ShowAllCustomers extends StatelessWidget {
                     dialogCustom('آیا از حذف تمام مشتریان اطمینان دارید؟', 20,
                         () async{
                         Get.back();
-                      var result =await MyDb().deleteCustomers();
+                      var result =await controller.deleteCustomers();
                       if(result != 0){
                         FocusScope.of(context).unfocus();
                         Future.delayed(const Duration(milliseconds: 2500), () {

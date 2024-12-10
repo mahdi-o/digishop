@@ -1,10 +1,12 @@
 import 'package:digishop/constans.dart';
+import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../database/my_db.dart';
 
 class MySearchController extends GetxController{
+  ProductController proController = Get.find<ProductController>();
 
   TextEditingController text = TextEditingController();
   RxList<Product> listSearch = <Product>[].obs;
@@ -36,7 +38,7 @@ class MySearchController extends GetxController{
     }
     else {
       listProductsDbForSearch.clear();
-      listProductsDbForSearch.value = await MyDb().getProducts();
+      listProductsDbForSearch.value = await proController.getProducts();
       listSearch.clear();
       for(var item in listProductsDbForSearch){
         String textSearch = text.text.removeAllWhitespace.trim();

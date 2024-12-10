@@ -20,7 +20,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Invoice>>(
-      future: controller.getListInvoice(), // متد بارگذاری فاکتورها از دیتابیس
+      future: controller.getInvoices(), // متد بارگذاری فاکتورها از دیتابیس
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return mainWidget(
@@ -147,7 +147,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                         shadowColor: kPurpleDark,
                         onTapped: () async {
                           var result =
-                              await myDb.changePayInvoice(invoice.id!);
+                              await controller.changePayInvoice(invoice.id!);
                           if (result != 0) {
                             FocusScope.of(context).unfocus();
                             Future.delayed(const Duration(milliseconds: 2500),
@@ -197,7 +197,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                               () async {
                             Get.back();
                             var result =
-                                await MyDb().deleteInvoice(invoice.id!);
+                                await controller.deleteInvoice(invoice.id!);
                             if (result == 1) {
                               FocusScope.of(context).unfocus();
                               Future.delayed(
@@ -270,7 +270,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                         'آیا از حذف همه فاکتورها و سفارشات اطمینان دارید؟',
                         20, () async {
                       Get.back();
-                      var result = await MyDb().deleteInvoices();
+                      var result = await controller.deleteInvoices();
                       if (result != 0) {
                         FocusScope.of(context).unfocus();
                         Future.delayed(const Duration(milliseconds: 2500),

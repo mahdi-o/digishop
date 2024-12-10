@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/basket_controller.dart';
+import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Basket.dart';
 import 'package:digishop/models/Product.dart';
@@ -14,8 +15,7 @@ import '../widgets/navbar_custom.dart';
 
 class BasketScreen extends GetView<BasketController> {
   BasketScreen({super.key});
-
-  final Future<List<Product>> proListDb = MyDb().getProducts();
+  // final Future<List<Product>> proListDb = proController.getProducts();
   final List<int> basketId = [];
   final User user = Get.arguments;
 
@@ -95,12 +95,13 @@ class BasketScreen extends GetView<BasketController> {
                       icon1: Icons.delete_outline_rounded,
                       onTapIcon2: () {
                         dialogCustom(
-                            'آیا از حذف همه سبدها اطمینان دارید؟', 16, () {
+                            'آیا از حذف همه سبدها اطمینان دارید؟', 18, () {
                           controller.deleteBaskets();
                           FocusScope.of(context).unfocus();
                           Get.back();
                         });
                       },
+
                       icon2: null,
                     ),
                     Expanded(
@@ -263,7 +264,7 @@ class BasketScreen extends GetView<BasketController> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            controller.deleteItemInBaskets(
+                                            controller.deleteItemBaskets(
                                                 basket.id!);
                                           },
                                           child: const Icon(

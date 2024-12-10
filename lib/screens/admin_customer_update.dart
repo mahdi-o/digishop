@@ -193,8 +193,8 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                   onTapped: () async {
                     if (customer.id != null) {
                       var idCus =
-                          await xController.getIdCustomer(customer.id ?? 0);
-                     var result = await xController.updateCustomer(
+                          await controller.getIdCustomer(customer.id ?? 0);
+                     var result = await controller.updateCustomer(
                         idCus,
                         Customer(
                           id: idCus,

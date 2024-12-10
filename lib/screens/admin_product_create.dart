@@ -210,7 +210,7 @@ class AdminProductCreate extends GetView<ProductController> {
                   fontSizeBtn: 26,
                   shadowColor: kPurpleDark,
                   onTapped: ()async {
-                    var status = await xController.addProduct(
+                    var status = await controller.addProduct(
                       controller.nameProduct.value.text,
                       controller.priceProduct.value.text,
                       controller.brandProduct.value.text,

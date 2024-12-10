@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:digishop/screens/basket_screen.dart';
@@ -10,6 +11,7 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
 
+  ProductController proController = Get.find<ProductController>();
   Rx<CarouselController> controllerCarouser = CarouselController().obs;
   RxInt currentIndex = 0.obs;
   RxList<Product> listProductsBestDb = <Product>[].obs;
@@ -75,7 +77,7 @@ class HomeController extends GetxController {
 
   getProductDbForHomeScreen()async{
     listProductsBestDb.clear();
-    listProductsBestDb.value = await MyDb().getProducts();
+    listProductsBestDb.value = await proController.getProducts();
   }
 
 

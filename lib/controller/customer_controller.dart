@@ -1,7 +1,8 @@
 import 'package:digishop/models/Customer.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:sqflite/sqflite.dart';
+import '../constans.dart';
 import '../database/my_db.dart';
 
 class CustomerController extends GetxController{
@@ -15,13 +16,306 @@ class CustomerController extends GetxController{
   Rx<TextEditingController> address =TextEditingController().obs;
   Rx<TextEditingController> changePassword = TextEditingController().obs;
 
-  RxList<Customer> listCustomersDb = <Customer>[].obs;
+  // use controller 'invoiceController'
+  // use file 'my_db' to function 'get customer'
+  RxList<Customer> customerList = <Customer>[].obs;
 
-  Future<List<Customer>>getListCustomer()async{
-    listCustomersDb.clear();
-    listCustomersDb.value = await MyDb().getCustomers();
-    return listCustomersDb;
+  // ************Customer*****************
+  // ************Customer*****************
+
+  // use to screen 'admin customer create'
+  Future<int> addCustomer(nameCustomer, username, password, email, phoneNumber,
+      wallet, address, description, deleteStatus) async {
+    // this function use for create table customer to database
+    final db = await MyDb().db();
+    var res = await db.query("customers",
+        where: "username = ? AND deleteStatus=?", whereArgs: [username, 0]);
+    var jam = res.isNotEmpty ? Customer.fromJson(res.first) : Null;
+    if (jam == Null) {
+      await db.insert('customers', {
+        "nameCustomer": nameCustomer,
+        "username": username,
+        "password": password,
+        "email": email,
+        "phoneNumber": phoneNumber,
+        "wallet": wallet,
+        "address": address,
+        "description": description,
+        "isDelete": 0,
+        "createdAt": DateTime.now().toString().split(".")[0],
+        "updatedAt": DateTime.now().toString().split(".")[0],
+        "deleteStatus": deleteStatus,
+      });
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'ثبت مشتری',
+          style: TextStyle(fontSize: 20, color: kPurpleDark),
+        ),
+        messageText: const Text(
+          'اطلاعات مشتری با موفقیت ثبت شد',
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
+        ),
+        backgroundColor: Colors.white,
+        colorText: kPinkDark,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    } else {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'مشتری با این نام کاربری قبلا در سیستم ثبت شده است',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        icon: const Icon(
+          Icons.highlight_remove_outlined,
+          color: Colors.white,
+          size: 35,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
   }
+
+  // use to screen 'admin customer update'
+  Future<int> updateCustomer(int id, Customer newCustomer) async {
+    // this function use for update table customer to database
+
+    var db = await MyDb().db();
+    Customer customer = Customer();
+    var res = await db.query("customers",
+        where: "id = ? AND deleteStatus=?", whereArgs: [id, 0]);
+    var jam = res.isNotEmpty ? customer = Customer.fromJson(res.first) : Null;
+    if (jam == Null) {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'این مشتری در سیستم موجود نمی باشد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        icon: const Icon(
+          Icons.highlight_remove_outlined,
+          color: Colors.white,
+          size: 35,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    } else {
+      await db.update(
+          'customers',
+          Customer(
+              id: newCustomer.id,
+              nameCustomer: newCustomer.nameCustomer,
+              username: newCustomer.username,
+              password: newCustomer.password,
+              email: newCustomer.email,
+              phoneNumber: newCustomer.phoneNumber,
+              wallet: newCustomer.wallet,
+              address: newCustomer.address,
+              description: newCustomer.description,
+              isDelete: newCustomer.isDelete,
+              createdAt: newCustomer.createdAt,
+              updatedAt: DateTime.now().toString().split(".")[0],
+              deleteStatus: newCustomer.deleteStatus)
+              .toJson(),
+          where: "id=?",
+          whereArgs: [newCustomer.id]);
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'ویرایش اطلاعات',
+          style: TextStyle(fontSize: 20, color: kPurpleDark),
+        ),
+        messageText: const Text(
+          'اطلاعات مشتری با موفقیت ویرایش شد',
+          style: TextStyle(fontSize: 18, color: kPurpleDark),
+        ),
+        backgroundColor: Colors.white,
+        colorText: kPinkDark,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    }
+  }
+
+  // use to screen 'admin customer update'
+  Future<int> getIdCustomer(int id) async {
+    // use function for read customer by id where don't delete
+    final db = await MyDb().db();
+    Customer cus = Customer();
+    var res = await db.query("customers",
+        where: "id = ? AND deleteStatus=?", whereArgs: [id, 0]);
+    if (res.isEmpty) {
+      return -1;
+    } else {
+      var jam = res.isNotEmpty ? cus = Customer.fromJson(res.first) : Null;
+      if (jam != Null) {
+        return cus.id ?? -1;
+      } else {
+        return cus.id ?? -1;
+      }
+    }
+  }
+
+  // use to screen 'show all customer'
+  Future<int> deleteCustomer(int id) async {
+    // use function delete customer from db by id
+    // update deleteStatus from 0 to 1
+
+    final db = await MyDb().db();
+    // حذف مشتری از دیتابیس
+    await db.update(
+      'customers',
+      {'deleteStatus': 1},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    var isDelete = await db.query('customers',
+        where: 'id = ? AND deleteStatus=?', whereArgs: [id, 0]);
+    if (isDelete.isEmpty) {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف مشتری',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'مشتری با موفقیت حذف شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    } else {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف مشتری با خطا مواجه شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        icon: const Icon(
+          Icons.highlight_remove_outlined,
+          color: Colors.white,
+          size: 35,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
+  }
+
+  // use to screen 'show all customer'
+  Future<int> deleteCustomers() async {
+    // use function delete customers from db
+    // update deleteStatus from 0 to 1
+
+    final db = await MyDb().db();
+    var result = await db.update(
+      'customers',
+      {'deleteStatus': 1},
+      where: 'deleteStatus = ?',
+      whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
+    );
+    if (result != 0) {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف مشتریان',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'تمام مشتریان با موفقیت حذف شدند',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    } else {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف مشتریان با خطا مواجه شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        icon: const Icon(
+          Icons.highlight_remove_outlined,
+          color: Colors.white,
+          size: 35,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
+  }
+
+  // use to controllers 'invoiceController & customerController'
+  Future<List<Customer>> getCustomers() async {
+    // use function read customers from db
+
+    final Database db = await MyDb().db();
+    final List<Map<String, dynamic>> maps =
+    await db.query('customers', where: "deleteStatus=?", whereArgs: [0]);
+    if (maps.isEmpty) {
+      return customerList;
+    } else {
+
+      return List.generate(
+        maps.length,
+            (i) {
+          customerList.add(Customer.fromJson(maps[i]));
+          return (customerList[i]);
+        },
+      );
+    }
+  }
+
 
   clear()async{
     nameCustomer.value.clear();
@@ -37,6 +331,6 @@ class CustomerController extends GetxController{
   void onInit() async{
     // TODO: implement onInit
     super.onInit();
-    await getListCustomer();
+    await getCustomers();
   }
 }

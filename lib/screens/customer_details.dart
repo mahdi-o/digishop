@@ -69,15 +69,10 @@ class CustomerDetails extends StatelessWidget {
                   const Divider(endIndent: 0.9,indent: 0.2,thickness: 0.4,color: Colors.grey,height: 1.5),
                    const SizedBox(height: 35,),
                   Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          await basket.getDataBaskets();
-                        },
-                        child:Image.asset(
-                          'assets/images/user3.png',
-                          fit: BoxFit.cover,
-                          width: 200,
-                        ),
+                      child: Image.asset(
+                        'assets/images/user3.png',
+                        fit: BoxFit.cover,
+                        width: 200,
                       )),
                   Column(
                     children: [

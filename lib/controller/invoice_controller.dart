@@ -1,4 +1,5 @@
 import 'package:digishop/constans.dart';
+import 'package:digishop/controller/customer_controller.dart';
 import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Customer.dart';
 import 'package:digishop/models/Invoice.dart';
@@ -6,7 +7,9 @@ import 'package:digishop/models/Order.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sqflite/sqflite.dart';
 import '../models/invoiceProducts.dart';
+import 'product_controller.dart';
 
 class InvoiceController extends GetxController {
 
@@ -21,6 +24,8 @@ class InvoiceController extends GetxController {
   Rx<TextEditingController> createAt = TextEditingController().obs;
   Rx<TextEditingController> updateAt = TextEditingController().obs;
 
+  ProductController proController = Get.find<ProductController>();
+
   RxInt sumProPriceAll = 0.obs;
   RxInt isPay = 0.obs;
   RxInt sumPriceAll = 0.obs;
@@ -29,9 +34,12 @@ class InvoiceController extends GetxController {
   RxList<Product> productListOrder = <Product>[].obs;
   RxList<Product> listProductsForInvoice = <Product>[].obs;
   RxList<Customer> listCustomersForInvoice = <Customer>[].obs;
-  RxList<Invoice> listInvoicesDb = <Invoice>[].obs;
+  // use file 'my_db' to function 'get invoice'
+  RxList<Invoice> invoiceList = <Invoice>[].obs;
   RxList listOrders = [].obs;
   RxList<Order> listOrder = <Order>[].obs;
+  // use file 'my_db' to function '  readInvoiceProductForInvoiceDetails  &  readInvoiceProduct'
+  RxList<InvoiceProducts> invoiceProductsList = <InvoiceProducts>[].obs;
 
   ///// customer dropDown //////
   RxList<String> listIdCustomers = <String>[].obs;
@@ -125,10 +133,23 @@ class InvoiceController extends GetxController {
     return itemsHeights;
   }
 
-  Future<List<Invoice>>getListInvoice() async {
-    listInvoicesDb.clear();
-    listInvoicesDb.value = await MyDb().getInvoices();
-    return listInvoicesDb;
+  // use to controller 'invoiceController'
+  Future<List<Invoice>> getInvoices() async {
+    // use function for read invoices from db
+    final Database db = await MyDb().db();
+    final List<Map<String, dynamic>> maps =
+    await db.query('invoices', where: "deleteStatus=?", whereArgs: [0]);
+    if (maps.isEmpty) {
+      return invoiceList;
+    } else {
+      return List.generate(
+        maps.length,
+            (i) {
+          invoiceList.add(Invoice.fromJson(maps[i]));
+          return (invoiceList[i]);
+        },
+      );
+    }
   }
 
   Future<void> addOrder() async {
@@ -352,7 +373,7 @@ class InvoiceController extends GetxController {
     discount.value.clear();
     listOrders.clear();
     listOrder.clear();
-    listInvoicesDb.clear();
+    invoiceList.clear();
   }
 
   Future<int> deleteOrder()async{
@@ -405,13 +426,201 @@ class InvoiceController extends GetxController {
     }
   }
 
+  // use to screen 'show all invoice'
+  Future<int> deleteInvoices() async {
+    // use function delete invoices from db where don't delete
+    // update deleteStatus from 0 to 1
+    final db = await MyDb().db();
+    var result = await db.update(
+      'invoices',
+      {
+        'deleteStatus': 1,
+      },
+      where: 'deleteStatus = ?',
+      whereArgs: [0],
+    );
+    if (result != 0) {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف فاکتورها',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'تمام فاکتورها با موفقیت حذف شدند',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    } else {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف فاکتورها با خطا مواجه شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        icon: const Icon(
+          Icons.highlight_remove_outlined,
+          color: Colors.white,
+          size: 35,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+
+      return 0;
+    }
+  }
+
+  // use to screen 'show all invoice'
+  Future<int> deleteInvoice(int id) async {
+    // use function delete invoice from db where don't delete
+    // update deleteStatus from 0 to 1
+    final db = await MyDb().db();
+    var result = await db.update('invoices', {'deleteStatus': 1},
+        where: "id=?", whereArgs: [id]);
+    if (result != 0) {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'حذف فاکتور',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'فاکتور با موفقیت حذف شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    } else {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف فاکتور با خطا مواجه شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        icon: const Icon(
+          Icons.highlight_remove_outlined,
+          color: Colors.white,
+          size: 35,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
+  }
+  // use to screen 'show all invoice'
+  Future<int> changePayInvoice(int id) async {
+    // use function for update isPaying from 0 to 1 where don't delete
+    final Database db = await MyDb().db();
+    Invoice invoice = Invoice();
+    var res = await db.query("invoices",
+        where: "id=? AND deleteStatus=?", whereArgs: [id, 0]);
+    var jam = res.isNotEmpty ? invoice = Invoice.fromJson(res.first) : Null;
+    if (jam != Null) {
+      // factor vojod dard baraye update
+      if (invoice.isPaying == 0) {
+        await db.update(
+            'invoices',
+            Invoice(
+              id: invoice.id,
+              idCustomer: invoice.idCustomer,
+              nameCustomer: invoice.nameCustomer,
+              discount: invoice.discount,
+              typePay: invoice.typePay,
+              createdAt: invoice.createdAt,
+              isPaying: 1,
+              updatedAt: DateTime.now().toString().split(".")[0],
+              deleteStatus: invoice.deleteStatus,
+            ).toJson(),
+            where: "id=?",
+            whereArgs: [id]);
+        Get.snackbar(
+          '',
+          '',
+          titleText: const Text(
+            'پرداخت فاکتور',
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          messageText: const Text(
+            'وضعیت فاکتور با موفقیت به پرداخت شده تغییر کرد',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+          backgroundColor: kPurpleDark,
+          colorText: kPinkDark,
+          duration: const Duration(milliseconds: 1500),
+        );
+        return 1;
+      } else if (invoice.isPaying == 1) {
+        Get.snackbar(
+          '',
+          '',
+          titleText: const Text(
+            'اخطار',
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          messageText: const Text(
+            'وضعیت فاکتور پرداخت شده می باشد',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+          backgroundColor: kRedLight,
+          colorText: kPinkDark,
+          duration: const Duration(milliseconds: 1500),
+        );
+        return 0;
+      }
+      return 3;
+    } else {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'پرداخت ناموفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'فاکتور برای تغییر به حالت پرداخت شده یافت نشد!',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        backgroundColor: kRedLight,
+        colorText: kPinkDark,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
+  }
   Future<List<Product>> getIdNameProductForInvoice() async {
 
     listProductsForInvoice.clear();
-    MyDb xController = Get.find<MyDb>();
-    var p = await xController.getProducts();
 
-    listProductsForInvoice.value = xController.productList;
+    var p = await proController.getProducts();
+
+    listProductsForInvoice.value = proController.productList;
 
     for (int i = 0; i < listProductsForInvoice.length; i++) {
       listIdProducts.add(listProductsForInvoice[i].nameProduct!);
@@ -421,8 +630,10 @@ class InvoiceController extends GetxController {
   Future<List<Customer>> getIdNameCustomerForInvoice() async {
     listCustomersForInvoice.clear();
     MyDb xController = Get.find<MyDb>();
-    var c = await xController.getCustomers();
-    listCustomersForInvoice.value = xController.customerList;
+    CustomerController cusController = Get.find<CustomerController>();
+
+    var c = await cusController.getCustomers();
+    listCustomersForInvoice.value = cusController.customerList;
     for (int i = 0; i < listCustomersForInvoice.length; i++) {
       listIdCustomers.add(listCustomersForInvoice[i].nameCustomer!);
     }
@@ -431,9 +642,31 @@ class InvoiceController extends GetxController {
 
   Future<void> getProductForInvoice() async {
     final db = await MyDb();
-    await db.getProductForInvoice();
+    await proController.getProductForInvoice();
   }
 
+
+  // use to screen 'invoice details'
+  Future<List<InvoiceProducts>> readInvoiceProductForInvoiceDetails(
+      idInvoice) async {
+    // use function read invoice_products ha where don't delete by idInvoice
+    // push to list 'invoiceProductsList'
+    invoiceProductsList.clear();
+    final db = await MyDb().db();
+    List<Map<String, dynamic>> maps = await db.query('invoice_products',
+        where: "idInvoice=? AND deleteStatus=?", whereArgs: [idInvoice, 0]);
+    if (maps.isEmpty) {
+      return invoiceProductsList;
+    } else {
+      return List.generate(
+        maps.length,
+            (i) {
+          invoiceProductsList.add(InvoiceProducts.fromJson(maps[i]));
+          return (invoiceProductsList[i]);
+        },
+      );
+    }
+  }
   clear()async{
     idProduct.value.clear();
     idCustomer.value.clear();
@@ -451,15 +684,78 @@ class InvoiceController extends GetxController {
     isProductExists = false.obs;
     listOrders.clear();
     listOrder.clear();
-    listInvoicesDb.clear();
+    invoiceList.clear();
   }
+
+
+
+
+
+  // don't use
+  Future<String> readInvoice(idCustomer) async {
+    // use function for read invoice by id from db
+
+    final db = await MyDb().db();
+    Invoice invoice = Invoice();
+    var res = await db.query('invoices',
+        where: "idCustomer=? AND deleteStatus=?",
+        whereArgs: [idCustomer,0]);
+    if (res.isEmpty) {
+      return 'null res';
+    } else {
+      var jam = res.isNotEmpty ? invoice = Invoice.fromJson(res.first) : Null;
+      if (jam != Null) {
+        return {'${invoice.idCustomer}${invoice.createdAt}'}.toString();
+      } else {
+        return {'${invoice.idCustomer}${invoice.createdAt}'}.toString();
+      }
+    }
+  }
+
+  // don't use
+  // function for show order to screen invoiceDetails
+  // readInvoiceProductForInvoiceDetails == readInvoiceProduct
+  Future<List<InvoiceProducts>> readInvoiceProduct(idInvoice) async {
+    // use function for read invoice_products ha where don't delete by idInvoice
+    // push to list 'invoiceProductsList'
+    invoiceProductsList.clear();
+    final db = await MyDb().db();
+    List<Map<String, dynamic>> maps = await db.query('invoice_products',
+        where: "idInvoice=? AND deleteStatus=?", whereArgs: [idInvoice, 0]);
+    if (maps.isEmpty) {
+      return invoiceProductsList;
+    } else {
+      return List.generate(
+        maps.length,
+            (i) {
+          invoiceProductsList.add(InvoiceProducts.fromJson(maps[i]));
+          return (invoiceProductsList[i]);
+        },
+      );
+    }
+  }
+
+
+  // don't use
+  Future<String> deleteInvoiceProducts() async {
+    // use function for delete invoice_products ha from db where don't delete
+    // update deleteStatus from 0 to 1
+    final db = await MyDb().db();
+    await db.update('invoice_products',{
+      'deleteStatus': 1,
+    },
+      where: 'deleteStatus = ?',
+      whereArgs: [0],);
+    return "successful delete invoice_products";
+  }
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getIdNameCustomerForInvoice();
     getIdNameProductForInvoice();
-    getListInvoice();
+    getInvoices();
     getProductForInvoice();
 
   }

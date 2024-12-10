@@ -17,6 +17,8 @@ class ShowAllProducts extends GetView<ProductController> {
   final String roll = Get.arguments['roll'];
   final String brandHomeScreen = Get.parameters['all']!;
   final MyDb myDb = Get.find<MyDb>();
+  final ProductController proController = Get.find<ProductController>();
+
   @override
   final ProductController controller = Get.find<ProductController>();
   final RxList<Product> listProducts = <Product>[].obs;
@@ -25,7 +27,7 @@ class ShowAllProducts extends GetView<ProductController> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Product>>(
-      future: controller.getListProduct(), // متد بارگذاری محصولات از دیتابیس
+      future: controller.getProducts(), // متد بارگذاری محصولات از دیتابیس
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return mainWidget(
@@ -194,7 +196,7 @@ class ShowAllProducts extends GetView<ProductController> {
                   dialogCustom(
                       'آیا از حذف این محصول اطمینان دارید؟', 20, () async {
                     Get.back();
-                    var result = await myDb.deleteProduct(product.id ?? -1);
+                    var result = await proController.deleteProduct(product.id ?? -1);
                     if (result != 0) {
                       FocusScope.of(context).unfocus();
                       controller.clear();
@@ -265,7 +267,7 @@ class ShowAllProducts extends GetView<ProductController> {
                         'آیا از حذف تمامی محصولات اطمینان دارید؟',
                         20, () async {
                       Get.back();
-                      var result = await MyDb().deleteProducts();
+                      var result = await proController.deleteProducts();
                       if (result != 0) {
                         FocusScope.of(context).unfocus();
                         Future.delayed(const Duration(milliseconds: 2500), () {
