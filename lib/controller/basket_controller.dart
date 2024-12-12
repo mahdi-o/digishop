@@ -2,6 +2,8 @@ import 'package:digishop/constans.dart';
 import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Basket.dart';
 import 'package:digishop/models/Product.dart';
+import 'package:digishop/screens/basket_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:digishop/database/my_db.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +11,6 @@ import 'package:sqflite/sqflite.dart';
 
 
 class BasketController extends GetxController {
-
   // use file 'my_db' to function 'get baskets'
   RxList<Basket> basketList = <Basket>[].obs;
 
@@ -78,19 +79,62 @@ class BasketController extends GetxController {
   Future<int> deleteBaskets() async {
     // this function use for delete baskets where don't delete
     // update deleteStatus from 0 to 1
-
     final db = await MyDb().db();
-    await db.update(
+    var result = await db.update(
       "baskets",
       {'deleteStatus': 1},
       where: 'deleteStatus = ?',
       whereArgs: [0],
     );
-    return 1;
+  print(result);
+  print('+WD(#*&#^&^%@)(*(');
+    // چاپ نتیجه‌ها برای بررسی
+    if (result != 0) {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات موفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'تمامی سبدها با موفقیت حذف شدند',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    } else {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف سبدها با خطا مواجه شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        icon: const Icon(
+          Icons.highlight_remove_outlined,
+          color: Colors.white,
+          size: 35,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
   }
 
   // use to controllers 'basketController'
-  Future<String> deleteItemBaskets(int id) async {
+  Future<int> deleteItemBaskets(int id) async {
     // this function use for delete basket by id where don't delete
     // update deleteStatus from 0 to 1
     // get Basket by Id from db and get data this basket and check count basket for delete
@@ -103,12 +147,12 @@ class BasketController extends GetxController {
     var countBasketForDb = idBasket.first['count'];
     var isPayingBasketForDb = idBasket.first['isPaying'];
     var isCreatedBasketForDb = idBasket.first['createdAt'];
-
+    var result=0;
     if (countBasketForDb == 1) {
-      await db.update('baskets', {'deleteStatus': 1},
+       result = await db.update('baskets', {'deleteStatus': 1},
           where: "id=?", whereArgs: [id]);
     } else {
-      await db.update(
+      result = await db.update(
           'baskets',
           Basket(
               id: id,
@@ -124,7 +168,47 @@ class BasketController extends GetxController {
           where: "id=?",
           whereArgs: [id]);
     }
-    return "successful delete item in baskets";
+    // چاپ نتیجه‌ها برای بررسی
+    if (result != 0) {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات موفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'سبد خرید با موفقیت حذف شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        backgroundColor: kPurpleDark,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 1;
+    } else {
+      Get.snackbar(
+        '',
+        '',
+        titleText: const Text(
+          'عملیات ناموفق',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        messageText: const Text(
+          'حذف سبد خرید با خطا مواجه شد',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+        icon: const Icon(Icons.highlight_remove_outlined,
+            color: Colors.white, size: 35),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        shouldIconPulse: false,
+        backgroundColor: kRedLight,
+        colorText: Colors.white,
+        duration: const Duration(milliseconds: 1500),
+      );
+      return 0;
+    }
+
   }
 
 
@@ -176,6 +260,7 @@ class BasketController extends GetxController {
   }
 
   Future<List<Basket>> getBaskets() async {
+    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     Database db = await MyDb().db();
     basketList.clear();
     productListFromBasket.clear();
@@ -203,10 +288,16 @@ class BasketController extends GetxController {
 
         // Only add to the list if the product exists (i.e., valid product found)
         if (product.id != null && product.id != 0) {
+          print('productListFromBasket productListFromBasket productListFromBasket productListFromBasket productListFromBasket');
+          print(productListFromBasket.length);
           productListFromBasket.add(product);
+          print(productListFromBasket.length);
         }
 
-        basketList.add(basket);
+        print('basketList basketList basketList basketList basketList');
+        print(basketList.length);
+         basketList.add(basket);
+        print(basketList.length);
         countSum.value += basket.count!;
         priceSum.value += (int.parse(product.price!) * basket.count!);
       }
@@ -233,8 +324,6 @@ class BasketController extends GetxController {
       await getBaskets();
     }
   }
-
-
 
   // don't use
   checkDbForBaskets(String name) async {
@@ -271,5 +360,6 @@ class BasketController extends GetxController {
     super.onInit();
     await getBaskets();
   }
+
 }
 

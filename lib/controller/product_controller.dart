@@ -26,6 +26,7 @@ class ProductController extends GetxController {
   RxList<Product> productListForShowOrder = <Product>[].obs;
 
   // use file 'my_db' to function 'getProductFromBas'
+  // user page basket Screen
   RxList<Product> listProForPageBasket = <Product>[].obs;
 
   // ************Product*****************
@@ -350,41 +351,21 @@ class ProductController extends GetxController {
     }
   }
 
-  // don't use
-  Future<String> readProduct(int id) async {
-    // use function read product by id from db where don't delete
-
-    final Database db = await MyDb().db();
-    Product pro = Product();
-    var res = await db.query("products",
-        where: "id = ? AND deleteStatus=?", whereArgs: [id, 0]);
-    if (res.isEmpty) {
-      return 'null res';
-    } else {
-      var jam = res.isNotEmpty ? pro = Product.fromJson(res.first) : Null;
-      if (jam != Null) {
-        return pro.nameProduct ?? '';
-      } else {
-        return pro.nameProduct ?? '';
-      }
-    }
-  }
-
-  // don't use
-  Future<List<Product>> getProductFromBas() async {
-    // use function for read products for basket where don't delete
-    // and push to list 'listProForPageBasket'
+  // use to basketScreen
+  Future<RxList<Product>> getProductsForBasket() async {
+    // use function read products from db where don't delete
     final Database db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
     await db.query('products', where: "deleteStatus=?", whereArgs: [0]);
+
     if (maps.isEmpty) {
       return listProForPageBasket;
     } else {
-      return List.generate(
+      return RxList.generate(
         maps.length,
             (i) {
-          listProForPageBasket.add(Product.fromJson(maps[i]));
-          return listProForPageBasket[i];
+              listProForPageBasket.add(Product.fromJson(maps[i]));
+          return (listProForPageBasket[i]);
         },
       );
     }
@@ -403,9 +384,12 @@ class ProductController extends GetxController {
   }
 
 @override
-  void onInit() {
+  void onInit()async{
     // TODO: implement onInit
     super.onInit();
     getProducts();
+    var get =await getProducts();
+    print(get.length);
+    print(':::::::::^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
   }
 }

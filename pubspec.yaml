@@ -107,6 +107,9 @@ flutter:
       fonts:
         - asset: assets/fonts/LalezarPlus.ttf
 
+    - family: BlackNorth
+      fonts:
+        - asset: assets/fonts/BlackNorth.otf
 
 
   # For details regarding fonts from package dependencies,

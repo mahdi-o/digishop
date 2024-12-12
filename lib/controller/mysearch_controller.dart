@@ -3,7 +3,6 @@ import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../database/my_db.dart';
 
 class MySearchController extends GetxController{
   ProductController proController = Get.find<ProductController>();
@@ -47,5 +46,11 @@ class MySearchController extends GetxController{
         }
       }
     }
+     text.clear();
   }
+
+  Future<void> clear()async{
+     listSearch.clear();
+  }
+
 }

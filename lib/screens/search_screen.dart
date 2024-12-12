@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/mysearch_controller.dart';
@@ -13,12 +14,12 @@ import '../widgets/navbar_custom.dart';
 class SearchScreen extends GetView<MySearchController> {
   SearchScreen({super.key});
 
-  final RxBool heartStatus = false.obs;
   final Random random = Random();
   final User user = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    controller.clear();
     double height = Get.height;
     return Obx(
       () => BaseWidget(
@@ -134,6 +135,7 @@ class SearchScreen extends GetView<MySearchController> {
                           scrollDirection: Axis.vertical,
                           itemCount: controller.listSearch.length,
                           itemBuilder: (context, index) {
+                            final RxBool heartStatus = false.obs;
                             Product product = controller.listSearch[index];
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -163,95 +165,98 @@ class SearchScreen extends GetView<MySearchController> {
                                               radius: 70,
                                             ),
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 60,
-                                          width: 230,
-                                          child: Text(
-                                            product.nameProduct.toString(),
-                                            style:
-                                                const TextStyle(fontSize: 15),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 20.0),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 60,
+                                            width: 200,
+                                            child: Text(
+                                              product.nameProduct.toString(),
+                                              style:
+                                                  const TextStyle(fontSize: 16,fontFamily: 'BlackNorth'),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10.0),
-                                          child: Text(
-                                            '${separateDigits(int.parse(product.price.toString()))} تومان',
-                                            style: TextStyle(
-                                                fontFamily: 'Titr',
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color:
-                                                    kPinkDark.withOpacity(0.7)),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(bottom: 10.0),
+                                            child: Text(
+                                              '${separateDigits(int.parse(product.price.toString()))} تومان',
+                                              style: TextStyle(
+                                                  fontFamily: 'Titr',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      kPinkDark.withOpacity(0.7)),
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: kPurpleDark),
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                  color: kPurpleLight),
-                                              width: 110,
-                                              height: 35,
-                                              child: Center(
-                                                  child: GestureDetector(
-                                                onTap: () {
-                                                  FocusScope.of(context)
-                                                      .unfocus();
-                                                  Get.toNamed(
-                                                    AppRoutes.proDet,
-                                                    arguments: {
-                                                        'product':product,
-                                                        'user':user,'roll':'home'
-                                                      },
-                                                  parameters: {'all':'all'});
-                                                },
-                                                child: const Text(
-                                                  'جزئیات',
-                                                  style: TextStyle(
-                                                      fontFamily: 'lalezarPlus',
-                                                      fontSize: 16),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: kPurpleDark),
+                                                    borderRadius:
+                                                        BorderRadius.circular(50),
+                                                    color: kPurpleLight),
+                                                width: 110,
+                                                height: 35,
+                                                child: Center(
+                                                    child: GestureDetector(
+                                                  onTap: () {
+                                                    FocusScope.of(context)
+                                                        .unfocus();
+                                                    Get.toNamed(
+                                                      AppRoutes.proDet,
+                                                      arguments: {
+                                                          'product':product,
+                                                          'user':user,'roll':'home'
+                                                        },
+                                                    parameters: {'all':'all'});
+                                                  },
+                                                  child: const Text(
+                                                    'جزئیات',
+                                                    style: TextStyle(
+                                                        fontFamily: 'lalezar',
+                                                        fontSize: 18),
+                                                  ),
+                                                )),
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Obx(
+                                                ()=> GestureDetector(
+                                                  onTap: () {
+                                                    if (heartStatus.value ==
+                                                        false) {
+                                                      heartStatus.value = true;
+                                                    } else {
+                                                      heartStatus.value = false;
+                                                    }
+                                                  },
+                                                  child: heartStatus.value == false
+                                                      ? const Icon(
+                                                          CupertinoIcons.heart,
+                                                          color: kPurpleDark,
+                                                          size: 27,
+                                                        )
+                                                      : const Icon(
+                                                          CupertinoIcons.heart_fill,
+                                                          color: kPinkDark,
+                                                          size: 27,
+                                                        ),
                                                 ),
-                                              )),
-                                            ),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                if (heartStatus.value ==
-                                                    false) {
-                                                  heartStatus.value = true;
-                                                } else {
-                                                  heartStatus.value = false;
-                                                }
-                                              },
-                                              child: heartStatus.value == false
-                                                  ? const Icon(
-                                                      CupertinoIcons.heart,
-                                                      color: kPurpleDark,
-                                                      size: 27,
-                                                    )
-                                                  : const Icon(
-                                                      CupertinoIcons.heart_fill,
-                                                      color: kPinkDark,
-                                                      size: 27,
-                                                    ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),

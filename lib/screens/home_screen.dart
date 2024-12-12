@@ -45,11 +45,11 @@ class HomeScreen extends GetView<HomeController> {
                         icon1: Icons.shopping_cart,
                         onTapIcon1: () {
                           FocusScope.of(context).unfocus();
-                          Get.toNamed(AppRoutes.profile,arguments: user);
+                          Get.offAllNamed(AppRoutes.profile,arguments: user);
                         },
                         onTapIcon2: () {
                           FocusScope.of(context).unfocus();
-                          Get.toNamed(AppRoutes.basket,arguments: user);
+                          Get.offAllNamed(AppRoutes.basket,arguments: user);
                         },
                         moveHomeAdmin: () {
                           FocusScope.of(context).unfocus();

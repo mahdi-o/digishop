@@ -4,6 +4,7 @@ import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/base_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/User.dart';
@@ -91,6 +92,7 @@ class ShowAllProducts extends GetView<ProductController> {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
+              final RxBool heartStatus = false.obs;
               return Column(
                 children: [
                   Padding(
@@ -106,7 +108,7 @@ class ShowAllProducts extends GetView<ProductController> {
                         children: [
                           _buildProductImage(product),
                           const SizedBox(width: 5),
-                          _buildProductInfo(product, context),
+                          _buildProductInfo(product, context,heartStatus),
                         ],
                       ),
                     ),
@@ -141,7 +143,7 @@ class ShowAllProducts extends GetView<ProductController> {
     );
   }
 
-  Widget _buildProductInfo(Product product, context) {
+  Widget _buildProductInfo(Product product, context, RxBool heartStatus) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: Column(
@@ -155,7 +157,7 @@ class ShowAllProducts extends GetView<ProductController> {
                 scrollDirection: Axis.horizontal,
                 child: Text(
                   product.nameProduct ?? '',
-                  style: const TextStyle(fontSize: 22, fontFamily: 'lalezar'),
+                  style: const TextStyle(fontSize: 18, fontFamily: 'BlackNorth'),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -187,9 +189,9 @@ class ShowAllProducts extends GetView<ProductController> {
                 icon: roll == 'admin' ? const Icon(
                     Icons.edit_rounded, color: kPurpleDark) : const Icon(null),
               ),
-              const SizedBox(width: 5),
-              _buildDetailsButton(product),
-              const SizedBox(width: 20),
+               SizedBox(width: roll=='admin'?5:0),
+              _buildDetailsButton(product,context,heartStatus),
+               SizedBox(width: roll=='admin'?20:0),
 
               GestureDetector(
                 onTap:roll=='admin'? () async {
@@ -295,15 +297,77 @@ class ShowAllProducts extends GetView<ProductController> {
         ));
   }
 
-  Widget _buildDetailsButton(Product product) {
-    return Container(
+  Widget _buildDetailsButton(Product product,BuildContext context,heartStatus) {
+    return
+    roll == 'home'?
+    Row(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: kPurpleDark),
+              borderRadius:
+              BorderRadius.circular(50),
+              color: kPurpleLight),
+          width: 110,
+          height: 35,
+          child: Center(
+              child: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context)
+                      .unfocus();
+                  Get.toNamed(
+                      AppRoutes.proDet,
+                      arguments: {
+                        'product':product,
+                        'user':user,'roll':'home'
+                      },
+                      parameters: {'all':'all'});
+                },
+                child: const Text(
+                  'جزئیات',
+                  style: TextStyle(
+                      fontFamily: 'lalezar',
+                      fontSize: 18),
+                ),
+              )),
+        ),
+        const SizedBox(
+          width: 20,
+        ),
+        Obx(
+              ()=> GestureDetector(
+            onTap: () {
+              if (heartStatus.value ==
+                  false) {
+                heartStatus.value = true;
+              } else {
+                heartStatus.value = false;
+              }
+            },
+            child: heartStatus.value == false
+                ? const Icon(
+              CupertinoIcons.heart,
+              color: kPurpleDark,
+              size: 27,
+            )
+                : const Icon(
+              CupertinoIcons.heart_fill,
+              color: kPinkDark,
+              size: 27,
+            ),
+          ),
+        ),
+      ],
+    ):
+     Container(
       decoration: BoxDecoration(
         border: Border.all(color: kPurpleDark),
         borderRadius: BorderRadius.circular(50),
         color: kPurpleLight,
       ),
-      width: roll == 'admin' ? 110 : 130,
-      height: roll == 'admin' ? 35 : 45,
+      width:110,
+      height:35,
       child: Center(
         child: GestureDetector(
           onTap: () {
@@ -315,7 +379,7 @@ class ShowAllProducts extends GetView<ProductController> {
           child: Text(
             'جزئیات',
             style: TextStyle(
-                fontFamily: 'lalezarPlus', fontSize: roll == 'admin' ? 18 : 20),
+                fontFamily: 'lalezarPlus', fontSize:18),
           ),
         ),
       ),

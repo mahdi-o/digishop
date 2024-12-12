@@ -1,4 +1,5 @@
 import 'package:digishop/constans.dart';
+import 'package:digishop/controller/home_controller.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:digishop/widgets/base_widget.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/User.dart';
 
-class AdminHomeScreen extends StatelessWidget {
+class AdminHomeScreen extends GetView<HomeController> {
   AdminHomeScreen({super.key});
 
   final User user = Get.arguments;
@@ -21,12 +22,15 @@ class AdminHomeScreen extends StatelessWidget {
       appBar: null,
       floating: FloatingActionButton(
         onPressed: () {
-          Get.toNamed(AppRoutes.home,arguments: user);
+          Get.toNamed(AppRoutes.home, arguments: user);
         },
         elevation: 20,
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
-        child: const Icon(Icons.arrow_back_sharp,size: 33,),
+        child: const Icon(
+          Icons.arrow_back_sharp,
+          size: 33,
+        ),
       ),
       floatingLocation: FloatingCustomButtons(),
       bottomNavigation: null,
@@ -35,7 +39,7 @@ class AdminHomeScreen extends StatelessWidget {
         color: Colors.grey.shade300,
         childWidget: Padding(
           padding:
-          const EdgeInsets.only(left: 20, right: 20, bottom: 0, top: 65),
+              const EdgeInsets.only(left: 20, right: 20, bottom: 0, top: 65),
           child: Column(
             children: [
               const Row(
@@ -60,11 +64,17 @@ class AdminHomeScreen extends StatelessWidget {
                         children: [
                           Center(
                               child: Text(
-                                'دیجی‌شاپ',
-                                style: TextStyle(color: Colors.white, fontSize: 28),
-                              )),
-                          SizedBox(width: 15,),
-                          Icon(Icons.webhook_rounded,color: Colors.white,size: 35,)
+                            'دیجی‌شاپ',
+                            style: TextStyle(color: Colors.white, fontSize: 28),
+                          )),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Icon(
+                            Icons.webhook_rounded,
+                            color: Colors.white,
+                            size: 35,
+                          )
                         ],
                       ),
                     ],
@@ -209,7 +219,7 @@ class AdminHomeScreen extends StatelessWidget {
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
 
-                            Get.toNamed(AppRoutes.adminCusCre,arguments: user);
+                            Get.offAllNamed(AppRoutes.adminCusCre, arguments: user);
                           }),
                       ContainerCustomAdmin(
                           text: 'مشتریان',
@@ -218,8 +228,7 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor: Colors.black,
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
-                            Get.toNamed(AppRoutes.showAllCus,
-                                arguments: user);
+                            Get.offAllNamed(AppRoutes.showAllCus, arguments: user);
                           }),
                     ],
                   ),
@@ -236,7 +245,8 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor: Colors.black,
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
-                            Get.offAllNamed(AppRoutes.adminInvCre,arguments: user);
+                            Get.offAllNamed(AppRoutes.adminInvCre,
+                                arguments: user);
                           }),
                       ContainerCustomAdmin(
                           text: 'فاکتورها',
@@ -245,8 +255,7 @@ class AdminHomeScreen extends StatelessWidget {
                           iconColor: kPurpleDark,
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
-                            Get.toNamed(AppRoutes.showAllInv,
-                                arguments: user);
+                            Get.offAllNamed(AppRoutes.showAllInv, arguments: user);
                           }),
                     ],
                   ),
@@ -256,23 +265,27 @@ class AdminHomeScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ContainerCustomAdmin(text: 'افزودن محصول',
+                      ContainerCustomAdmin(
+                          text: 'افزودن محصول',
                           icon: Icons.add_shopping_cart_outlined,
-                          textColor
-                              :Colors.black,
-                          iconColor
-                              :kPurpleDark,
-                          voidCallback: () {FocusScope.of(context).unfocus();
-                        Get.toNamed(AppRoutes.adminProCre,arguments: user);}),
-                      ContainerCustomAdmin(text: 'محصولات',
+                          textColor: Colors.black,
+                          iconColor: kPurpleDark,
+                          voidCallback: () {
+                            FocusScope.of(context).unfocus();
+                            Get.offAllNamed(AppRoutes.adminProCre,
+                                arguments: user);
+                          }),
+                      ContainerCustomAdmin(
+                          text: 'محصولات',
                           icon: Icons.dataset_outlined,
-                          textColor
-                              :kPurpleDark,
-                          iconColor
-                              :Colors.black,
-                          voidCallback: () {FocusScope.of(context).unfocus(); Get.toNamed(AppRoutes.showAllPro,
-                              arguments: {'user':user,'roll':'admin'},
-                              parameters: {'all': 'all'});}),
+                          textColor: kPurpleDark,
+                          iconColor: Colors.black,
+                          voidCallback: () {
+                            FocusScope.of(context).unfocus();
+                            Get.offAllNamed(AppRoutes.showAllPro,
+                                arguments: {'user': user, 'roll': 'admin'},
+                                parameters: {'all': 'all'});
+                          }),
                     ],
                   ),
                 ],

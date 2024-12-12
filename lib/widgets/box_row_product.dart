@@ -55,6 +55,10 @@ class BoxRowProduct extends StatelessWidget {
                     width: 180,
                     child: Text(
                       name,
+                      style: const TextStyle(
+                          fontFamily: 'BlackNorth',
+                      ),
+
                     ),
                   ),
                   Padding(

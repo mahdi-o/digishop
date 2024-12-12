@@ -15,6 +15,7 @@ import '../widgets/navbar_custom.dart';
 
 class ProductDetails extends GetView<ProductController> {
   ProductDetails({super.key});
+
   final Product product = Get.arguments['product'];
   final User user = Get.arguments['user'];
   final String roll = Get.arguments['roll'];
@@ -25,13 +26,19 @@ class ProductDetails extends GetView<ProductController> {
   Widget build(BuildContext context) {
     double height = Get.height;
     int? lengthStar = product.star;
-    return BaseWidget(color: Colors.white,
+    return BaseWidget(
+      color: Colors.white,
       bottomNavigation: null,
-      appBar:null,
+      appBar: null,
       floatingLocation: FloatingActionButtonLocation.startFloat,
       floating: FloatingActionButton(
         onPressed: () {
-          Get.toNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':roll},parameters: {'all':brandHomeScreen});
+          roll == 'admin'?
+          Get.toNamed(AppRoutes.showAllPro, arguments: {
+            'user': user,
+            'roll': roll
+          }, parameters: {'all': brandHomeScreen}):
+          Get.toNamed(AppRoutes.home, arguments:user,);
         },
         elevation: 20,
         foregroundColor: Colors.black,
@@ -47,7 +54,7 @@ class ProductDetails extends GetView<ProductController> {
           children: [
             Padding(
               padding:
-              EdgeInsets.only(right: height/7.5, left: 0, bottom: 0, top: 50),
+              EdgeInsets.only(right: height / 7.5, left: 0, bottom: 0, top: 50),
               child: const Column(
 
                 children: [
@@ -74,11 +81,16 @@ class ProductDetails extends GetView<ProductController> {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Column(
                   children: [
-                    const Divider(endIndent: 0.9,indent: 0.2,thickness: 0.4,color: Colors.grey,height: 1.5),
+                    const Divider(endIndent: 0.9,
+                        indent: 0.2,
+                        thickness: 0.4,
+                        color: Colors.grey,
+                        height: 1.5),
 
                     Center(
-                        child: product.imageAddress!.isEmpty ?  Image.asset(
-                          proLaptopList[Random().nextInt(10)].imageAddress.toString(),
+                        child: product.imageAddress!.isEmpty ? Image.asset(
+                          proLaptopList[Random().nextInt(10)].imageAddress
+                              .toString(),
                           fit: BoxFit.cover,
                           width: 270,
                         ) : Image.asset(
@@ -97,7 +109,9 @@ class ProductDetails extends GetView<ProductController> {
                               child: Text(
                                 product.nameProduct.toString(),
                                 style:
-                                    const TextStyle(fontSize: 19, color: kPurpleDark),
+                                const TextStyle(fontSize: 18,
+                                    color: kPurpleDark,
+                                    fontFamily: 'BlackNorth'),
                               ),
                             ),
                           ],
@@ -107,8 +121,10 @@ class ProductDetails extends GetView<ProductController> {
                             StarCustom(lengthStar: lengthStar!),
                             const Spacer(),
                             Text(
-                              '${separateDigits(int.parse(product.price.toString()))} ت',
-                              style: const TextStyle(fontSize: 20, color: kPinkDark),
+                              '${separateDigits(
+                                  int.parse(product.price.toString()))} ت',
+                              style: const TextStyle(
+                                  fontSize: 20, color: kPinkDark),
                             ),
                             const SizedBox(
                               width: 20,
@@ -120,15 +136,25 @@ class ProductDetails extends GetView<ProductController> {
                     Column(
                       children: [
                         RowDetailsModels(
-                            typeRow: 'product',title: 'حافظه رم', body: product.ram.toString()),
+                            typeRow: 'product',
+                            title: 'حافظه رم',
+                            body: product.ram.toString()),
                         RowDetailsModels(
-                            typeRow: 'product', title: 'تعداد', body: product.count.toString()),
+                            typeRow: 'product',
+                            title: 'تعداد',
+                            body: product.count.toString()),
                         RowDetailsModels(
-                            typeRow: 'product', title: 'قطر صفحه نمایش', body: product.screen.toString()),
+                            typeRow: 'product',
+                            title: 'قطر صفحه نمایش',
+                            body: product.screen.toString()),
                         RowDetailsModels(
-                            typeRow: 'product',title: 'پردازنده', body: product.cpu.toString()),
+                            typeRow: 'product',
+                            title: 'پردازنده',
+                            body: product.cpu.toString()),
                         RowDetailsModels(
-                            typeRow: 'product',title: 'حافظه داخلی', body: product.hard.toString()),
+                            typeRow: 'product',
+                            title: 'حافظه داخلی',
+                            body: product.hard.toString()),
 
 
                         Padding(
@@ -142,22 +168,27 @@ class ProductDetails extends GetView<ProductController> {
                             shadowColor: kPurpleDark,
                             onTapped: () {
                               basket.addOrUpdateBasket(
-                                  "${user.username},${product.id}", user.username, product.id, 1.toInt(), 0,0);
+                                  "${user.username},${product.id}",
+                                  user.username, product.id, 1.toInt(), 0, 0);
 
                               Get.snackbar(
                                 '',
                                 '',
                                 titleText: const Text(
                                   'افزودن به سبد خرید',
-                                  style: TextStyle(fontSize: 20, color: Colors.white),
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
                                 ),
                                 messageText: const Text(
                                   'محصول با موفقیت در سبد خرید اضافه شد',
-                                  style: TextStyle(fontSize: 18, color: Colors.white),
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
                                 ),
                                 backgroundColor: kPurpleDark,
                                 colorText: Colors.white,
-                                icon: const Icon(Icons.add_shopping_cart_rounded,size: 35,color: Colors.white,),
+                                icon: const Icon(
+                                  Icons.add_shopping_cart_rounded, size: 35,
+                                  color: Colors.white,),
                                 shouldIconPulse: false,
                                 duration: const Duration(milliseconds: 1500),
                               );
