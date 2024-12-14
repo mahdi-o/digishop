@@ -272,7 +272,7 @@ class AdminHomeScreen extends GetView<HomeController> {
                           iconColor: kPurpleDark,
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
-                            Get.offAllNamed(AppRoutes.adminProCre,
+                            Get.toNamed(AppRoutes.adminProCre,
                                 arguments: user);
                           }),
                       ContainerCustomAdmin(

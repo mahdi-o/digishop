@@ -154,6 +154,7 @@ class ProductController extends GetxController {
           ).toJson(),
           where: "id=?",
           whereArgs: [pro.id]);
+      await readAllProducts();
 
       Get.snackbar(
         '',

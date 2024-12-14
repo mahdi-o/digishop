@@ -2,6 +2,7 @@ import 'package:digishop/constans.dart';
 import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Product.dart';
+import 'package:digishop/screens/admin_home_screen.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/custom_button.dart';
@@ -26,7 +27,17 @@ class AdminProductUpdate extends GetView<ProductController> {
       floating: FloatingActionButton(
         onPressed: () {
           controller.clear();
-          Get.toNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},parameters: {'all':brandHomeScreen});
+          Future.delayed(const Duration(milliseconds: 2500), () {
+            Get.offAll(
+                  () => AdminHomeScreen(), arguments: user,
+              // صفحه مقصد
+              transition: Transition.zoom,
+              // نوع انیمیشن
+              duration: const Duration(
+                  milliseconds: 500), // مدت زمان انیمیشن
+            );
+          });
+          // Get.offAllNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},parameters: {'all':brandHomeScreen});
         },
         elevation: 20,
         foregroundColor: Colors.black,
@@ -236,9 +247,20 @@ class AdminProductUpdate extends GetView<ProductController> {
                         ));
                     if(result != 0){
                       FocusScope.of(context).unfocus();
-                      Future.delayed(const Duration(milliseconds: 2500),() {
-                        Get.toNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},parameters: {'all':brandHomeScreen});
-                      },);
+                      controller.clear();
+                      Future.delayed(const Duration(milliseconds: 2500), () {
+                        Get.offAll(
+                              () => AdminHomeScreen(), arguments: user,
+                          // صفحه مقصد
+                          transition: Transition.zoom,
+                          // نوع انیمیشن
+                          duration: const Duration(
+                              milliseconds: 500), // مدت زمان انیمیشن
+                        );
+                      });
+                      // Future.delayed(const Duration(milliseconds: 2500),() {
+                      //   Get.offAllNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},parameters: {'all':brandHomeScreen});
+                      // },);
                     }
                   },
                   splashColor: kPurpleDark,

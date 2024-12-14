@@ -18,7 +18,6 @@ class ShowAllProducts extends GetView<ProductController> {
   final String roll = Get.arguments['roll'];
   final String brandHomeScreen = Get.parameters['all']!;
   final MyDb myDb = Get.find<MyDb>();
-  final ProductController proController = Get.find<ProductController>();
 
   @override
   final ProductController controller = Get.find<ProductController>();
@@ -86,38 +85,40 @@ class ShowAllProducts extends GetView<ProductController> {
               ),
             ),
           )
-              : ListView.builder(
+              : Obx(
+              ()=> ListView.builder(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.only(bottom: 80),
             itemCount: products.length,
             itemBuilder: (context, index) {
-              final product = products[index];
-              final RxBool heartStatus = false.obs;
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 140,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          _buildProductImage(product),
-                          const SizedBox(width: 5),
-                          _buildProductInfo(product, context,heartStatus),
-                        ],
+                final product = products[index];
+                final RxBool heartStatus = false.obs;
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 140,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            _buildProductImage(product),
+                            const SizedBox(width: 5),
+                            _buildProductInfo(product, context,heartStatus),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const Divider(color: Colors.grey),
-                ],
-              );
+                    const Divider(color: Colors.grey),
+                  ],
+                );
             },
           ),
+              ),
         );
       },
     );
@@ -156,7 +157,7 @@ class ShowAllProducts extends GetView<ProductController> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Text(
-                  product.nameProduct ?? '',
+                  product.brand ?? '',
                   style: const TextStyle(fontSize: 18, fontFamily: 'BlackNorth'),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -198,7 +199,7 @@ class ShowAllProducts extends GetView<ProductController> {
                   dialogCustom(
                       'آیا از حذف این محصول اطمینان دارید؟', 20, () async {
                     Get.back();
-                    var result = await proController.deleteProduct(product.id ?? -1);
+                    var result = await controller.deleteProduct(product.id ?? -1);
                     if (result != 0) {
                       FocusScope.of(context).unfocus();
                       controller.clear();
@@ -232,8 +233,7 @@ class ShowAllProducts extends GetView<ProductController> {
     return BaseWidget(
         color: Colors.white,
         bottomNavigation: null,
-        floating:
-        FloatingActionButton(
+        floating: FloatingActionButton(
           onPressed: () {
             Get.toNamed(roll=='admin'?AppRoutes.adminHome:AppRoutes.home, arguments: user);
           },
@@ -269,7 +269,7 @@ class ShowAllProducts extends GetView<ProductController> {
                         'آیا از حذف تمامی محصولات اطمینان دارید؟',
                         20, () async {
                       Get.back();
-                      var result = await proController.deleteProducts();
+                      var result = await controller.deleteProducts();
                       if (result != 0) {
                         FocusScope.of(context).unfocus();
                         Future.delayed(const Duration(milliseconds: 2500), () {
