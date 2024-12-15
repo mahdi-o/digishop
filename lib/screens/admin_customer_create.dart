@@ -120,6 +120,7 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                   fontSizeBtn: 26,
                   shadowColor: kPurpleDark,
                   onTapped: () async {
+
                    // var result =
                    await controller.addCustomer(
                         controller.nameCustomer.value.text,
@@ -130,6 +131,8 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                         controller.wallet.value.text,
                         controller.address.value.text,
                         '');
+
+
                     // if(result != 0){
                     //   // Future.delayed(const Duration(milliseconds: 2500), () {
                     //   //   Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد

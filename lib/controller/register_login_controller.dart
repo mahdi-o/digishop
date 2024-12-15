@@ -25,42 +25,14 @@ class RegisterLoginController extends GetxController {
         name.text == '' ||
         name.text.isEmpty ||
         name.text != name.text.trim()) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'خطا',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        messageText: const Text(
-          'نام وارد نشده است',
-          style: TextStyle(color: Colors.white),
-        ),
-        duration: const Duration(milliseconds: 1500),
-        backgroundColor: kRedLight,
-      );
+      mySnackBar(false, true, 'نام وارد نشده است');
     } else {
       pref.setString('name', name.text.trim());
       if (username.text == null ||
           username.text == '' ||
           username.text.isEmpty ||
           username.text != username.text.trim()) {
-        Get.snackbar(
-          '',
-          '',
-          titleText: const Text(
-            'خطا',
-            style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          messageText: const Text(
-            'نام کاربری وارد نشده است',
-            style: TextStyle(color: Colors.white),
-          ),
-          duration: const Duration(milliseconds: 1500),
-          backgroundColor: kRedLight,
-        );
+        mySnackBar(false, true, 'نام کاربری وارد نشده است');
       } else {
         pref.setString('username', username.text);
         if (email.text == null ||
@@ -68,110 +40,30 @@ class RegisterLoginController extends GetxController {
             email.text.isEmpty ||
             email.text.isNum ||
             !email.text.isEmail) {
-          Get.snackbar(
-            '',
-            '',
-            titleText: const Text(
-              'خطا',
-              style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            messageText: const Text(
-              'ایمیل در قالب صحیح وارد نشده است',
-              style: TextStyle(color: Colors.white),
-            ),
-            duration: const Duration(milliseconds: 1500),
-            backgroundColor: kRedLight,
-          );
+          mySnackBar(false, true, 'ایمیل در قالب صحیح وارد نشده است');
         } else {
           pref.setString('email', email.text);
           if (phoneNumber.text == null ||
               phoneNumber.text == '' ||
               phoneNumber.text.isEmpty ||
               phoneNumber.text != phoneNumber.text.trim()) {
-            Get.snackbar(
-              '',
-              '',
-              titleText: const Text(
-                'خطا',
-                style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-              messageText: const Text(
-                'شماره موبایل وارد نشده است',
-                style: TextStyle(color: Colors.white),
-              ),
-              duration: const Duration(milliseconds: 1500),
-              backgroundColor: kRedLight,
-            );
+            mySnackBar(false, true, 'شماره موبایل وارد نشده است');
           } else {
             pref.setString('phoneNumber', phoneNumber.text.trim());
             if (password.text == null ||
                 password.text == '' ||
                 password.text.isEmpty ||
                 password.text.length < 8) {
-              Get.snackbar(
-                '',
-                '',
-                titleText: const Text(
-                  'خطا',
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                messageText: const Text(
-                  'رمزعبور نباید کمتر از 8 کاراکتر باشد',
-                  style: TextStyle(color: Colors.white),
-                ),
-                duration: const Duration(milliseconds: 1500),
-                backgroundColor: kRedLight,
-              );
+              mySnackBar(false, true, 'رمزعبور نباید کمتر از 8 کاراکتر باشد');
             } else {
               if (passwordAgain.text == null ||
                   password.text == '' ||
                   password.text.isEmpty ||
                   password.text.length < 8) {
-                Get.snackbar(
-                  '',
-                  '',
-                  titleText: const Text(
-                    'خطا',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  messageText: const Text(
-                    'تکرار رمزعبور وارد نشده است',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  duration: const Duration(milliseconds: 1500),
-                  backgroundColor: kRedLight,
-                );
+                mySnackBar(false, true, 'تکرار رمزعبور وارد نشده است');
               } else {
                 if (password.text != passwordAgain.text) {
-                  Get.snackbar(
-                    '',
-                    '',
-                    titleText: const Text(
-                      'خطا',
-                      style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    messageText: const Text(
-                      'رمزعبور با تکرار آن برابر نمی باشد',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    duration: const Duration(milliseconds: 1500),
-                    backgroundColor: kRedLight,
-                  );
+                  mySnackBar(false, true, 'رمزعبور با تکرار آن برابر نمی باشد');
                 } else {
                   pref.setString('password', password.text);
                   accessR = 1;
@@ -206,38 +98,10 @@ class RegisterLoginController extends GetxController {
     String passwordPref = pref.getString('password') ?? '';
     if (usernameLogin.text != usernamePref) {
       usernameLogin.clear();
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'خطا',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        messageText: const Text(
-          'نام کاربری صحیح نمی باشد',
-          style: TextStyle(color: Colors.white),
-        ),
-        duration: const Duration(milliseconds: 1500),
-        backgroundColor: kRedLight,
-      );
+      mySnackBar(false, true, 'نام کاربری صحیح نمی باشد');
     } else if (passwordLogin.text != passwordPref) {
       passwordLogin.clear();
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'خطا',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        messageText: const Text(
-          'رمزعبور صحیح نمی باشد',
-          style: TextStyle(color: Colors.white),
-        ),
-        duration: const Duration(milliseconds: 1500),
-        backgroundColor: kRedLight,
-      );
+      mySnackBar(false, true, 'رمزعبور صحیح نمی باشد');
     } else {
       user.username = usernamePref;
       passwordLogin.clear();

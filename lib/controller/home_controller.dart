@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:digishop/controller/product_controller.dart';
-import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:digishop/screens/basket_screen.dart';
 import 'package:digishop/screens/home_screen.dart';

@@ -13,27 +13,7 @@ class MySearchController extends GetxController{
 
   searching(String textSearch)async{
     if(text.text.isEmpty){
-      return Get.snackbar('', '',
-          titleText: const Text(
-            'خطا',
-            style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
-          ),
-          messageText: const Text(
-            'متنی برای جست و جو وارد نشده است!',
-            style: TextStyle(color: Colors.white,fontSize: 18),
-          ),
-          duration: const Duration(milliseconds: 1500),
-          backgroundColor: kRedLight,
-          padding:
-          const EdgeInsets.only(left: 30, right: 10, top: 15, bottom: 15),
-          icon: const Icon(
-            Icons.highlight_off,
-            color: Colors.white,
-            size: 35,
-          ));
+      mySnackBar(false, true, 'متنی برای جست و جو وارد نشده است!');
     }
     else {
       listProductsDbForSearch.clear();

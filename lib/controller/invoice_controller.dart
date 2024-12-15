@@ -309,21 +309,7 @@ class InvoiceController extends GetxController {
           where: 'id = ?',
           whereArgs: [existingProduct.id],
         );
-        Get.snackbar(
-          '',
-          '',
-          titleText: const Text(
-            'بروزرسانی تعداد محصول',
-            style: TextStyle(fontSize: 20, color: kPurpleDark),
-          ),
-          messageText: const Text(
-            'بروزرسانی تعداد محصول با موفقیت ثبت شد',
-            style: TextStyle(fontSize: 18, color: kPurpleDark),
-          ),
-          backgroundColor: Colors.white,
-          colorText: kPinkDark,
-          duration: const Duration(milliseconds: 1500),
-        );
+        mySnackBar(true, true, 'بروزرسانی سفارش با موفقیت ثبت شد');
       } else {
         // اگر محصول جدید است، آن را به فاکتور اضافه می‌کنیم
         await db.insert('invoice_products', {
@@ -332,21 +318,7 @@ class InvoiceController extends GetxController {
           "count": order.countOrder ?? 0,  // استفاده از ?? 0 برای جلوگیری از null
           "deleteStatus":0,
         });
-        Get.snackbar(
-          '',
-          '',
-          titleText: const Text(
-            'ثبت فاکتور',
-            style: TextStyle(fontSize: 20, color: kPurpleDark),
-          ),
-          messageText: const Text(
-            'محصول با موفقیت در فاکتور ثبت شد',
-            style: TextStyle(fontSize: 18, color: kPurpleDark),
-          ),
-          backgroundColor: Colors.white,
-          colorText: kPinkDark,
-          duration: const Duration(milliseconds: 1500),
-        );
+        mySnackBar(false, true, 'محصول با موفقیت در فاکتور ثبت شد');
       }
 
       // بروزرسانی موجودی محصول در دیتابیس
@@ -362,7 +334,6 @@ class InvoiceController extends GetxController {
         where: 'id = ?',
         whereArgs: [product.id],
       );
-
     }
     //Invoice with multiple orders added/updated successfully
     idProduct.value.clear();
@@ -385,43 +356,11 @@ class InvoiceController extends GetxController {
       whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
     );
     if(result!=0){
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'حذف سفارش',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'سفارش با موفقیت حذف شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kPurpleDark,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true, false, 'سفارش با موفقیت حذف شد');
       return 1;
     }
     else{
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'حذف سفارش با خطا مواجه شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-
-        icon:const Icon(Icons.highlight_remove_outlined,color: Colors.white,size: 35,),
-        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false, false, 'حذف سفارش با خطا مواجه شد');
       return 0;
     }
   }
@@ -440,46 +379,10 @@ class InvoiceController extends GetxController {
       whereArgs: [0],
     );
     if (result != 0) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'حذف فاکتورها',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'تمام فاکتورها با موفقیت حذف شدند',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kPurpleDark,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true, false, 'تمام فاکتورها با موفقیت حذف شدند');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'حذف فاکتورها با خطا مواجه شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
-
+      mySnackBar(false, false,'حذف فاکتورها با خطا مواجه شد');
       return 0;
     }
   }
@@ -492,48 +395,14 @@ class InvoiceController extends GetxController {
     var result = await db.update('invoices', {'deleteStatus': 1},
         where: "id=?", whereArgs: [id]);
     if (result != 0) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'حذف فاکتور',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'فاکتور با موفقیت حذف شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kPurpleDark,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true, false, 'فاکتور با موفقیت حذف شد');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'حذف فاکتور با خطا مواجه شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false, false, 'حذف فاکتور با خطا مواجه شد');
       return 0;
     }
   }
+
   // use to screen 'show all invoice'
   Future<int> changePayInvoice(int id) async {
     // use function for update isPaying from 0 to 1 where don't delete
@@ -560,57 +429,15 @@ class InvoiceController extends GetxController {
             ).toJson(),
             where: "id=?",
             whereArgs: [id]);
-        Get.snackbar(
-          '',
-          '',
-          titleText: const Text(
-            'پرداخت فاکتور',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-          messageText: const Text(
-            'وضعیت فاکتور با موفقیت به پرداخت شده تغییر کرد',
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          ),
-          backgroundColor: kPurpleDark,
-          colorText: kPinkDark,
-          duration: const Duration(milliseconds: 1500),
-        );
+        mySnackBar(true, false, 'وضعیت فاکتور به پرداخت شده تغییر کرد');
         return 1;
       } else if (invoice.isPaying == 1) {
-        Get.snackbar(
-          '',
-          '',
-          titleText: const Text(
-            'اخطار',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-          messageText: const Text(
-            'وضعیت فاکتور پرداخت شده می باشد',
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          ),
-          backgroundColor: kRedLight,
-          colorText: kPinkDark,
-          duration: const Duration(milliseconds: 1500),
-        );
+        mySnackBar(false, false, 'وضعیت فاکتور پرداخت شده می باشد');
         return 0;
       }
       return 3;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'پرداخت ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'فاکتور برای تغییر به حالت پرداخت شده یافت نشد!',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kRedLight,
-        colorText: kPinkDark,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false, false, 'فاکتور یافت نشد!');
       return 0;
     }
   }

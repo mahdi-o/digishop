@@ -426,12 +426,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
                             controller.listOrder.isNotEmpty) {
                           await controller.addInvoice();
                         } else {
-                          Get.snackbar(
-                            'خطا',
-                            'اطلاعات وارد شده صحیح نمی‌باشد!',
-                            backgroundColor: kRedLight,
-                            colorText: Colors.white,
-                          );
+                          mySnackBar(false, true, 'اطلاعات وارد شده صحیح نمی‌باشد!');
                         }
                       },
                       splashColor: kPurpleDark,

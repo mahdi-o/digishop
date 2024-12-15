@@ -8,27 +8,7 @@ const Color kPinkDark = Color(0xFFfe0081);
 const Color kPurpleLight = Color(0xFFeee9ff);
 const Color kPinkLight = Color(0xFFF642AE);
 const Color kBlueLight = Color(0xFFc77dff);
-
-const Color kLightRedColor = Color(0xFFfde8e4);
-const Color kLightGreyColor = Color(0xFFf2f3f2);
-const Color kLightPurpleColor = Color(0xFFf4ebf7);
-const Color kLightYellowColor = Color(0xFFfff8e5);
-const Color kLightBlueColor = Color(0xFFedf7fc);
-const Color kLightGreenColor = Color(0xFFeef7f1);
-const Color kLightOrangeColor = Color(0xFFfef6ed);
 const Color kRedLight = Color(0xFFff5454);
-
-List<Color> kColorList = [
-  kLightRedColor,
-  kLightGreyColor,
-  kLightBlueColor,
-  kLightYellowColor,
-  kLightPurpleColor,
-  kLightOrangeColor,
-  kLightGreenColor,
-  kPurpleLight,
-  kLightGreenColor,
-];
 
 String separateDigits(int number) {
   String result = '';
@@ -42,18 +22,19 @@ String separateDigits(int number) {
   return result;
 }
 
-dialogCustom(String textBody,double sizeText, VoidCallback onTapped) {
+dialogCustom(String textBody, double sizeText, VoidCallback onTapped) {
   return Get.defaultDialog(
     backgroundColor: kPurpleDark,
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
     title: 'اخطار',
-    titleStyle: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+    titleStyle: const TextStyle(
+        color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
     content: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Text(
         textBody,
         textAlign: TextAlign.center,
-        style:  TextStyle(color: Colors.white, fontSize: sizeText),
+        style: TextStyle(color: Colors.white, fontSize: sizeText),
       ),
     ),
     confirm: CustomButton(
@@ -87,13 +68,14 @@ dialogCustom(String textBody,double sizeText, VoidCallback onTapped) {
     radius: 10,
   );
 }
- dialogCheckOut(
-    String title,
-    String textBody,
-    String textButton,
-    VoidCallback onTapped,
-    int type,
-    ) {
+
+dialogCheckOut(
+  String title,
+  String textBody,
+  String textButton,
+  VoidCallback onTapped,
+  int type,
+) {
   return Get.defaultDialog(
     backgroundColor: Colors.white,
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -123,17 +105,53 @@ dialogCustom(String textBody,double sizeText, VoidCallback onTapped) {
   );
 }
 
+mySnackBar(bool type, colorType, String message) {
+  var textColor = kPurpleDark;
+  var backColor = Colors.white;
+  if (colorType == false) {
+    textColor = Colors.white;
+    backColor = kPurpleDark;
+  }
+  return Get.snackbar('', '',
+      titleText: Text(
+        type == true ? 'عملیات موفق' : 'عملیات ناموفق',
+        style: TextStyle(
+            fontSize: 20, color: type == true ? textColor : Colors.white),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      messageText: Text(
+        message,
+        style: TextStyle(
+            fontSize: 18, color: type == true ? textColor : Colors.white),
+      ),
+      shouldIconPulse: false,
+      backgroundColor: type == true ? backColor : kRedLight,
+      colorText: type == true ? textColor : Colors.white,
+      duration: const Duration(milliseconds: 1500),
+      icon: Padding(
+        padding: const EdgeInsets.only(right: 15.0),
+        child: Icon(
+          type == true
+              ? Icons.add_task_outlined
+              : Icons.highlight_remove_outlined,
+          size: 40,
+          color: type == true ? Colors.pinkAccent : Colors.white,
+        ),
+      ));
+}
+
 dialogTextFieldCheck(
-    String title,
-    String textBody,
-    String textButton,
-    VoidCallback onTapped,
-    int type,
-    TextEditingController inputController,
-    ) {
+  String title,
+  String textBody,
+  String textButton,
+  VoidCallback onTapped,
+  int type,
+  TextEditingController inputController,
+) {
   return Get.defaultDialog(
     backgroundColor: Colors.white,
-    contentPadding: const EdgeInsets.only(right: 16,left: 16,bottom: 20,top: 0),
+    contentPadding:
+        const EdgeInsets.only(right: 16, left: 16, bottom: 20, top: 0),
     title: title,
     titleStyle: const TextStyle(color: kPinkDark, fontSize: 24),
     content: Column(
@@ -159,11 +177,10 @@ dialogTextFieldCheck(
         ),
       ],
     ),
-    confirm:
-    CustomButton(
+    confirm: CustomButton(
       colorBtn: kPurpleDark,
       textBtn: textButton,
-      textColor:  Colors.white,
+      textColor: Colors.white,
       fontBtn: 'lalezarPlus',
       fontSizeBtn: 24,
       shadowColor: kPurpleDark,
@@ -173,11 +190,10 @@ dialogTextFieldCheck(
       heightBtn: 55,
       onTapped: onTapped,
     ),
-
-    cancel:CustomButton(
+    cancel: CustomButton(
       colorBtn: Colors.white,
       textBtn: 'لغو',
-      textColor:kPurpleDark,
+      textColor: kPurpleDark,
       fontBtn: 'lalezarPlus',
       fontSizeBtn: 24,
       shadowColor: kPurpleDark,
@@ -192,6 +208,7 @@ dialogTextFieldCheck(
     radius: 10,
   );
 }
+
 textFieldCustom(
     TextEditingController controller,
     Color textColor,
@@ -204,13 +221,15 @@ textFieldCustom(
     TextAlign textAlign,
     double double,
     {bool? readOnly,
-    obscureText,VoidCallback? onTap}) {
+    obscureText,
+    VoidCallback? onTap}) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: width, vertical: height),
     child: TextField(
       controller: controller,
       textAlign: textAlign,
-      style: TextStyle(color: textColor, fontSize: double,fontFamily: 'lalezar'),
+      style:
+          TextStyle(color: textColor, fontSize: double, fontFamily: 'lalezar'),
       decoration: InputDecoration(
         label: textAlign == TextAlign.center
             ? Center(child: Text(label))

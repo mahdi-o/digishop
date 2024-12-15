@@ -47,45 +47,10 @@ class CustomerController extends GetxController{
         "updatedAt": DateTime.now().toString().split(".")[0],
       });
       await readAllCustomers();
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'ثبت مشتری',
-          style: TextStyle(fontSize: 20, color: kPurpleDark),
-        ),
-        messageText: const Text(
-          'اطلاعات مشتری با موفقیت ثبت شد',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
-        ),
-        backgroundColor: Colors.white,
-        colorText: kPinkDark,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true,true, 'اطلاعات مشتری با موفقیت ثبت شد');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'مشتری با این نام کاربری قبلا در سیستم ثبت شده است',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false, true,'نام کاربری در سیستم وجود دارد');
       return 0;
     }
   }
@@ -100,28 +65,7 @@ class CustomerController extends GetxController{
         where: "id = ? AND deleteStatus=?", whereArgs: [id, 0]);
     var jam = res.isNotEmpty ? customer = Customer.fromJson(res.first) : Null;
     if (jam == Null) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'این مشتری در سیستم موجود نمی باشد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true,true, 'این مشتری در سیستم موجود نمی باشد');
       return 0;
     } else {
       await db.update(
@@ -144,21 +88,7 @@ class CustomerController extends GetxController{
           where: "id=?",
           whereArgs: [newCustomer.id]);
       await readAllCustomers();
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'ویرایش اطلاعات',
-          style: TextStyle(fontSize: 20, color: kPurpleDark),
-        ),
-        messageText: const Text(
-          'اطلاعات مشتری با موفقیت ویرایش شد',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
-        ),
-        backgroundColor: Colors.white,
-        colorText: kPinkDark,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true,true, 'اطلاعات مشتری با موفقیت ویرایش شد');
       return 1;
     }
   }
@@ -198,45 +128,10 @@ class CustomerController extends GetxController{
     var isDelete = await db.query('customers',
         where: 'id = ? AND deleteStatus=?', whereArgs: [id, 0]);
     if (isDelete.isEmpty) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'حذف مشتری',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'مشتری با موفقیت حذف شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kPurpleDark,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true,false, 'مشتری با موفقیت حذف شد');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'حذف مشتری با خطا مواجه شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false,false, 'حذف مشتری با خطا مواجه شد');
       return 0;
     }
   }
@@ -245,7 +140,6 @@ class CustomerController extends GetxController{
   Future<int> deleteCustomers() async {
     // use function delete customers from db
     // update deleteStatus from 0 to 1
-
     final db = await MyDb().db();
     var result = await db.update(
       'customers',
@@ -254,49 +148,13 @@ class CustomerController extends GetxController{
       whereArgs: [0], // فقط رکوردهایی که هنوز حذف نشده‌اند
     );
     if (result != 0) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'حذف مشتریان',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'تمام مشتریان با موفقیت حذف شدند',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kPurpleDark,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true,false, 'تمام مشتریان با موفقیت حذف شدند');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'حذف مشتریان با خطا مواجه شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false, false,'حذف مشتریان با خطا مواجه شد');
       return 0;
     }
   }
-
   // use to controllers 'invoiceController & customerController'
   Future<List<Customer>> getCustomers() async {
     // use function read customers from db

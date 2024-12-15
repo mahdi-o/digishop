@@ -58,45 +58,10 @@ class ProductController extends GetxController {
         "updatedAt": DateTime.now().toString().split(".")[0]
       });
       await readAllProducts();
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'ثبت محصول',
-          style: TextStyle(fontSize: 20, color: kPurpleDark),
-        ),
-        messageText: const Text(
-          'محصول با موفقیت ثبت شد',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
-        ),
-        backgroundColor: Colors.white,
-        colorText: kPinkDark,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true, true, 'محصول با موفقیت ثبت شد');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'محصولی با این نام قبلا در سیستم ثبت شده است',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false, true,'نام محصول تکراری می باشد' );
       return 0;
     }
   }
@@ -110,28 +75,7 @@ class ProductController extends GetxController {
         where: "id = ? AND deleteStatus=?", whereArgs: [id, 0]);
     var jam = res.isNotEmpty ? product = Product.fromJson(res.first) : Null;
     if (jam == Null) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'این محصول در سیستم موجود نمی باشد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false, true, 'محصول در سیستم موجود نمی باشد');
       return 0;
     } else {
       await db.update(
@@ -155,22 +99,7 @@ class ProductController extends GetxController {
           where: "id=?",
           whereArgs: [pro.id]);
       await readAllProducts();
-
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'ویرایش اطلاعات',
-          style: TextStyle(fontSize: 20, color: kPurpleDark),
-        ),
-        messageText: const Text(
-          'اطلاعات محصول با موفقیت ویرایش شد',
-          style: TextStyle(fontSize: 18, color: kPurpleDark),
-        ),
-        backgroundColor: Colors.white,
-        colorText: kPinkDark,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true, true, 'اطلاعات محصول با موفقیت ویرایش شد');
       return 1;
     }
   }
@@ -209,45 +138,10 @@ class ProductController extends GetxController {
 
     // چاپ نتیجه‌ها برای بررسی
     if (result != 0) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'حذف محصولات',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'تمامی محصولات با موفقیت حذف شدند',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kPurpleDark,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true, false, 'تمامی محصولات با موفقیت حذف شدند');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'حذف محصولات با خطا مواجه شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false, false, 'حذف محصولات با خطا مواجه شد');
       return 0;
     }
   }
@@ -272,42 +166,10 @@ class ProductController extends GetxController {
 
     // چاپ نتیجه‌ها برای بررسی
     if (result != 0) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'حذف محصول',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'محصول با موفقیت حذف شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kPurpleDark,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true, false, 'محصول با موفقیت حذف شد');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'حذف محصول با خطا مواجه شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(Icons.highlight_remove_outlined,
-            color: Colors.white, size: 35),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false, false, 'حذف محصول با خطا مواجه شد');
       return 0;
     }
   }
@@ -371,7 +233,6 @@ class ProductController extends GetxController {
       );
     }
   }
-
 
   clear(){
     nameProduct.value.clear();

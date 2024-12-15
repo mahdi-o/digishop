@@ -2,7 +2,6 @@ import 'package:digishop/constans.dart';
 import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Basket.dart';
 import 'package:digishop/models/Product.dart';
-import 'package:digishop/screens/basket_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:digishop/database/my_db.dart';
@@ -25,25 +24,35 @@ class BasketController extends GetxController {
 
   // use database 'my_db'
   // use function 'addOrUpdateBasket'
-  Future<void> addBasket(
+  Future<int> addBasket(
       nameBasket, usernameId, productId, count, isPaying, deleteStatus) async {
     // this function use for create table baskets to database
     final db = await MyDb().db();
-    await db.insert('baskets', {
-      "nameBasket": nameBasket,
-      "usernameId": usernameId,
-      "productId": productId,
-      "count": count,
-      "isPaying": isPaying,
-      "createdAt": DateTime.now().toString().split(".")[0],
-      "updatedAt": DateTime.now().toString().split(".")[0],
-      "deleteStatus": deleteStatus,
-    });
+    var res = await db.query("baskets",
+        where: "nameBasket = ? AND deleteStatus=?", whereArgs: [nameBasket, 0]);
+    var jam = res.isNotEmpty ? Basket.fromJson(res.first) : Null;
+    if (jam == Null) {
+      await db.insert('baskets', {
+        "nameBasket": nameBasket,
+        "usernameId": usernameId,
+        "productId": productId,
+        "count": count,
+        "isPaying": isPaying,
+        "createdAt": DateTime.now().toString().split(".")[0],
+        "updatedAt": DateTime.now().toString().split(".")[0],
+        "deleteStatus": deleteStatus,
+      });
+      await getDataFullBasket();
+      mySnackBar(true, false, 'محصول با موفقیت در سبد خرید اضافه شد');
+      return 1;
+    } else {
+      mySnackBar(false, false,'سبد خرید در سیستم وجود دارد');
+      return 0;
+    }
   }
 
-
   // use to controllers 'basketController'
-  Future<void> addOrUpdateBasket( nameBasket,  usernameId,
+  Future<int> addOrUpdateBasket( nameBasket,  usernameId,
        productId,  count,  isPaying, deleteStatus) async {
     // this function use for create or update table baskets to database
     // check if not exist basket => create else update increase count basket
@@ -53,25 +62,41 @@ class BasketController extends GetxController {
         where: "nameBasket = ? AND isPaying=? AND deleteStatus=?",
         whereArgs: [nameBasket, 0, 0]);
     var jam = res.isNotEmpty ? bas = Basket.fromJson(res.first) : Null;
+
     if (jam == Null) {
       await addBasket(
           nameBasket, usernameId, productId, count, isPaying, deleteStatus);
-    } else {
-      await db.update(
-          "baskets",
-          Basket(
-              id: bas.id,
-              nameBasket: bas.nameBasket,
-              usernameId: bas.usernameId,
-              productId: bas.productId,
-              isPaying: bas.isPaying,
-              count: bas.count! + 1,
-              createdAt: bas.createdAt,
-              updatedAt: DateTime.now().toString().split(".")[0],
-              deleteStatus: bas.deleteStatus)
-              .toJson(),
-          where: "id=?",
-          whereArgs: [bas.id]);
+      return 1;
+    }
+    else {
+      var db = await MyDb().db();
+      var res = await db.query("baskets",
+          where: "nameBasket = ? AND deleteStatus=?", whereArgs: [nameBasket, 0]);
+      var jam = res.isNotEmpty ? bas = Basket.fromJson(res.first) : Null;
+      if (jam == Null) {
+        mySnackBar(true,true, 'این سبد خرید در سیستم موجود نمی باشد');
+        return 0;
+      }
+      else {
+        await db.update(
+            "baskets",
+            Basket(
+                id: bas.id,
+                nameBasket: bas.nameBasket,
+                usernameId: bas.usernameId,
+                productId: bas.productId,
+                isPaying: bas.isPaying,
+                count: bas.count! + 1,
+                createdAt: bas.createdAt,
+                updatedAt: DateTime.now().toString().split(".")[0],
+                deleteStatus: bas.deleteStatus)
+                .toJson(),
+            where: "id=?",
+            whereArgs: [bas.id]);
+        await getDataFullBasket();
+        mySnackBar(true,true, 'اطلاعات سبد خرید با موفقیت ویرایش شد');
+        return 1;
+      }
     }
   }
 
@@ -86,49 +111,12 @@ class BasketController extends GetxController {
       where: 'deleteStatus = ?',
       whereArgs: [0],
     );
-  print(result);
-  print('+WD(#*&#^&^%@)(*(');
     // چاپ نتیجه‌ها برای بررسی
     if (result != 0) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات موفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'تمامی سبدها با موفقیت حذف شدند',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kPurpleDark,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true, false, 'تمامی سبدها با موفقیت حذف شدند');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'حذف سبدها با خطا مواجه شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(
-          Icons.highlight_remove_outlined,
-          color: Colors.white,
-          size: 35,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false,false, 'حذف سبدها با خطا مواجه شد');
       return 0;
     }
   }
@@ -170,45 +158,12 @@ class BasketController extends GetxController {
     }
     // چاپ نتیجه‌ها برای بررسی
     if (result != 0) {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات موفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'سبد خرید با موفقیت حذف شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        backgroundColor: kPurpleDark,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(true,false, 'سبد خرید با موفقیت حذف شد');
       return 1;
     } else {
-      Get.snackbar(
-        '',
-        '',
-        titleText: const Text(
-          'عملیات ناموفق',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        messageText: const Text(
-          'حذف سبد خرید با خطا مواجه شد',
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-        icon: const Icon(Icons.highlight_remove_outlined,
-            color: Colors.white, size: 35),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shouldIconPulse: false,
-        backgroundColor: kRedLight,
-        colorText: Colors.white,
-        duration: const Duration(milliseconds: 1500),
-      );
+      mySnackBar(false,false, 'حذف سبد خرید با خطا مواجه شد');
       return 0;
     }
-
   }
 
 
