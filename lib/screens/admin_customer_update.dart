@@ -24,30 +24,20 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
   Widget build(BuildContext context) {
     return BaseWidget(
       appBar: null,
-      floatingLocation: FloatingActionButtonLocation.startFloat,
-      floating: FloatingActionButton(
-        onPressed: () {
-          controller.clear();
-          Future.delayed(const Duration(milliseconds: 2500), () {
-            Get.offAll(
-                  () => AdminHomeScreen(), arguments: user,
-              // صفحه مقصد
-              transition: Transition.zoom,
-              // نوع انیمیشن
-              duration: const Duration(
-                  milliseconds: 500), // مدت زمان انیمیشن
-            );
-          });
-          // Get.toNamed(AppRoutes.showAllCus,arguments: user);
-        },
-        elevation: 20,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        child: const Icon(
-          Icons.arrow_back_sharp,
-          size: 33,
-        ),
-      ),
+      onPressed: () {
+        controller.clear();
+        Future.delayed(const Duration(milliseconds: 2500), () {
+          Get.offAll(
+                () => AdminHomeScreen(), arguments: user,
+            // صفحه مقصد
+            transition: Transition.zoom,
+            // نوع انیمیشن
+            duration: const Duration(
+                milliseconds: 500), // مدت زمان انیمیشن
+          );
+        });
+        // Get.toNamed(AppRoutes.showAllCus,arguments: user);
+      },
       bottomNavigation: null,
       color: Colors.grey.shade300,
       child: AdminBaseWidget(

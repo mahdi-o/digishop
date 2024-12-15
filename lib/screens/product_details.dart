@@ -27,27 +27,16 @@ class ProductDetails extends GetView<ProductController> {
     double height = Get.height;
     int? lengthStar = product.star;
     return BaseWidget(
-      color: Colors.white,
       bottomNavigation: null,
       appBar: null,
-      floatingLocation: FloatingActionButtonLocation.startFloat,
-      floating: FloatingActionButton(
-        onPressed: () {
-          roll == 'admin'?
-          Get.toNamed(AppRoutes.showAllPro, arguments: {
-            'user': user,
-            'roll': roll
-          }, parameters: {'all': brandHomeScreen}):
-          Get.toNamed(AppRoutes.home, arguments:user,);
-        },
-        elevation: 20,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        child: const Icon(
-          Icons.arrow_back_sharp,
-          size: 33,
-        ),
-      ),
+      onPressed: () {
+        roll == 'admin'?
+        Get.toNamed(AppRoutes.showAllPro, arguments: {
+          'user': user,
+          'roll': roll
+        }, parameters: {'all': brandHomeScreen}):
+        Get.toNamed(AppRoutes.home, arguments:user,);
+      },
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(

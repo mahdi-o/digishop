@@ -227,64 +227,30 @@ class ShowAllCustomers extends GetView<CustomerController> {
 
   Widget mainWidget(BuildContext context, Widget child) {
     return BaseWidget(
-        color: Colors.white,
         bottomNavigation: null,
-        floating: FloatingActionButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.adminHome,arguments: user);
-          },
-          elevation: 20,
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          child: const Icon(
-            Icons.arrow_back_sharp,
-            size: 33,
-          ),
-        ),
-        floatingLocation: FloatingActionButtonLocation.startFloat,
+        onPressed: (){Get.toNamed(AppRoutes.adminHome,arguments: user);},
         appBar: null,
-        child: Padding(
-          padding:
-              const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 60,
-                child: NavbarCustom(
-                  text1: '  مشتریان ',
-                  text2: '',
-                  size1: 28,
-                  size2: 26,
-                  fontFace1: 'lalezarPlus',
-                  fontFace2: 'lalezarPlus',
-                  icon1: Icons.delete_outline_rounded,
-                  onTapIcon2: ()  {
-                    dialogCustom('آیا از حذف تمام مشتریان اطمینان دارید؟', 20,
-                        () async{
-                        Get.back();
-                      var result =await controller.deleteCustomers();
-                      if(result != 0){
-                        FocusScope.of(context).unfocus();
-                        Future.delayed(const Duration(milliseconds: 2500), () {
-                          Get.off(
-                                () => AdminHomeScreen(), arguments: user,
-                            // صفحه مقصد
-                            transition: Transition.rightToLeft,
-                            // نوع انیمیشن
-                            duration: const Duration(
-                                milliseconds: 500), // مدت زمان انیمیشن
-                          );
-                        });
-                      }
-                    });
-                  },
-                  icon2: null,
-                ),
-              ),
-              Expanded(child: child)
-            ],
-          ),
-        ));
+        child: contentBaseWidget('  مشتریان ', Icons.delete_outline_rounded,  ()  {
+          dialogCustom('آیا از حذف تمام مشتریان اطمینان دارید؟', 20,
+                  () async{
+                Get.back();
+                var result =await controller.deleteCustomers();
+                if(result != 0){
+                  FocusScope.of(context).unfocus();
+                  Future.delayed(const Duration(milliseconds: 2500), () {
+                    Get.off(
+                          () => AdminHomeScreen(), arguments: user,
+                      // صفحه مقصد
+                      transition: Transition.rightToLeft,
+                      // نوع انیمیشن
+                      duration: const Duration(
+                          milliseconds: 500), // مدت زمان انیمیشن
+                    );
+                  });
+                }
+              });
+        }, child)
+    );
   }
 
   Widget _buildDetailsButton(Customer customer) {

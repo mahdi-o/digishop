@@ -23,22 +23,11 @@ class SearchScreen extends GetView<MySearchController> {
     double height = Get.height;
     return Obx(
       () => BaseWidget(
-          color: Colors.white,
           bottomNavigation: null,
           appBar: null,
-          floatingLocation: FloatingActionButtonLocation.startFloat,
-          floating: FloatingActionButton(
-            onPressed: () {
-              Get.toNamed(AppRoutes.home,arguments: user);
-            },
-            elevation: 20,
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.white,
-            child: const Icon(
-              Icons.arrow_back_sharp,
-              size: 33,
-            ),
-          ),
+          onPressed: () {
+            Get.toNamed(AppRoutes.home,arguments: user);
+          },
           child: Column(
             children: [
                Padding(

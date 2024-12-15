@@ -20,20 +20,10 @@ class AdminProductCreate extends GetView<ProductController> {
     return BaseWidget(
       appBar: null,
       bottomNavigation: null,
-      floatingLocation: FloatingActionButtonLocation.startFloat,
-      floating: FloatingActionButton(
-        onPressed: () {
-          controller.clear();
-          Get.toNamed(AppRoutes.adminHome,arguments: user);
-        },
-        elevation: 20,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        child: const Icon(
-          Icons.arrow_back_sharp,
-          size: 33,
-        ),
-      ),
+      onPressed: () {
+        controller.clear();
+        Get.toNamed(AppRoutes.adminHome,arguments: user);
+      },
       color: Colors.grey.shade300,
       child: AdminBaseWidget(height: 300,
         color: Colors.grey.shade200,

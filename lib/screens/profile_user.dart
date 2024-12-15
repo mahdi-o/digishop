@@ -18,22 +18,11 @@ class ProfileUser extends GetView<ProfileController> {
 
     return Obx(
       () => BaseWidget(
-        color: Colors.white,
         bottomNavigation: null,
         appBar: null,
-        floating: FloatingActionButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.home,arguments: user);
-          },
-          elevation: 20,
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          child: const Icon(
-            Icons.arrow_back_sharp,
-            size: 33,
-          ),
-        ),
-        floatingLocation: FloatingActionButtonLocation.startFloat,
+        onPressed: () {
+          Get.toNamed(AppRoutes.home,arguments: user);
+        },
         child: Center(
           child: Column(
             children: [

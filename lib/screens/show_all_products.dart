@@ -229,70 +229,34 @@ Widget _buildProductInfo(Product product, context, RxBool heartStatus) {
 
 Widget mainWidget(BuildContext context, Widget child) {
   return BaseWidget(
-      color: Colors.white,
-      bottomNavigation: null,
-      floating: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed(roll=='admin'?AppRoutes.adminHome:AppRoutes.home, arguments: user);
-        },
-        elevation: 20,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        child: const Icon(
-          Icons.arrow_back_sharp,
-          size: 33,
-        ),
-      ),
-      floatingLocation: FloatingActionButtonLocation.startFloat,
-      appBar: null,
-      child:
-      Padding(
-        padding:
-        const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
-        child: Column(
-          children: [
-            // ویجت NavbarCustom ثابت
-            SizedBox(
-              height: 60, // ارتفاع ثابت برای هدر
-              child: NavbarCustom(
-                text1: 'محصولات',
-                text2: '',
-                size1: 28,
-                size2: 26,
-                fontFace1: 'lalezarPlus',
-                fontFace2: 'lalezarPlus',
-                icon1: roll == 'admin' ? Icons.delete_outline_rounded : null,
-                onTapIcon2: () async {
-                  roll == 'admin' ? dialogCustom(
-                      'آیا از حذف تمامی محصولات اطمینان دارید؟',
-                      20, () async {
-                    Get.back();
-                    var result = await controller.deleteProducts();
-                    if (result != 0) {
-                      FocusScope.of(context).unfocus();
-                      Future.delayed(const Duration(milliseconds: 2500), () {
-                        Get.off(
-                              () => AdminHomeScreen(), arguments: user,
-                          // صفحه مقصد
-                          transition: Transition.zoom,
-                          // نوع انیمیشن
-                          duration: const Duration(
-                              milliseconds: 500), // مدت زمان انیمیشن
-                        );
-                      });
-                    }
-                  }):(){};
-                },
-                icon2: null,
-              ),
-            ),
-            // محتوای اسکرول‌شونده
-            Expanded(
-                child: child
-            ),
-          ],
-        ),
-      ));
+        bottomNavigation: null,
+      onPressed: ()async {
+       await Get.toNamed(roll=='admin'?AppRoutes.adminHome:AppRoutes.home, arguments: user);
+      },
+        appBar: null,
+        child:
+        contentBaseWidget('محصولات', roll == 'admin' ? Icons.delete_outline_rounded : null, () async {
+          roll == 'admin' ? dialogCustom(
+              'آیا از حذف تمامی محصولات اطمینان دارید؟',
+              20, () async {
+            Get.back();
+            var result = await controller.deleteProducts();
+            if (result != 0) {
+              FocusScope.of(context).unfocus();
+              Future.delayed(const Duration(milliseconds: 2500), () {
+                Get.off(
+                      () => AdminHomeScreen(), arguments: user,
+                  // صفحه مقصد
+                  transition: Transition.zoom,
+                  // نوع انیمیشن
+                  duration: const Duration(
+                      milliseconds: 500), // مدت زمان انیمیشن
+                );
+              });
+            }
+          }):(){};
+        }, child)
+    );
 }
 
 Widget _buildDetailsButton(Product product,BuildContext context,heartStatus) {

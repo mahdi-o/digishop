@@ -22,33 +22,23 @@ class AdminProductUpdate extends GetView<ProductController> {
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      appBar: null,
-      floatingLocation: FloatingActionButtonLocation.startFloat,
-      floating: FloatingActionButton(
-        onPressed: () {
-          controller.clear();
-          Future.delayed(const Duration(milliseconds: 2500), () {
-            Get.offAll(
-                  () => AdminHomeScreen(), arguments: user,
-              // صفحه مقصد
-              transition: Transition.zoom,
-              // نوع انیمیشن
-              duration: const Duration(
-                  milliseconds: 500), // مدت زمان انیمیشن
-            );
-          });
-          // Get.offAllNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},parameters: {'all':brandHomeScreen});
-        },
-        elevation: 20,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        child: const Icon(
-          Icons.arrow_back_sharp,
-          size: 33,
-        ),
-      ),
-      bottomNavigation: null,
       color: Colors.grey.shade300,
+      appBar: null,
+      onPressed: () {
+        controller.clear();
+        Future.delayed(const Duration(milliseconds: 2500), () {
+          Get.offAll(
+                () => AdminHomeScreen(), arguments: user,
+            // صفحه مقصد
+            transition: Transition.zoom,
+            // نوع انیمیشن
+            duration: const Duration(
+                milliseconds: 500), // مدت زمان انیمیشن
+          );
+        });
+        // Get.offAllNamed(AppRoutes.showAllPro,arguments: {'user':user,'roll':'admin'},parameters: {'all':brandHomeScreen});
+      },
+      bottomNavigation: null,
       child: AdminBaseWidget(
         height: 300,
         color: Colors.grey.shade200,

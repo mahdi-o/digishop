@@ -23,21 +23,11 @@ class BasketScreen extends GetView<BasketController> {
   Widget build(BuildContext context) {
     return Obx(
           () => BaseWidget(
-        color: Colors.white,
         appBar: null,
         bottomNavigation: null,
-        floating: FloatingActionButton(
-          onPressed: () {
-            Get.offAllNamed(AppRoutes.home, arguments: user);
-          },
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          child: const Icon(
-            Icons.arrow_back_sharp,
-            size: 33,
-          ),
-        ),
-        floatingLocation: FloatingActionButtonLocation.startFloat,
+            onPressed: () {
+              Get.offAllNamed(AppRoutes.home, arguments: user);
+            },
         child: controller.basketList.isEmpty
             ? _buildEmptyBasket(context) :
             _buildBasketList(context),

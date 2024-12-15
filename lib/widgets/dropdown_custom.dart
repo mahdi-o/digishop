@@ -20,7 +20,6 @@ class _DropDownCustomState extends State<DropDownCustom> {
      return BaseWidget(
     appBar: null,
        bottomNavigation: null,
-       color: Colors.white,
     child:
     Center(
       child: DropdownButtonHideUnderline(

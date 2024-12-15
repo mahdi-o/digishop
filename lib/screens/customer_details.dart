@@ -18,23 +18,12 @@ class CustomerDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = Get.height;
 
-    return BaseWidget(color: Colors.white,
+    return BaseWidget(
       bottomNavigation: null,
       appBar:null,
-      floatingLocation: FloatingActionButtonLocation.startFloat,
-      floating: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed(AppRoutes.showAllCus,arguments: user);
-
-        },
-        elevation: 20,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        child: const Icon(
-          Icons.arrow_back_sharp,
-          size: 33,
-        ),
-      ),
+      onPressed: () {
+        Get.toNamed(AppRoutes.showAllCus,arguments: user);
+      },
       child: Column(
         children: [
           Padding(

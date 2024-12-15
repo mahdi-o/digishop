@@ -20,18 +20,9 @@ class AdminHomeScreen extends GetView<HomeController> {
     return BaseWidget(
       color: Colors.grey.shade300.withOpacity(0.1),
       appBar: null,
-      floating: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed(AppRoutes.home, arguments: user);
-        },
-        elevation: 20,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        child: const Icon(
-          Icons.arrow_back_sharp,
-          size: 33,
-        ),
-      ),
+      onPressed: () {
+        Get.toNamed(AppRoutes.home, arguments: user);
+      },
       floatingLocation: FloatingCustomButtons(),
       bottomNavigation: null,
       child: AdminBaseWidget(

@@ -1,4 +1,5 @@
 import 'package:digishop/widgets/custom_button.dart';
+import 'package:digishop/widgets/navbar_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -246,6 +247,38 @@ textFieldCustom(
       readOnly: readOnly ?? false,
       obscureText: obscureText ?? false,
       onTap: onTap,
+    ),
+  );
+}
+
+
+// برای این نوشته شده که قسمت های mainWidget فاکتور و محصول و مشتری که ثابت هستند دیگه تکرار نشن
+Widget contentBaseWidget(String textNavbar1,IconData? iconNavbar1,VoidCallback onTabIconNavbar2,Widget child
+    ){
+  return Padding(
+    padding:
+    const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
+    child: Column(
+      children: [            // ویجت NavbarCustom ثابت
+        SizedBox(
+          height: 60, // ارتفاع ثابت برای هدر
+          child: NavbarCustom(
+            text1: textNavbar1,
+            text2: '',
+            size1: 28,
+            size2: 26,
+            fontFace1: 'lalezarPlus',
+            fontFace2: 'lalezarPlus',
+            icon1: iconNavbar1,
+            onTapIcon2:onTabIconNavbar2,
+            icon2: null,
+          ),
+        ),
+        // محتوای اسکرول‌شونده
+        Expanded(
+            child: child
+        ),
+      ],
     ),
   );
 }

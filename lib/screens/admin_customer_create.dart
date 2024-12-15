@@ -1,6 +1,5 @@
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/customer_controller.dart';
-import 'package:digishop/database/my_db.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:digishop/widgets/custom_button.dart';
@@ -9,7 +8,6 @@ import 'package:get/get.dart';
 import '../models/User.dart';
 import '../services/routes.dart';
 import '../widgets/navbar_custom.dart';
-import 'admin_home_screen.dart';
 
 class AdminCustomerCreate extends GetView<CustomerController> {
   AdminCustomerCreate({super.key});
@@ -18,23 +16,13 @@ class AdminCustomerCreate extends GetView<CustomerController> {
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
+      color: Colors.grey.shade300,
       appBar: null,
       bottomNavigation: null,
-      floatingLocation: FloatingActionButtonLocation.startFloat,
-      floating: FloatingActionButton(
-        onPressed: () {
-          controller.clear();
-          Get.toNamed(AppRoutes.adminHome,arguments: user);
-        },
-        elevation: 20,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        child: const Icon(
-          Icons.arrow_back_sharp,
-          size: 33,
-        ),
-      ),
-      color: Colors.grey.shade300,
+      onPressed: () {
+        controller.clear();
+        Get.toNamed(AppRoutes.adminHome,arguments: user);
+      },
       child: AdminBaseWidget(
         height: 310,
         color: Colors.white,
