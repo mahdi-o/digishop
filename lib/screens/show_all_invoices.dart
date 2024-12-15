@@ -16,6 +16,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
 
   final User user = Get.arguments;
   final MyDb myDb = Get.find<MyDb>();
+  final RxList<Invoice> invoices = <Invoice>[].obs;
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +53,14 @@ class ShowAllInvoices extends GetView<InvoiceController> {
             ),
           );
         }
+        for (var item in snapshot.data!) {
+          // چک کردن وجود فاکتور در لیست قبل از اضافه کردن آن
+          if (!invoices.any((existingItem) =>
+          existingItem.nameCustomer == item.nameCustomer)) {
+            invoices.add(item);
+          }
 
-        final invoices = snapshot.data!;
+        }
 
         return mainWidget(
           context,

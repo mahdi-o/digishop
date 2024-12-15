@@ -13,8 +13,6 @@ import 'admin_home_screen.dart';
 
 class AdminCustomerCreate extends GetView<CustomerController> {
   AdminCustomerCreate({super.key});
-
-  final MyDb xController = Get.find<MyDb>();
   final User user = Get.arguments;
 
   @override
@@ -122,7 +120,8 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                   fontSizeBtn: 26,
                   shadowColor: kPurpleDark,
                   onTapped: () async {
-                   var result = await controller.addCustomer(
+                   // var result =
+                   await controller.addCustomer(
                         controller.nameCustomer.value.text,
                         controller.username.value.text,
                         controller.password.value.text,
@@ -130,17 +129,16 @@ class AdminCustomerCreate extends GetView<CustomerController> {
                         controller.phoneNumber.value.text,
                         controller.wallet.value.text,
                         controller.address.value.text,
-                        '',0);
-                    if(result != 0){
-                      Future.delayed(const Duration(milliseconds: 2500), () {
-                        Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد
-                          transition: Transition.zoom,  // نوع انیمیشن
-                          duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
-                        );
-                      });
-                      controller.clear();
-                    }
-                    controller.clear();
+                        '');
+                    // if(result != 0){
+                    //   // Future.delayed(const Duration(milliseconds: 2500), () {
+                    //   //   Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد
+                    //   //     transition: Transition.zoom,  // نوع انیمیشن
+                    //   //     duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
+                    //   //   );
+                    //   // });
+                    //   // controller.clear();
+                    // }
                   },
                   splashColor: kPurpleDark,
                   borderColor: kPurpleDark,

@@ -10,13 +10,10 @@ import '../services/routes.dart';
 import '../widgets/navbar_custom.dart';
 import 'admin_home_screen.dart';
 
-class ShowAllCustomers extends StatelessWidget {
+class ShowAllCustomers extends GetView<CustomerController> {
   ShowAllCustomers({super.key});
-
   final User user = Get.arguments;
-  final MyDb myDb = Get.find<MyDb>();
-  final CustomerController controller = Get.find<CustomerController>();
-  final MyDb xController = Get.find<MyDb>();
+  final RxList<Customer> customers = <Customer>[].obs;
 
   @override
   Widget build(BuildContext context) {
@@ -53,44 +50,86 @@ class ShowAllCustomers extends StatelessWidget {
             ),
           );
         }
+        for (var item in snapshot.data!) {
+            // چک کردن وجود مشتری در لیست قبل از اضافه کردن آن
+            if (!customers.any((existingItem) =>
+            existingItem.nameCustomer == item.nameCustomer)) {
+              customers.add(item);
+            }
 
-        final customers = snapshot.data!;
+        }
+         // customers.value = snapshot.data!;
 
         return mainWidget(
           context,
-          ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.only(bottom: 80),
-            itemCount: customers.length,
-            itemBuilder: (context, index) {
-              final customer = customers[index];
-              return Container(
-                width: double.infinity,
-                height: 160,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+                    ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.only(bottom: 80),
+                  itemCount: customers.length,
+                  itemBuilder: (context, index) {
+                    final customer = customers[index];
+                    return Container(
+                      width: double.infinity,
+                      height: 160,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _buildAvatar(),
+                              const SizedBox(width: 10),
+                              _buildCustomerInfo(customer, context),
+                            ],
+                          ),
+                          const Divider(
+                            color: Colors.black26,
+                            thickness: 0.7,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildAvatar(),
-                        const SizedBox(width: 10),
-                        _buildCustomerInfo(customer, context),
-                      ],
-                    ),
-                    const Divider(
-                      color: Colors.black26,
-                      thickness: 0.7,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
         );
+        // return mainWidget(
+        //   context,
+        //           ListView.builder(
+        //       physics: const BouncingScrollPhysics(),
+        //       padding: const EdgeInsets.only(bottom: 80),
+        //       itemCount: customers.length,
+        //       itemBuilder: (context, index) {
+        //         final customer = customers[index];
+        //         return Container(
+        //           width: double.infinity,
+        //           height: 160,
+        //           decoration: BoxDecoration(
+        //             color: Colors.white,
+        //             borderRadius: BorderRadius.circular(20),
+        //           ),
+        //           child: Column(
+        //             children: [
+        //               Row(
+        //                 mainAxisAlignment: MainAxisAlignment.center,
+        //                 children: [
+        //                   _buildAvatar(),
+        //                   const SizedBox(width: 10),
+        //                   _buildCustomerInfo(customer, context),
+        //                 ],
+        //               ),
+        //               const Divider(
+        //                 color: Colors.black26,
+        //                 thickness: 0.7,
+        //               ),
+        //             ],
+        //           ),
+        //         );
+        //       },
+        //     ),
+        // );
       },
     );
   }

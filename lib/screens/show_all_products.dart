@@ -17,15 +17,11 @@ class ShowAllProducts extends GetView<ProductController> {
   final User user = Get.arguments['user'];
   final String roll = Get.arguments['roll'];
   final String brandHomeScreen = Get.parameters['all']!;
-  final MyDb myDb = Get.find<MyDb>();
-
-  @override
-  final ProductController controller = Get.find<ProductController>();
-  final RxList<Product> listProducts = <Product>[].obs;
   final RxList<Product> products = <Product>[].obs;
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder<List<Product>>(
       future: controller.getProducts(), // متد بارگذاری محصولات از دیتابیس
       builder: (context, snapshot) {
@@ -75,7 +71,8 @@ class ShowAllProducts extends GetView<ProductController> {
         return mainWidget(
           context,
           products.isEmpty
-              ? Center(
+              ?
+          Center(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 120.0),
               child: Text(
@@ -85,7 +82,8 @@ class ShowAllProducts extends GetView<ProductController> {
               ),
             ),
           )
-              : Obx(
+              :
+          Obx(
               ()=> ListView.builder(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.only(bottom: 80),
@@ -124,85 +122,154 @@ class ShowAllProducts extends GetView<ProductController> {
     );
   }
 
-  Widget _buildProductImage(Product product) {
-    return Padding(
-      padding:  EdgeInsets.only(
-        right: roll=='admin'?10.0:0.0,
+Widget _buildProductImage(Product product) {
+  return Padding(
+    padding:  EdgeInsets.only(
+      right: roll=='admin'?10.0:0.0,
+    ),
+    child: Container(
+      decoration: BoxDecoration(
+        color: kPurple,
+        borderRadius: BorderRadius.circular(140),
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: kPurple,
-          borderRadius: BorderRadius.circular(140),
-        ),
-        child: product.imageAddress != null && product.imageAddress!.isNotEmpty
-            ? Image.asset(product.imageAddress!, width: 140)
-            : const CircleAvatar(
-          backgroundImage: AssetImage('assets/images/slider5.jpg'),
-          radius: 70,
-        ),
+      child: product.imageAddress != null && product.imageAddress!.isNotEmpty
+          ? Image.asset(product.imageAddress!, width: 140)
+          : const CircleAvatar(
+        backgroundImage: AssetImage('assets/images/slider5.jpg'),
+        radius: 70,
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildProductInfo(Product product, context, RxBool heartStatus) {
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 40,
-            width: 200,
-            child: Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Text(
-                  product.brand ?? '',
-                  style: const TextStyle(fontSize: 18, fontFamily: 'BlackNorth'),
-                  overflow: TextOverflow.ellipsis,
-                ),
+Widget _buildProductInfo(Product product, context, RxBool heartStatus) {
+  return Padding(
+    padding: const EdgeInsets.all(2.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 40,
+          width: 200,
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                product.nameProduct ?? '',
+                style: const TextStyle(fontSize: 18, fontFamily: 'BlackNorth'),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 15),
-            child: Text(
-              '${separateDigits(int.parse(product.price.toString()))} تومان',
-              style: TextStyle(
-                fontFamily: 'Titr',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: kPinkDark.withOpacity(0.7),
-              ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5, bottom: 15),
+          child: Text(
+            '${separateDigits(int.parse(product.price.toString()))} تومان',
+            style: TextStyle(
+              fontFamily: 'Titr',
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: kPinkDark.withOpacity(0.7),
             ),
           ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Get.toNamed(
-                      AppRoutes.adminProUpd,
-                      arguments: {'product': product, 'user': user},
-                      parameters: {'all': brandHomeScreen}
-                  );
-                },
-                icon: roll == 'admin' ? const Icon(
-                    Icons.edit_rounded, color: kPurpleDark) : const Icon(null),
-              ),
-               SizedBox(width: roll=='admin'?5:0),
-              _buildDetailsButton(product,context,heartStatus),
-               SizedBox(width: roll=='admin'?20:0),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Get.toNamed(
+                    AppRoutes.adminProUpd,
+                    arguments: {'product': product, 'user': user},
+                    parameters: {'all': brandHomeScreen}
+                );
+              },
+              icon: roll == 'admin' ? const Icon(
+                  Icons.edit_rounded, color: kPurpleDark) : const Icon(null),
+            ),
+             SizedBox(width: roll=='admin'?5:0),
+            _buildDetailsButton(product,context,heartStatus),
+             SizedBox(width: roll=='admin'?20:0),
 
-              GestureDetector(
-                onTap:roll=='admin'? () async {
-                  dialogCustom(
-                      'آیا از حذف این محصول اطمینان دارید؟', 20, () async {
+            GestureDetector(
+              onTap:roll=='admin'? () async {
+                dialogCustom(
+                    'آیا از حذف این محصول اطمینان دارید؟', 20, () async {
+                  Get.back();
+                  var result = await controller.deleteProduct(product.id ?? -1);
+                  if (result != 0) {
+                    FocusScope.of(context).unfocus();
+                    controller.clear();
+                    Future.delayed(const Duration(milliseconds: 2500), () {
+                      Get.off(
+                            () => AdminHomeScreen(), arguments: user,
+                        // صفحه مقصد
+                        transition: Transition.zoom,
+                        // نوع انیمیشن
+                        duration: const Duration(
+                            milliseconds: 500), // مدت زمان انیمیشن
+                      );
+                    });
+                  }
+                });
+              }:(){},
+              child: roll == 'admin' ? const Icon(
+                Icons.delete_outline_rounded,
+                size: 35,
+                color: kPurpleDark,
+              ) : const Icon(null),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget mainWidget(BuildContext context, Widget child) {
+  return BaseWidget(
+      color: Colors.white,
+      bottomNavigation: null,
+      floating: FloatingActionButton(
+        onPressed: () {
+          Get.toNamed(roll=='admin'?AppRoutes.adminHome:AppRoutes.home, arguments: user);
+        },
+        elevation: 20,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.arrow_back_sharp,
+          size: 33,
+        ),
+      ),
+      floatingLocation: FloatingActionButtonLocation.startFloat,
+      appBar: null,
+      child:
+      Padding(
+        padding:
+        const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
+        child: Column(
+          children: [
+            // ویجت NavbarCustom ثابت
+            SizedBox(
+              height: 60, // ارتفاع ثابت برای هدر
+              child: NavbarCustom(
+                text1: 'محصولات',
+                text2: '',
+                size1: 28,
+                size2: 26,
+                fontFace1: 'lalezarPlus',
+                fontFace2: 'lalezarPlus',
+                icon1: roll == 'admin' ? Icons.delete_outline_rounded : null,
+                onTapIcon2: () async {
+                  roll == 'admin' ? dialogCustom(
+                      'آیا از حذف تمامی محصولات اطمینان دارید؟',
+                      20, () async {
                     Get.back();
-                    var result = await controller.deleteProduct(product.id ?? -1);
+                    var result = await controller.deleteProducts();
                     if (result != 0) {
                       FocusScope.of(context).unfocus();
-                      controller.clear();
                       Future.delayed(const Duration(milliseconds: 2500), () {
                         Get.off(
                               () => AdminHomeScreen(), arguments: user,
@@ -214,175 +281,106 @@ class ShowAllProducts extends GetView<ProductController> {
                         );
                       });
                     }
-                  });
-                }:(){},
-                child: roll == 'admin' ? const Icon(
-                  Icons.delete_outline_rounded,
-                  size: 35,
-                  color: kPurpleDark,
-                ) : const Icon(null),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget mainWidget(BuildContext context, Widget child) {
-    return BaseWidget(
-        color: Colors.white,
-        bottomNavigation: null,
-        floating: FloatingActionButton(
-          onPressed: () {
-            Get.toNamed(roll=='admin'?AppRoutes.adminHome:AppRoutes.home, arguments: user);
-          },
-          elevation: 20,
-          foregroundColor: Colors.black,
-          backgroundColor: Colors.white,
-          child: const Icon(
-            Icons.arrow_back_sharp,
-            size: 33,
-          ),
-        ),
-        floatingLocation: FloatingActionButtonLocation.startFloat,
-        appBar: null,
-        child:
-        Padding(
-          padding:
-          const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
-          child: Column(
-            children: [
-              // ویجت NavbarCustom ثابت
-              SizedBox(
-                height: 60, // ارتفاع ثابت برای هدر
-                child: NavbarCustom(
-                  text1: 'محصولات',
-                  text2: '',
-                  size1: 28,
-                  size2: 26,
-                  fontFace1: 'lalezarPlus',
-                  fontFace2: 'lalezarPlus',
-                  icon1: roll == 'admin' ? Icons.delete_outline_rounded : null,
-                  onTapIcon2: () async {
-                    roll == 'admin' ? dialogCustom(
-                        'آیا از حذف تمامی محصولات اطمینان دارید؟',
-                        20, () async {
-                      Get.back();
-                      var result = await controller.deleteProducts();
-                      if (result != 0) {
-                        FocusScope.of(context).unfocus();
-                        Future.delayed(const Duration(milliseconds: 2500), () {
-                          Get.off(
-                                () => AdminHomeScreen(), arguments: user,
-                            // صفحه مقصد
-                            transition: Transition.zoom,
-                            // نوع انیمیشن
-                            duration: const Duration(
-                                milliseconds: 500), // مدت زمان انیمیشن
-                          );
-                        });
-                      }
-                    }):(){};
-                  },
-                  icon2: null,
-                ),
-              ),
-              // محتوای اسکرول‌شونده
-              Expanded(
-                  child: child
-              ),
-            ],
-          ),
-        ));
-  }
-
-  Widget _buildDetailsButton(Product product,BuildContext context,heartStatus) {
-    return
-    roll == 'home'?
-    Row(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              border: Border.all(
-                  color: kPurpleDark),
-              borderRadius:
-              BorderRadius.circular(50),
-              color: kPurpleLight),
-          width: 110,
-          height: 35,
-          child: Center(
-              child: GestureDetector(
-                onTap: () {
-                  FocusScope.of(context)
-                      .unfocus();
-                  Get.toNamed(
-                      AppRoutes.proDet,
-                      arguments: {
-                        'product':product,
-                        'user':user,'roll':'home'
-                      },
-                      parameters: {'all':'all'});
+                  }):(){};
                 },
-                child: const Text(
-                  'جزئیات',
-                  style: TextStyle(
-                      fontFamily: 'lalezar',
-                      fontSize: 18),
-                ),
-              )),
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        Obx(
-              ()=> GestureDetector(
-            onTap: () {
-              if (heartStatus.value ==
-                  false) {
-                heartStatus.value = true;
-              } else {
-                heartStatus.value = false;
-              }
-            },
-            child: heartStatus.value == false
-                ? const Icon(
-              CupertinoIcons.heart,
-              color: kPurpleDark,
-              size: 27,
-            )
-                : const Icon(
-              CupertinoIcons.heart_fill,
-              color: kPinkDark,
-              size: 27,
+                icon2: null,
+              ),
             ),
-          ),
+            // محتوای اسکرول‌شونده
+            Expanded(
+                child: child
+            ),
+          ],
         ),
-      ],
-    ):
-     Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: kPurpleDark),
-        borderRadius: BorderRadius.circular(50),
-        color: kPurpleLight,
+      ));
+}
+
+Widget _buildDetailsButton(Product product,BuildContext context,heartStatus) {
+  return
+  roll == 'home'?
+  Row(
+    children: [
+      Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+                color: kPurpleDark),
+            borderRadius:
+            BorderRadius.circular(50),
+            color: kPurpleLight),
+        width: 110,
+        height: 35,
+        child: Center(
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context)
+                    .unfocus();
+                Get.toNamed(
+                    AppRoutes.proDet,
+                    arguments: {
+                      'product':product,
+                      'user':user,'roll':'home'
+                    },
+                    parameters: {'all':'all'});
+              },
+              child: const Text(
+                'جزئیات',
+                style: TextStyle(
+                    fontFamily: 'lalezar',
+                    fontSize: 18),
+              ),
+            )),
       ),
-      width:110,
-      height:35,
-      child: Center(
-        child: GestureDetector(
+      const SizedBox(
+        width: 20,
+      ),
+      Obx(
+            ()=> GestureDetector(
           onTap: () {
-            Get.toNamed(
-                AppRoutes.proDet,
-                arguments: {'product': product, 'user': user,'roll':roll},
-                parameters: {'all': brandHomeScreen});
-          }, // Add your navigation action here.
-          child: Text(
-            'جزئیات',
-            style: TextStyle(
-                fontFamily: 'lalezarPlus', fontSize:18),
+            if (heartStatus.value ==
+                false) {
+              heartStatus.value = true;
+            } else {
+              heartStatus.value = false;
+            }
+          },
+          child: heartStatus.value == false
+              ? const Icon(
+            CupertinoIcons.heart,
+            color: kPurpleDark,
+            size: 27,
+          )
+              : const Icon(
+            CupertinoIcons.heart_fill,
+            color: kPinkDark,
+            size: 27,
           ),
         ),
       ),
-    );
-  }
+    ],
+  ):
+   Container(
+    decoration: BoxDecoration(
+      border: Border.all(color: kPurpleDark),
+      borderRadius: BorderRadius.circular(50),
+      color: kPurpleLight,
+    ),
+    width:110,
+    height:35,
+    child: Center(
+      child: GestureDetector(
+        onTap: () {
+          Get.toNamed(
+              AppRoutes.proDet,
+              arguments: {'product': product, 'user': user,'roll':roll},
+              parameters: {'all': brandHomeScreen});
+        }, // Add your navigation action here.
+        child: Text(
+          'جزئیات',
+          style: TextStyle(
+              fontFamily: 'lalezarPlus', fontSize:18),
+        ),
+      ),
+    ),
+  );
+}
 }

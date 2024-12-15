@@ -14,7 +14,6 @@ import '../widgets/navbar_custom.dart';
 class AdminProductCreate extends GetView<ProductController> {
   AdminProductCreate({super.key});
 
-  final MyDb xController = Get.find<MyDb>();
   final User user = Get.arguments;
   @override
   Widget build(BuildContext context) {

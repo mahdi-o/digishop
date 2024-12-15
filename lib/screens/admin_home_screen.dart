@@ -219,7 +219,7 @@ class AdminHomeScreen extends GetView<HomeController> {
                           voidCallback: () {
                             FocusScope.of(context).unfocus();
 
-                            Get.offAllNamed(AppRoutes.adminCusCre, arguments: user);
+                            Get.toNamed(AppRoutes.adminCusCre, arguments: user);
                           }),
                       ContainerCustomAdmin(
                           text: 'مشتریان',

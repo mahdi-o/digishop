@@ -179,11 +179,11 @@ class ProductController extends GetxController {
   // use function 'addProduct'
   Future<List<Map<String, dynamic>>> readAllProducts() async {
     // use function read products from db
-    final Database db = await MyDb().db();
+    final  db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
     await db.query('products', where: "deleteStatus=?", whereArgs: [0]);
     if (maps.isEmpty) {
-      return maps;
+      return List.empty();
     } else {
       return maps;
     }

@@ -1,5 +1,6 @@
 import 'package:digishop/controller/customer_controller.dart';
 import 'package:digishop/database/my_db.dart';
+import 'package:digishop/screens/admin_home_screen.dart';
 import 'package:digishop/screens/show_all_customers.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
@@ -27,7 +28,17 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
       floating: FloatingActionButton(
         onPressed: () {
           controller.clear();
-          Get.toNamed(AppRoutes.showAllCus,arguments: user);
+          Future.delayed(const Duration(milliseconds: 2500), () {
+            Get.offAll(
+                  () => AdminHomeScreen(), arguments: user,
+              // صفحه مقصد
+              transition: Transition.zoom,
+              // نوع انیمیشن
+              duration: const Duration(
+                  milliseconds: 500), // مدت زمان انیمیشن
+            );
+          });
+          // Get.toNamed(AppRoutes.showAllCus,arguments: user);
         },
         elevation: 20,
         foregroundColor: Colors.black,
@@ -214,12 +225,23 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                       );
                       if(result != 0){
                         FocusScope.of(context).unfocus();
+                        controller.clear();
                         Future.delayed(const Duration(milliseconds: 2500), () {
-                          Get.off(() => ShowAllCustomers(),arguments: user, // صفحه مقصد
-                            transition: Transition.zoom,  // نوع انیمیشن
-                            duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
+                          Get.offAll(
+                                () => AdminHomeScreen(), arguments: user,
+                            // صفحه مقصد
+                            transition: Transition.zoom,
+                            // نوع انیمیشن
+                            duration: const Duration(
+                                milliseconds: 500), // مدت زمان انیمیشن
                           );
                         });
+                        // Future.delayed(const Duration(milliseconds: 2500), () {
+                        //   Get.off(() => ShowAllCustomers(),arguments: user, // صفحه مقصد
+                        //     transition: Transition.zoom,  // نوع انیمیشن
+                        //     duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
+                        //   );
+                        // });
                       }
                     }
                   },

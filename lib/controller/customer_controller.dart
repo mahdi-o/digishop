@@ -25,7 +25,7 @@ class CustomerController extends GetxController{
 
   // use to screen 'admin customer create'
   Future<int> addCustomer(nameCustomer, username, password, email, phoneNumber,
-      wallet, address, description, deleteStatus) async {
+      wallet, address, description) async {
     // this function use for create table customer to database
     final db = await MyDb().db();
     var res = await db.query("customers",
@@ -42,10 +42,11 @@ class CustomerController extends GetxController{
         "address": address,
         "description": description,
         "isDelete": 0,
+        "deleteStatus": 0,
         "createdAt": DateTime.now().toString().split(".")[0],
         "updatedAt": DateTime.now().toString().split(".")[0],
-        "deleteStatus": deleteStatus,
       });
+      await readAllCustomers();
       Get.snackbar(
         '',
         '',
@@ -142,6 +143,7 @@ class CustomerController extends GetxController{
               .toJson(),
           where: "id=?",
           whereArgs: [newCustomer.id]);
+      await readAllCustomers();
       Get.snackbar(
         '',
         '',
@@ -316,6 +318,17 @@ class CustomerController extends GetxController{
     }
   }
 
+  Future<List<Map<String, dynamic>>> readAllCustomers() async {
+    // use function read products from db
+    final Database db = await MyDb().db();
+    final List<Map<String, dynamic>> maps =
+    await db.query('customers', where: "deleteStatus=?", whereArgs: [0]);
+    if (maps.isEmpty) {
+      return maps;
+    } else {
+      return maps;
+    }
+  }
 
   clear()async{
     nameCustomer.value.clear();
