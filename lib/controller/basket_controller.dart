@@ -2,7 +2,6 @@ import 'package:digishop/constans.dart';
 import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Basket.dart';
 import 'package:digishop/models/Product.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:digishop/database/my_db.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -215,7 +214,6 @@ class BasketController extends GetxController {
   }
 
   Future<List<Basket>> getBaskets() async {
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     Database db = await MyDb().db();
     basketList.clear();
     productListFromBasket.clear();
@@ -243,16 +241,9 @@ class BasketController extends GetxController {
 
         // Only add to the list if the product exists (i.e., valid product found)
         if (product.id != null && product.id != 0) {
-          print('productListFromBasket productListFromBasket productListFromBasket productListFromBasket productListFromBasket');
-          print(productListFromBasket.length);
           productListFromBasket.add(product);
-          print(productListFromBasket.length);
         }
-
-        print('basketList basketList basketList basketList basketList');
-        print(basketList.length);
          basketList.add(basket);
-        print(basketList.length);
         countSum.value += basket.count!;
         priceSum.value += (int.parse(product.price!) * basket.count!);
       }

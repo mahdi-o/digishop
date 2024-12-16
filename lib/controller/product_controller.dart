@@ -251,8 +251,6 @@ class ProductController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     getProducts();
-    var get =await getProducts();
-    print(get.length);
-    print(':::::::::^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+    await getProducts();
   }
 }

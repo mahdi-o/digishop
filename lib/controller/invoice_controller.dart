@@ -462,7 +462,6 @@ class InvoiceController extends GetxController {
   }
   Future<List<Customer>> getIdNameCustomerForInvoice() async {
     listCustomersForInvoice.clear();
-    MyDb xController = Get.find<MyDb>();
     CustomerController cusController = Get.find<CustomerController>();
 
     var c = await cusController.getCustomers();
@@ -474,7 +473,6 @@ class InvoiceController extends GetxController {
   }
 
   Future<void> getProductForInvoice() async {
-    final db = await MyDb();
     await proController.getProductForInvoice();
   }
 

@@ -1,6 +1,5 @@
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/product_controller.dart';
-import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Product.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/base_widget.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/User.dart';
-import '../widgets/navbar_custom.dart';
 import 'admin_home_screen.dart';
 
 class ShowAllProducts extends GetView<ProductController> {
@@ -338,7 +336,7 @@ Widget _buildDetailsButton(Product product,BuildContext context,heartStatus) {
               arguments: {'product': product, 'user': user,'roll':roll},
               parameters: {'all': brandHomeScreen});
         }, // Add your navigation action here.
-        child: Text(
+        child: const Text(
           'جزئیات',
           style: TextStyle(
               fontFamily: 'lalezarPlus', fontSize:18),

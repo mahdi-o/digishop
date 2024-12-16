@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/mysearch_controller.dart';

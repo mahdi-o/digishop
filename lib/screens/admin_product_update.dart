@@ -5,12 +5,10 @@ import 'package:digishop/models/Product.dart';
 import 'package:digishop/screens/admin_home_screen.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:digishop/widgets/base_widget.dart';
-import 'package:digishop/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/User.dart';
-import '../services/routes.dart';
-import '../widgets/navbar_custom.dart';
+
 
 class AdminProductUpdate extends GetView<ProductController> {
   AdminProductUpdate({super.key});

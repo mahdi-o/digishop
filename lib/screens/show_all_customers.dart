@@ -1,13 +1,11 @@
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/customer_controller.dart';
-import 'package:digishop/database/my_db.dart';
 import 'package:digishop/models/Customer.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/User.dart';
 import '../services/routes.dart';
-import '../widgets/navbar_custom.dart';
 import 'admin_home_screen.dart';
 
 class ShowAllCustomers extends GetView<CustomerController> {
