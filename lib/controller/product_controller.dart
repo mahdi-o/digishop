@@ -178,13 +178,14 @@ class ProductController extends GetxController {
   // use to screen 'BasketScreen'
   Future<List<Product>> getProducts() async {
     // use function read products from db where don't delete
-    final Database db = await MyDb().db();
+    final db = await MyDb().db();
     final List<Map<String, dynamic>> maps =
     await db.query('products', where: "deleteStatus=?", whereArgs: [0]);
 
     if (maps.isEmpty) {
       return productList;
     } else {
+       productList.clear();
       return List.generate(
         maps.length,
             (i) {

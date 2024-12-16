@@ -142,6 +142,7 @@ class InvoiceController extends GetxController {
     if (maps.isEmpty) {
       return invoiceList;
     } else {
+      invoiceList.clear();
       return List.generate(
         maps.length,
             (i) {

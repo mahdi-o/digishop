@@ -95,41 +95,6 @@ class ShowAllCustomers extends GetView<CustomerController> {
                   },
                 ),
         );
-        // return mainWidget(
-        //   context,
-        //           ListView.builder(
-        //       physics: const BouncingScrollPhysics(),
-        //       padding: const EdgeInsets.only(bottom: 80),
-        //       itemCount: customers.length,
-        //       itemBuilder: (context, index) {
-        //         final customer = customers[index];
-        //         return Container(
-        //           width: double.infinity,
-        //           height: 160,
-        //           decoration: BoxDecoration(
-        //             color: Colors.white,
-        //             borderRadius: BorderRadius.circular(20),
-        //           ),
-        //           child: Column(
-        //             children: [
-        //               Row(
-        //                 mainAxisAlignment: MainAxisAlignment.center,
-        //                 children: [
-        //                   _buildAvatar(),
-        //                   const SizedBox(width: 10),
-        //                   _buildCustomerInfo(customer, context),
-        //                 ],
-        //               ),
-        //               const Divider(
-        //                 color: Colors.black26,
-        //                 thickness: 0.7,
-        //               ),
-        //             ],
-        //           ),
-        //         );
-        //       },
-        //     ),
-        // );
       },
     );
   }

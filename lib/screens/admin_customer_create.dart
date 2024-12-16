@@ -25,7 +25,7 @@ class AdminCustomerCreate extends GetView<CustomerController> {
       },
       child: AdminBaseWidget(
         onTapButton: () async {
-          await controller.addCustomer(
+         var result = await controller.addCustomer(
               controller.nameCustomer.value.text,
               controller.username.value.text,
               controller.password.value.text,
@@ -34,6 +34,15 @@ class AdminCustomerCreate extends GetView<CustomerController> {
               controller.wallet.value.text,
               controller.address.value.text,
               '');
+          if(result != 0){
+            Future.delayed(const Duration(milliseconds: 2500), () {
+              Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد
+                transition: Transition.zoom,  // نوع انیمیشن
+                duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
+              );
+            });
+            controller.clear();
+          }
         },
         textNavbar2: 'ثبت مشتری جدید',
         textBtn: 'افزودن مشتری',

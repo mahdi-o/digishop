@@ -165,7 +165,7 @@ class CustomerController extends GetxController{
     if (maps.isEmpty) {
       return customerList;
     } else {
-
+       customerList.clear();
       return List.generate(
         maps.length,
             (i) {
