@@ -34,6 +34,7 @@ class InvoiceController extends GetxController {
   RxList<Product> productListOrder = <Product>[].obs;
   RxList<Product> listProductsForInvoice = <Product>[].obs;
   RxList<Customer> listCustomersForInvoice = <Customer>[].obs;
+
   // use file 'my_db' to function 'get invoice'
   RxList<Invoice> invoiceList = <Invoice>[].obs;
   RxList listOrders = [].obs;
@@ -311,6 +312,8 @@ class InvoiceController extends GetxController {
           whereArgs: [existingProduct.id],
         );
         mySnackBar(true, true, 'بروزرسانی سفارش با موفقیت ثبت شد');
+        selectedValueCus = ''.obs;
+        selectedValuePro = ''.obs;
       } else {
         // اگر محصول جدید است، آن را به فاکتور اضافه می‌کنیم
         await db.insert('invoice_products', {
@@ -319,7 +322,9 @@ class InvoiceController extends GetxController {
           "count": order.countOrder ?? 0,  // استفاده از ?? 0 برای جلوگیری از null
           "deleteStatus":0,
         });
-        mySnackBar(false, true, 'محصول با موفقیت در فاکتور ثبت شد');
+        mySnackBar(true, true, 'محصول با موفقیت در فاکتور ثبت شد');
+        selectedValueCus = ''.obs;
+        selectedValuePro = ''.obs;
       }
 
       // بروزرسانی موجودی محصول در دیتابیس
@@ -513,6 +518,10 @@ class InvoiceController extends GetxController {
     listOrders.clear();
     listOrder.clear();
     invoiceList.clear();
+    selectedValueCus = ''.obs;
+
+    selectedValuePro = ''.obs;
+
   }
 
 
