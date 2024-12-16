@@ -13,6 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  GetMaterialApp(
+      transitionDuration: const Duration(milliseconds: 700),
+      defaultTransition: Transition.native,
       debugShowCheckedModeBanner: false,
       initialBinding: AppBinding(),
       initialRoute: AppRoutes.splash,

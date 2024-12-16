@@ -21,6 +21,7 @@ class HomeScreen extends GetView<HomeController> {
     size = MediaQuery.of(context).size;
     return Obx(
       ()=> BaseWidget(
+        floatingActionButton: false,
         color: Colors.white,
         bottomNavigation: null,
         appBar: null,

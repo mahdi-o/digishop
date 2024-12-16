@@ -11,6 +11,7 @@ class BaseWidget extends GetView {
       required this.appBar,
       required this.bottomNavigation,
        this.color,
+        this.floatingActionButton,
       this.floatingLocation,
        this.onPressed});
 
@@ -19,6 +20,7 @@ class BaseWidget extends GetView {
   final AppBar? appBar;
   final CurvedNavigationBar? bottomNavigation;
   final Color? color;
+  final bool? floatingActionButton;
   final FloatingActionButtonLocation? floatingLocation;
   final VoidCallback? onPressed;
 
@@ -30,7 +32,8 @@ class BaseWidget extends GetView {
         resizeToAvoidBottomInset: false,
         backgroundColor: color??Colors.white,
         appBar: appBar,
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton:floatingActionButton==false?
+            Container():FloatingActionButton(
           onPressed: onPressed,
           elevation: 20,
           foregroundColor: Colors.black,

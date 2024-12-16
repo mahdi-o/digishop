@@ -305,6 +305,7 @@ class AdminHomeScreen extends GetView<HomeController> {
       floatingLocation: FloatingCustomButtons(),
       bottomNavigation: null,
       child: AdminBaseWidget(
+
         height: 280,
         color: Colors.grey.shade300,
         childWidget: Padding(

@@ -74,7 +74,7 @@ class BasketController extends GetxController {
           where: "nameBasket = ? AND deleteStatus=?", whereArgs: [nameBasket, 0]);
       var jam = res.isNotEmpty ? bas = Basket.fromJson(res.first) : Null;
       if (jam == Null) {
-        mySnackBar(true,true, 'این سبد خرید در سیستم موجود نمی باشد');
+        mySnackBar(true,false, 'این سبد خرید در سیستم موجود نمی باشد');
         return 0;
       }
       else {
@@ -94,7 +94,7 @@ class BasketController extends GetxController {
             where: "id=?",
             whereArgs: [bas.id]);
         await getDataFullBasket();
-        mySnackBar(true,true, 'اطلاعات سبد خرید با موفقیت ویرایش شد');
+        mySnackBar(true,false, 'اطلاعات سبد خرید با موفقیت ویرایش شد');
         return 1;
       }
     }
