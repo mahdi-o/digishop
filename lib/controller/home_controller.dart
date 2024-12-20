@@ -1,17 +1,16 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:digishop/controller/product_controller.dart';
 import 'package:digishop/models/Product.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:digishop/screens/basket_screen.dart';
 import 'package:digishop/screens/home_screen.dart';
 import 'package:digishop/screens/profile_user.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
 
   ProductController proController = Get.find<ProductController>();
-  Rx<CarouselController> controllerCarouser = CarouselController().obs;
+  Rx<CarouselSliderController> controllerCarouser = CarouselSliderController().obs;
   RxInt currentIndex = 0.obs;
   RxList<Product> listProductsBestDb = <Product>[].obs;
 
@@ -24,53 +23,53 @@ class HomeController extends GetxController {
 
   RxList<Widget> listSliderImage = <Widget>[
     ClipRRect(
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(50),
         child: Image.asset(
           'assets/images/slider1.jpg',
           width: 450,
-          height: 300,
+          height: 250,
         )),
     ClipRRect(
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(50),
         child: Image.asset(
           'assets/images/slider2.jpg',
           width: 450,
-          height: 300,
+          height: 250,
         )),
     ClipRRect(
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(50),
         child: Image.asset(
           'assets/images/slider3.jpg',
           width: 450,
-          height: 300,
+          height: 250,
         )),
     ClipRRect(
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(50),
         child: Image.asset(
           'assets/images/slider4.jpg',
           width: 450,
-          height: 300,
+          height: 250,
         )),
     ClipRRect(
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(50),
         child: Image.asset(
           'assets/images/slider5.jpg',
           width: 450,
-          height: 300,
+          height: 250,
         )),
     ClipRRect(
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(50),
         child: Image.asset(
           'assets/images/slider6.jpg',
           width: 450,
-          height: 300,
+          height: 250,
         )),
     ClipRRect(
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(50),
         child: Image.asset(
           'assets/images/slider7.jpg',
           width: 450,
-          height: 300,
+          height: 250,
         )),
   ].obs;
 

@@ -62,6 +62,7 @@ class AdminProductCreate extends GetView<ProductController> {
             0,
             TextAlign.right,20
         ),
+        child8: 10,
         child2:textFieldCustom(
             controller.priceProduct.value,
             Colors.white,
@@ -73,6 +74,7 @@ class AdminProductCreate extends GetView<ProductController> {
             7,
             TextAlign.right,20
         ),
+        child9: 50,
         child3:Row(
           children: [
             Expanded(

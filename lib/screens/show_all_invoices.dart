@@ -30,7 +30,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
             context,
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 120.0),
+                padding:  EdgeInsets.only(bottom: Get.height/18),
                 child: Text(
                   'خطا در بارگذاری داده ها!',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
@@ -43,7 +43,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
             context,
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 100.0),
+                padding:  EdgeInsets.only(bottom: Get.height/18),
                 child: Text(
                   'فاکتوری یافت نشد!',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
@@ -145,6 +145,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                   Row(
                     children: [
                       CustomButton(
+                        elevationBtn: 3,
                         colorBtn: Colors.white,
                         textBtn: 'پرداخت',
                         textColor: kPurpleDark,
@@ -178,6 +179,7 @@ class ShowAllInvoices extends GetView<InvoiceController> {
                         width: 7,
                       ),
                       CustomButton(
+                        elevationBtn: 3,
                         colorBtn: Colors.white,
                         textBtn: 'جزئیات',
                         textColor: kPinkLight,

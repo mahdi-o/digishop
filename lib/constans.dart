@@ -257,7 +257,7 @@ Widget contentBaseWidget(String textNavbar1,IconData? iconNavbar1,VoidCallback o
     ){
   return Padding(
     padding:
-    const EdgeInsets.only(right: 10, left: 10, bottom: 20, top: 50),
+    const EdgeInsets.only(right: 10, left: 10, bottom: 30, top: 35),
     child: Column(
       children: [            // ویجت NavbarCustom ثابت
         SizedBox(

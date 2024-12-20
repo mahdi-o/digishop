@@ -1,11 +1,11 @@
 import 'package:digishop/controller/customer_controller.dart';
 import 'package:digishop/database/my_db.dart';
+import 'package:digishop/models/Customer.dart';
 import 'package:digishop/screens/admin_home_screen.dart';
 import 'package:digishop/widgets/admin_base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constans.dart';
-import '../models/Customer.dart';
 import '../models/User.dart';
 import '../widgets/base_widget.dart';
 
@@ -73,12 +73,6 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
                       milliseconds: 500), // مدت زمان انیمیشن
                 );
               });
-              // Future.delayed(const Duration(milliseconds: 2500), () {
-              //   Get.off(() => ShowAllCustomers(),arguments: user, // صفحه مقصد
-              //     transition: Transition.zoom,  // نوع انیمیشن
-              //     duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
-              //   );
-              // });
             }
           }
         },
@@ -97,6 +91,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
             0,
             TextAlign.right,
             20),
+        child8: 10,
         child2:textFieldCustom(
             controller.password.value =
                 TextEditingController(text: customer.password),
@@ -122,7 +117,7 @@ class AdminCustomerUpdate extends GetView<CustomerController> {
             }
           }, 1, controller.changePassword.value);
         }),
-
+        child9: 50,
         child3:textFieldCustom(
             controller.nameCustomer.value =
                 TextEditingController(text: customer.nameCustomer),

@@ -31,7 +31,7 @@ class ShowAllProducts extends GetView<ProductController> {
             context,
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 100.0),
+                padding:  EdgeInsets.only(bottom: Get.height/18),
                 child: Text(
                   'خطا در بارگذاری داده ها!',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
@@ -44,7 +44,7 @@ class ShowAllProducts extends GetView<ProductController> {
             context,
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 120.0),
+                padding:  EdgeInsets.only(bottom: Get.height/18),
                 child: Text(
                   'محصولی یافت نشد!',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
@@ -161,7 +161,7 @@ Widget _buildProductInfo(Product product, context, RxBool heartStatus) {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 5, bottom: 15),
+          padding: const EdgeInsets.only(top: 5, bottom: 10),
           child: Text(
             '${separateDigits(int.parse(product.price.toString()))} تومان',
             style: TextStyle(

@@ -33,7 +33,7 @@ class BaseWidget extends GetView {
         floatingActionButton:floatingActionButton==false?
             Container():FloatingActionButton(
           onPressed: onPressed,
-          elevation: 20,
+          elevation: 10,
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
           child: const Icon(

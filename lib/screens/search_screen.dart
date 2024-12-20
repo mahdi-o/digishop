@@ -1,12 +1,12 @@
 import 'dart:math';
 import 'package:digishop/constans.dart';
 import 'package:digishop/controller/mysearch_controller.dart';
+import 'package:digishop/models/Product.dart';
 import 'package:digishop/services/routes.dart';
 import 'package:digishop/widgets/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/Product.dart';
 import '../models/User.dart';
 import '../widgets/navbar_custom.dart';
 
@@ -20,6 +20,7 @@ class SearchScreen extends GetView<MySearchController> {
   Widget build(BuildContext context) {
     controller.clear();
     double height = Get.height;
+
     return Obx(
       () => BaseWidget(
           bottomNavigation: null,
@@ -31,7 +32,7 @@ class SearchScreen extends GetView<MySearchController> {
             children: [
                Padding(
                 padding:
-                    EdgeInsets.only(right: height/6, left: 0, bottom: 10, top: 50),
+                    EdgeInsets.only(right: height/6, left: 0, bottom: 10, top: 40),
                 child: const Column(
                   children: [
                     // ویجت NavbarCustom ثابت
@@ -54,7 +55,7 @@ class SearchScreen extends GetView<MySearchController> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Container(
-                  width: Get.height,
+                  width: Get.width,
                   height: 55,
                   decoration: BoxDecoration(
                       color: kPurpleLight,
@@ -69,6 +70,7 @@ class SearchScreen extends GetView<MySearchController> {
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
+                      contentPadding:  EdgeInsets.symmetric(vertical: 10),
                       hintText: 'جستجو',
                       hintStyle:
                           TextStyle(color: Colors.grey.shade600, fontSize: 20),
@@ -94,7 +96,7 @@ class SearchScreen extends GetView<MySearchController> {
                       ? Expanded(
                           child: Center(
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: 120.0),
+                              padding:  EdgeInsets.only(bottom:height/8),
                               child: Text(
                                 'محصولی یافت نشد!',
                                 style: TextStyle(
@@ -106,7 +108,7 @@ class SearchScreen extends GetView<MySearchController> {
                       : Expanded(
                           child: Center(
                             child: Padding(
-                              padding: const EdgeInsets.only(bottom: 120.0),
+                              padding:  EdgeInsets.only(bottom: height/8),
                               child: Text(
                                 'برای پیدا کردن محصول موردنظرتان جست و جو کنید',
                                 style: TextStyle(

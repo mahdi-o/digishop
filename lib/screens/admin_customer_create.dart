@@ -21,11 +21,11 @@ class AdminCustomerCreate extends GetView<CustomerController> {
       bottomNavigation: null,
       onPressed: () {
         controller.clear();
-        Get.toNamed(AppRoutes.adminHome,arguments: user);
+        Get.toNamed(AppRoutes.adminHome, arguments: user);
       },
       child: AdminBaseWidget(
         onTapButton: () async {
-         var result = await controller.addCustomer(
+          var result = await controller.addCustomer(
               controller.nameCustomer.value.text,
               controller.username.value.text,
               controller.password.value.text,
@@ -34,10 +34,11 @@ class AdminCustomerCreate extends GetView<CustomerController> {
               controller.wallet.value.text,
               controller.address.value.text,
               '');
-          if(result != 0){
+          if (result != 0) {
             Future.delayed(const Duration(milliseconds: 2500), () {
-              Get.off(() => AdminHomeScreen(),arguments: user, // صفحه مقصد
-                transition: Transition.zoom,  // نوع انیمیشن
+              Get.off(
+                () => AdminHomeScreen(), arguments: user, // صفحه مقصد
+                transition: Transition.zoom, // نوع انیمیشن
                 duration: const Duration(milliseconds: 500), // مدت زمان انیمیشن
               );
             });
@@ -59,6 +60,7 @@ class AdminCustomerCreate extends GetView<CustomerController> {
             0,
             TextAlign.right,
             20),
+        child8: 10,
         child2: textFieldCustom(
             controller.password.value,
             Colors.white,
@@ -70,6 +72,7 @@ class AdminCustomerCreate extends GetView<CustomerController> {
             7,
             TextAlign.right,
             20),
+        child9: 50,
         child3: textFieldCustom(
             controller.nameCustomer.value,
             Colors.black87,

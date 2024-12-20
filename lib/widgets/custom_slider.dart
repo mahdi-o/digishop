@@ -17,32 +17,12 @@ class CustomSlider extends GetView<HomeController> {
                 autoPlay: true,
                 enlargeCenterPage: true,
                 aspectRatio: 1.8,
+                autoPlayCurve: Curves.linear,
                 height: 200,
                 pageSnapping: true
                 // onPageChanged: controller.onChangeSlide
             ),
           ),
-              // Container(
-              //   padding: const EdgeInsets.only(top: 180),
-              //   alignment: AlignmentDirectional.center,
-              //   child:
-              //   AnimatedSmoothIndicator(
-              //     activeIndex: controller.current.value,
-              //     count: controller.resListSlider.length,
-              //     textDirection: TextDirection.ltr,
-              //     onDotClicked: controller.onDotClick,
-              //     effect: const ExpandingDotsEffect(
-              //         spacing:  8.0,
-              //         radius:  4.0,
-              //         dotWidth:  10.0,
-              //         dotHeight:  10.0,
-              //         paintStyle:  PaintingStyle.fill,
-              //         strokeWidth:  2,
-              //         dotColor:  Colors.grey,
-              //         activeDotColor:  Colors.white
-              //     ),
-              //   ),
-              // ),
         ],)
     );
   }

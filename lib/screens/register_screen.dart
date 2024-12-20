@@ -13,6 +13,7 @@ class SignupPage extends GetView<RegisterLoginController> {
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
+      floatingActionButton: false,
       color: Colors.white,
       bottomNavigation: null,
       appBar: null,
@@ -159,7 +160,7 @@ class SignupPage extends GetView<RegisterLoginController> {
                   children: <Widget>[
                     const Text(
                       "از قبل حساب کاربری دارید؟",
-                      style: TextStyle(fontSize: 18, fontFamily: 'lalezarPlus'),
+                      style: TextStyle(fontSize: 16, fontFamily: 'lalezarPlus'),
                     ),
                     TextButton(
                         onPressed: () {
@@ -171,7 +172,7 @@ class SignupPage extends GetView<RegisterLoginController> {
                         },
                         child: const Text(
                           "ورود",
-                          style: TextStyle(color: kPurpleDark, fontSize: 20, fontFamily: 'lalezarPlus'),
+                          style: TextStyle(color: kPurpleDark, fontSize: 18, fontFamily: 'lalezarPlus'),
                         ))
                   ],
                 )

@@ -13,7 +13,8 @@ class CustomButton extends StatelessWidget {
         required this.splashColor,
         required this.borderColor,
         required this.widthBtn,
-        required this.heightBtn});
+        required this.heightBtn,
+      this.elevationBtn});
 
   final Color colorBtn;
   final String textBtn;
@@ -26,11 +27,13 @@ class CustomButton extends StatelessWidget {
   final Color borderColor;
   final double widthBtn;
   final double heightBtn;
+  final double? elevationBtn;
+
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 7,
+      elevation: elevationBtn??7,
       shadowColor: shadowColor,
       borderRadius: BorderRadius.circular(30),
       color: colorBtn,

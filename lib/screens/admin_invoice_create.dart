@@ -256,7 +256,7 @@ class AdminInvoiceCreate extends GetView<InvoiceController> {
             ),
           ),
           child4: const Padding(
-            padding: EdgeInsets.symmetric(vertical: 25.0),
+            padding: EdgeInsets.symmetric(vertical: 50.0),
             child: Text(
               'سفارشات موجود در فاکتور',
               style: TextStyle(fontSize: 20, color: kPurpleDark),

@@ -28,7 +28,7 @@ class ProfileUser extends GetView<ProfileController> {
             children: [
               Padding(
                 padding:
-                const EdgeInsets.only(right: 20, left: 10, bottom: 20, top: 50),
+                const EdgeInsets.only(right: 20, left: 10, bottom: 30, top: 40),
                 child: Column(
                   children: [
                     // ویجت NavbarCustom ثابت
@@ -51,13 +51,6 @@ class ProfileUser extends GetView<ProfileController> {
                   ],
                 ),
               ),
-              // const Text(
-              //   'مشخصات کاربر',
-              //   style: TextStyle(fontSize: 35,),
-              // ),
-              // const SizedBox(
-              //   height: 30,
-              // ),
               CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 75,
@@ -86,46 +79,48 @@ class ProfileUser extends GetView<ProfileController> {
                     ),
                   )),
               const SizedBox(
-                height: 30,
+                height: 50,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: Container(
                   width: Get.width-30,
-                  height: 82,
+                  height: 80,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40), color: kPurple),
+                      borderRadius: BorderRadius.circular(35), color: kPurple),
                   child: Row(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 8,
-                          bottom: 5,
+                          top: 10,
                           right: 40.0,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'نام کاربری',
-                              style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
+                        child: SizedBox(
+                          width: 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'نام کاربری',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              controller.username.value,
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.grey.shade800),
-                            ),
-                          ],
+                              Text(
+                                controller.username.value,
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.grey.shade800),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const Spacer(),
                       const Icon(
                         CupertinoIcons.person_solid,
-                        size: 50,
+                        size: 45,
                       ),
                       const SizedBox(
                         width: 25,
@@ -135,7 +130,7 @@ class ProfileUser extends GetView<ProfileController> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: Container(
                   width: Get.width-30,
                   height: 80,
@@ -146,8 +141,7 @@ class ProfileUser extends GetView<ProfileController> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 8,
-                          bottom: 0,
+                          top: 10,
                           right: 40.0,
                         ),
                         child: SizedBox(
@@ -159,7 +153,7 @@ class ProfileUser extends GetView<ProfileController> {
                               const Text(
                                 'ایمیل',
                                 style: TextStyle(
-                                  fontSize: 23,
+                                  fontSize: 22,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -189,7 +183,7 @@ class ProfileUser extends GetView<ProfileController> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: Container(
                   width: Get.width-30,
                   height: 80,
@@ -199,26 +193,28 @@ class ProfileUser extends GetView<ProfileController> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 8,
-                          bottom: 5,
+                          top: 10,
                           right: 40.0,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'شماره موبایل',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
+                        child: SizedBox(
+                          width: 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'شماره موبایل',
+                                style: TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(controller.phoneNumber.value.toString(),
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.grey.shade800),
-                            ),
-                          ],
+                              Text(controller.phoneNumber.value.toString(),
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.grey.shade800),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const Spacer(),
@@ -246,7 +242,7 @@ class ProfileUser extends GetView<ProfileController> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: Container(
                   width: Get.width-30,
                   height: 80,
@@ -256,27 +252,29 @@ class ProfileUser extends GetView<ProfileController> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 8,
-                          bottom: 5,
+                          top: 10,
                           right: 40.0,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'موجودی کیف پول',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
+                        child: SizedBox(
+                          width: 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'موجودی کیف پول',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              '${separateDigits(int.parse(controller.wallet.value.toString()))} تومان',
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.grey.shade800),
-                            ),
-                          ],
+                              Text(
+                                '${separateDigits(int.parse(controller.wallet.value.toString()))} تومان',
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.grey.shade800),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const Spacer(),

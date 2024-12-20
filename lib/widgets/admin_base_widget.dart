@@ -11,6 +11,8 @@ class AdminBaseWidget extends StatelessWidget {
       this.childWidget,
         this.child1,
         this.child2,
+        this.child8,
+        this.child9,
         this.child3,
         this.child4,
         this.child5,
@@ -32,7 +34,7 @@ class AdminBaseWidget extends StatelessWidget {
       child6,
       child7;
   final Color? color;
-  final double? height,paddingRight;
+  final double? height,paddingRight, child8, child9;
   final String? textNavbar2, textBtn;
   final VoidCallback? onTapButton;
 
@@ -97,12 +99,11 @@ class AdminBaseWidget extends StatelessWidget {
                       ),
                     ),
                     child1!,
+                    SizedBox(height: child8,),
                     child2!,
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                SizedBox(height: child9,),
                 child3!,
                 child4!,
                 child5!,

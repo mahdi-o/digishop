@@ -15,6 +15,7 @@ class IntroScreen extends GetView<RegisterLoginController> {
   @override
   Widget build(BuildContext context) {
     return BaseWidget(color: Colors.white,
+      floatingActionButton: false,
       bottomNavigation: null,
       appBar: null,
       child: Container(

@@ -16,6 +16,7 @@ class LoginPage extends GetView<RegisterLoginController> {
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
+      floatingActionButton: false,
       color: Colors.white,
       bottomNavigation: null,
       appBar: null,
@@ -97,7 +98,7 @@ class LoginPage extends GetView<RegisterLoginController> {
                     children: [
                       const Text(
                         "حساب کاربری ندارید؟",
-                        style: TextStyle(fontSize: 18,fontFamily: 'lalezarPlus'),
+                        style: TextStyle(fontSize: 16,fontFamily: 'lalezarPlus'),
                       ),
                       TextButton(
                         onPressed: () {
@@ -106,7 +107,7 @@ class LoginPage extends GetView<RegisterLoginController> {
                         },
                         child: const Text(
                           "ثبت نام",
-                          style: TextStyle(color: kPurpleDark, fontSize: 22,fontFamily: 'lalezarPlus'),
+                          style: TextStyle(color: kPurpleDark, fontSize: 18,fontFamily: 'lalezarPlus'),
                         ),
                       ),
                     ],

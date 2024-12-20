@@ -138,7 +138,7 @@ class BasketScreen extends GetView<BasketController> {
                 }
                 return Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 170,
+                  height: 200,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20)),
@@ -160,7 +160,7 @@ class BasketScreen extends GetView<BasketController> {
                                   .imageAddress
                                   .toString()
                                   : product.imageAddress.toString(),
-                              width: 90,
+                              width: 100,
                             ),
                           ),
                           const SizedBox(
@@ -169,18 +169,22 @@ class BasketScreen extends GetView<BasketController> {
                           Column(
                             children: [
                               SizedBox(
-                                height: 40,
+                                height: 25,
                                 width: 200,
-                                child: Text(
-                                  product.nameProduct.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 18,
+                                child: SingleChildScrollView(
+                                  scrollDirection:Axis.horizontal,
+                                  child: Text(
+                                    product.nameProduct.toString(),
+                                    style: const TextStyle(
+                                      fontFamily: 'BlackNorth',
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(top: 30.0),
+                                const EdgeInsets.only(top: 10.0),
                                 child: Row(
                                   children: [
                                     Text(
@@ -209,7 +213,7 @@ class BasketScreen extends GetView<BasketController> {
                                 ),
                               ),
                               const SizedBox(
-                                height: 15,
+                                height: 30,
                               ),
                               Row(
                                 children: [
@@ -255,20 +259,23 @@ class BasketScreen extends GetView<BasketController> {
                           ),
                           Column(
                             children: [
-                              Container(
-                                decoration: const BoxDecoration(
-                                    color: kPurpleLight,
-                                    shape: BoxShape.circle),
-                                height: 50,
-                                width: 50,
-                                child: Center(
-                                  child: Text(
-                                    'x${basket.count}',
-                                    style: const TextStyle(
-                                        color: kPinkDark,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Titr',
-                                        fontSize: 16),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0,top: 10),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      color: kPurpleLight,
+                                      shape: BoxShape.circle),
+                                  height: 55,
+                                  width: 50,
+                                  child: Center(
+                                    child: Text(
+                                      'x${basket.count}',
+                                      style: const TextStyle(
+                                          color: kPinkDark,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Titr',
+                                          fontSize: 18),
+                                    ),
                                   ),
                                 ),
                               ),

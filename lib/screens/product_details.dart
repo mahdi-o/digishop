@@ -125,28 +125,32 @@ class ProductDetails extends GetView<ProductController> {
                     Column(
                       children: [
                         RowDetailsModels(
+                          buttonPay:roll=='admin'?false:true,
                             typeRow: 'product',
                             title: 'حافظه رم',
                             body: product.ram.toString()),
                         RowDetailsModels(
+                            buttonPay:roll=='admin'?false:true,
                             typeRow: 'product',
                             title: 'تعداد',
                             body: product.count.toString()),
                         RowDetailsModels(
+                            buttonPay:roll=='admin'?false:true,
                             typeRow: 'product',
                             title: 'قطر صفحه نمایش',
                             body: product.screen.toString()),
                         RowDetailsModels(
+                            buttonPay:roll=='admin'?false:true,
                             typeRow: 'product',
                             title: 'پردازنده',
                             body: product.cpu.toString()),
                         RowDetailsModels(
+                            buttonPay:roll=='admin'?false:true,
+
                             typeRow: 'product',
                             title: 'حافظه داخلی',
                             body: product.hard.toString()),
-
-
-                        Padding(
+                       roll=='admin'?Container():Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20.0),
                           child: CustomButton(
                             colorBtn: Colors.white,

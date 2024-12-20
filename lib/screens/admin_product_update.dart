@@ -90,6 +90,7 @@ class AdminProductUpdate extends GetView<ProductController> {
             0,
             TextAlign.right,
             22),
+        child8: 10,
         child2:textFieldCustom(
             controller.priceProduct.value =
                 TextEditingController(text: product.price),
@@ -102,6 +103,8 @@ class AdminProductUpdate extends GetView<ProductController> {
             7,
             TextAlign.right,
             22),
+        child9: 50,
+
         child3:Row(
           children: [
             Expanded(

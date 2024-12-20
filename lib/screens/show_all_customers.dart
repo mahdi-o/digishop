@@ -26,7 +26,7 @@ class ShowAllCustomers extends GetView<CustomerController> {
             context,
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 120.0),
+                padding:  EdgeInsets.only(bottom: Get.height/18),
                 child: Text(
                   'خطا در بارگذاری داده ها!',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
@@ -39,7 +39,7 @@ class ShowAllCustomers extends GetView<CustomerController> {
             context,
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 100.0),
+                padding:  EdgeInsets.only(bottom: Get.height/18),
                 child: Text(
                   'مشتری یافت نشد!',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 30),
@@ -117,7 +117,7 @@ class ShowAllCustomers extends GetView<CustomerController> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 40,
+          height: 25,
           width: 200,
           child: Center(
             child: Text(

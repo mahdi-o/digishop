@@ -34,7 +34,7 @@ class HomeScreen extends GetView<HomeController> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 8, top: 65),
+                      padding: const EdgeInsets.only(bottom: 5, top: 52),
                       child: NavbarCustom(
                         text1: ' دیجی ',
                         text2: 'شاپ',
@@ -82,6 +82,7 @@ class HomeScreen extends GetView<HomeController> {
                             decorationColor: Colors.grey.shade100,
                           ),
                           decoration: InputDecoration(
+                            contentPadding:  EdgeInsets.symmetric(vertical: 10),
                             border: InputBorder.none,
                             hintText: 'جستجو',
                             hintStyle: TextStyle(
@@ -127,7 +128,7 @@ class HomeScreen extends GetView<HomeController> {
                     ),
 
                     const SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
 
                     Padding(
